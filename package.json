@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:tailwind": "npx postcss css/main.css -o app/styles.css --verbose",
     "start": "next start",
     "lint": "next lint"
   },
@@ -36,6 +37,7 @@
     "p-limit": "^5.0.0",
     "rehype-pretty-code": "^0.13.0",
     "rehype-raw": "^7.0.0",
+    "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "remark-reading-time": "^2.0.1",
     "scroll-into-view-if-needed": "^3.1.0",

@@ -1,15 +1,6 @@
 import type { Config } from "tailwindcss"
 import colors from "tailwindcss/colors"
 
-// const makePrimaryColor = (l) =>{
-//   return  ({ opacityValue }) => {
-//     return (
-//       `hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) ${l}%` +
-//       (opacityValue ? ` / ${opacityValue})` : ')')
-//     )
-//   }
-// }
-
 const config: Config = {
   prefix: "nx-",
   content: [

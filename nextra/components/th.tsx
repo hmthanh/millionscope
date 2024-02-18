@@ -1,3 +1,4 @@
+"use client"
 import cn from 'clsx'
 import type { ComponentProps } from 'react'
 

@@ -25,6 +25,9 @@
       "@*": [
         "./*"
       ],
+      "flexsearch": [
+        "./node_modules/@types/flexsearch"
+      ]
     }
   },
   "include": [
