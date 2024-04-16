@@ -1,7 +1,7 @@
 "use client"
 
 import { ThemeProvider } from "next-themes"
-import type { FrontMatter, PageMapItem, PageOpts } from "@nextra/types"
+import type { FrontMatter, PageMapItem, PageOpts } from "@scope/types"
 import { metaSchema } from "nextra/normalize-pages"
 import type { ReactElement, ReactNode } from "react"
 import { createContext, useContext, useState } from "react"

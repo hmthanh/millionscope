@@ -1,5 +1,5 @@
 import cn from "clsx"
-import type { Heading } from "@nextra/types"
+import type { Heading } from "@scope/types"
 import type { ReactElement } from "react"
 import { useEffect, useMemo, useRef } from "react"
 import scrollIntoView from "scroll-into-view-if-needed"

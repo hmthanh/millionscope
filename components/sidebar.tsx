@@ -2,7 +2,7 @@
 
 import cn from "clsx"
 import { useRouter } from "next/router"
-import type { Heading } from "@nextra/types"
+import type { Heading } from "@scope/types"
 import { useFSRoute, useMounted } from "nextra/hooks"
 import { ArrowRightIcon, ExpandIcon } from "nextra/icons"
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages"
