@@ -1,4 +1,4 @@
-// import { Code, Pre, Table, Td, Th, Tr } from "@nextra/components"
+// import { Code, Pre, Table, Td, Th, Tr } from "@scope/components"
 import type { MDXComponents } from "mdx/types"
 import cn from "clsx"
 import type { Components } from "nextra/mdx"
@@ -9,7 +9,7 @@ import { Children, cloneElement, useEffect, useRef, useState } from "react"
 import type { DocsThemeConfig } from "@config/constants"
 import { DetailsProvider, useDetails, useSetActiveAnchor } from "@contexts"
 import { useIntersectionObserver, useSlugs } from "@contexts/active-anchor"
-import { Pre } from "@nextra/components"
+import { Pre } from "@scope/components"
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   const context = { index: 0 }

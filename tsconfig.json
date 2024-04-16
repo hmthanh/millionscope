@@ -25,6 +25,12 @@
       "@*": [
         "./*"
       ],
+      "@scope/components": [
+        "./scope/components"
+      ],
+      "@scope/icons": [
+        "./scope/icons"
+      ],
       "flexsearch": [
         "./node_modules/@types/flexsearch"
       ]
