@@ -14,7 +14,9 @@
 @tailwind components;
 @tailwind utilities; */
 
-html {
+
+/* ****************** DOCS ****************** */
+/* html {
   @apply nx-scroll-pt-5;
 }
 
@@ -50,7 +52,7 @@ h1 {
 
 .footnotes a[data-footnote-backref] {
   font-family: initial;
-}
+} */
 
 /* html{
   font-family: var(--font-latexmath);
