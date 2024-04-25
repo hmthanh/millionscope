@@ -2,6 +2,8 @@ import localFont from 'next/font/local'
 import { ThemeProvider } from 'next-themes'
 
 import "./globals.css"
+import "./styles.css"
+import "./custom.css"
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import BodyBlog from '@/components/body'
