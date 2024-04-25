@@ -1,0 +1,120 @@
+---
+comments: true
+mathjax: true
+priority: -1000
+title: "What are Diffusion Models?"
+description: "What are Diffusion Models?"
+excerpt: "What are Diffusion Models?"
+date: 2021-07-11 11:00:00
+---
+
+# What are Diffusion Models?
+
+Source : https://lilianweng.github.io/posts/2021-07-11-diffusion-models/
+
+So far, I've written about three types of generative models, [GAN](https://lilianweng.github.io/posts/2017-08-20-gan/), [VAE](https://lilianweng.github.io/posts/2018-08-12-vae/), and [Flow-based](https://lilianweng.github.io/posts/2018-10-13-flow-models/) models. They have shown great success in generating high-quality samples, but each has some limitations of its own.
+GAN models are known for potentially unstable training and less diversity in generation due to their adversarial training nature.
+VAE relies on a surrogate loss.
+Flow models have to use specialized architectures to construct reversible transform.
+
+Diffusion models are inspired by non-equilibrium thermodynamics. They define a Markov chain of diffusion steps to slowly add random noise to data and then learn to reverse the diffusion process to construct desired data samples from the noise. Unlike VAE or flow models, diffusion models are learned with a fixed procedure and the latent variable has high dimensionality (same as the original data).
+
+
+$$
+q(\mathbf{x}_t \vert \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_{t}} \mathbf{x}_{t-1}, \beta_t\mathbf{I}) \quad q(\mathbf{x}_{1:T} \vert \mathbf{x}_0) = \prod^T_{t=1} q(\mathbf{x}_t \vert \mathbf{x}_{t-1})
+$$
+
+
+Fig. 1. Overview of different types of generative models.
+
+* items
+
+1. dfdkjfs
+2. dsksjfsfd
+
+- Tan
+- Hoang
+
+
+> lsdkjskdf
+
+```
+Item
+```
+
+
+
+
+<main className="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
+<div className="nextra-breadcrumb nx-mt-1.5 nx-flex nx-items-center nx-gap-1 nx-overflow-hidden nx-text-sm nx-text-gray-500 dark:nx-text-gray-400 contrast-more:nx-text-current">
+<div className="nx-whitespace-nowrap nx-transition-colors nx-min-w-[24px] nx-overflow-hidden nx-text-ellipsis" title="Documentation">Documentation</div>
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="nx-w-3.5 nx-shrink-0">
+<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7">
+</path>
+</svg>
+<div className="nx-whitespace-nowrap nx-transition-colors nx-min-w-[24px] nx-overflow-hidden nx-text-ellipsis hover:nx-text-gray-900 dark:hover:nx-text-gray-100" title="Guide">
+
+<a href="/docs/guide">Guide</a>
+</div>
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="nx-w-3.5 nx-shrink-0">
+<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7">
+</path>
+</svg>
+<div className="nx-whitespace-nowrap nx-transition-colors nx-font-medium nx-text-gray-700 contrast-more:nx-font-bold contrast-more:nx-text-current dark:nx-text-gray-100 contrast-more:dark:nx-text-current" title="Markdown">Markdown</div>
+</div>
+<h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100">Markdown</h1>
+<h2 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400">MDX</h2>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">With Nextra, all your <code className="nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10" dir="ltr">.mdx</code> files under the pages directory will be rendered
+with 
+<a href="https://mdxjs.com/about" target="_blank" rel="noreferrer" className="nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]">MDX<span className="nx-sr-only nx-select-none"> (opens in a new tab)</span>
+</a>, it's an advanced Markdown format with React
+component support.</p>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">For example, you can use import and use React components inside your Markdown
+files like this:</p>
+<div className="nextra-code-block nx-relative nx-mt-6 first:nx-mt-0">
+<div className="nx-absolute nx-top-0 nx-z-[1] nx-w-full nx-truncate nx-rounded-t-xl nx-bg-primary-700/5 nx-py-2 nx-px-4 nx-text-xs nx-text-gray-700 dark:nx-bg-primary-300/10 dark:nx-text-gray-200">Markdown</div>
+
+
+
+
+
+
+
+
+
+
+<div className="nx-opacity-0 nx-transition [div:hover>&amp;]:nx-opacity-100 focus-within:nx-opacity-100 nx-flex nx-gap-1 nx-absolute nx-m-[11px] nx-right-0 nx-top-8">
+<button className="nextra-button nx-transition-all active:nx-opacity-50 nx-bg-primary-700/5 nx-border nx-border-black/5 nx-text-gray-600 hover:nx-text-gray-900 nx-rounded-md nx-p-1.5 dark:nx-bg-primary-300/10 dark:nx-border-white/10 dark:nx-text-gray-400 dark:hover:nx-text-gray-50 md:nx-hidden" title="Toggle word wrap">
+<svg viewBox="0 0 24 24" width="24" height="24" className="nx-pointer-events-none nx-h-4 nx-w-4">
+<path fill="currentColor" d="M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z">
+</path>
+</svg>
+</button>
+<button className="nextra-button nx-transition-all active:nx-opacity-50 nx-bg-primary-700/5 nx-border nx-border-black/5 nx-text-gray-600 hover:nx-text-gray-900 nx-rounded-md nx-p-1.5 dark:nx-bg-primary-300/10 dark:nx-border-white/10 dark:nx-text-gray-400 dark:hover:nx-text-gray-50" title="Copy code" >
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" className="nextra-copy-icon nx-pointer-events-none nx-h-4 nx-w-4">
+<rect x="9" y="9" width="13" height="13" rx="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+</rect>
+<path d="M5 15H4C2.89543 15 2 14.1046 2 13V4C2 2.89543 2.89543 2 4 2H13C14.1046 2 15 2.89543 15 4V5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+</path>
+</svg>
+</button>
+</div>
+</div>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">Generates:</p>
+
+
+<div className="mt-6 rounded-xl border border-gray-200 p-4 dark:border-gray-900">
+<div>
+</div>
+</div>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">Besides basic MDX, Nextra also has some advanced Markdown features built-in.</p>
+<h2 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400">GitHub Flavored Markdown</h2>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">GitHub, that adds support for strikethrough, task lists, tables, and more.</p>
+<h3 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">Strikethrough</h3>
+<p className="nx-mt-6 nx-leading-7 first:nx-mt-0">
+<del>removed</del>
+</p>
+<div className="nextra-code-block nx-relative nx-mt-6 first:nx-mt-0">
+<div className="nx-absolute nx-top-0 nx-z-[1] nx-w-full nx-truncate nx-rounded-t-xl nx-bg-primary-700/5 nx-py-2 nx-px-4 nx-text-xs nx-text-gray-700 dark:nx-bg-primary-300/10 dark:nx-text-gray-200">Markdown</div>
+</div>
+</main>
