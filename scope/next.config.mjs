@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-    output: 'export',
-};
-
-export default nextConfig;
-=======
 import createMDX from '@next/mdx'
 import remarkGfm from 'remark-gfm'
 import { remarkMermaid } from "@theguild/remark-mermaid"
@@ -31,4 +23,3 @@ const withMDX = createMDX({
 })
 
 export default withMDX(nextConfig);
->>>>>>> origin/dev

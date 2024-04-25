@@ -19,10 +19,7 @@
 # misc
 .DS_Store
 **/.DS_Store
-<<<<<<< HEAD
-=======
 **/**/.DS_Store
->>>>>>> origin/dev
 *.pem
 
 # debug

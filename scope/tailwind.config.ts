@@ -1,6 +1,4 @@
 import type { Config } from "tailwindcss";
-<<<<<<< HEAD
-=======
 const colors = require("tailwindcss/colors")
 
 const makePrimaryColor = (l: number, opacityValue: number): string => {
@@ -15,7 +13,6 @@ const makePrimaryColor = (l: number, opacityValue: number): string => {
   let opacity = opacityValue ? ` / ${opacityValue}` : ""
   return `hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) ${l}% ${opacity})`
 }
->>>>>>> origin/dev
 
 const config: Config = {
   content: [
@@ -23,18 +20,6 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-<<<<<<< HEAD
-  theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
-  },
-  plugins: [],
-=======
   prefix: 'nx-',
   theme: {
     screens: {
@@ -95,6 +80,5 @@ const config: Config = {
   },
   plugins: [],
   darkMode: ['class', 'html[class~="dark"]']
->>>>>>> origin/dev
 };
 export default config;

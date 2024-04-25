@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-    "lib": ["dom", "dom.iterable", "esnext"],
-=======
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
->>>>>>> origin/dev
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -26,7 +22,6 @@
       }
     ],
     "paths": {
-<<<<<<< HEAD
       "@/*": ["./*"],
       "@scope/components": [
         "./scope/components"
@@ -34,38 +29,12 @@
       "@scope/icons": [
         "./scope/icons"
       ],
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
-}
-=======
-<<<<<<<< HEAD:old/tsconfig.json
-      "@*": [
-        "*"
-========
-      "@/*": [
-        "./*"
->>>>>>>> origin/dev:scope/tsconfig.json
-      ],
-      "@scope/components": [
-        "scope/components"
-      ],
-      "@scope/icons": [
-        "scope/icons"
-      ],
-<<<<<<<< HEAD:old/tsconfig.json
-      "flexsearch": [
-        "node_modules/@types/flexsearch"
-      ]
-========
       "@scope/*": [
         "./scope/*"
       ],
       "@/utils": [
         "./utils"
       ],
->>>>>>>> origin/dev:scope/tsconfig.json
     }
   },
   "include": [
@@ -79,4 +48,4 @@
     "node_modules"
   ]
 }
->>>>>>> origin/dev
+
