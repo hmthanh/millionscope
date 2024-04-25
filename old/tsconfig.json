@@ -22,8 +22,13 @@
       }
     ],
     "paths": {
+<<<<<<<< HEAD:old/tsconfig.json
       "@*": [
         "*"
+========
+      "@/*": [
+        "./*"
+>>>>>>>> origin/dev:scope/tsconfig.json
       ],
       "@scope/components": [
         "scope/components"
@@ -31,17 +36,27 @@
       "@scope/icons": [
         "scope/icons"
       ],
+<<<<<<<< HEAD:old/tsconfig.json
       "flexsearch": [
         "node_modules/@types/flexsearch"
       ]
+========
+      "@scope/*": [
+        "./scope/*"
+      ],
+      "@/utils": [
+        "./utils"
+      ],
+>>>>>>>> origin/dev:scope/tsconfig.json
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+    ".next/types/**/*.ts",
+    "app/diffusion/page.mdx"
+, "components/breadcrumb.tsx.tx"  ],
   "exclude": [
     "node_modules"
   ]

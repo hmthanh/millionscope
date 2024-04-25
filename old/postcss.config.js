@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('postcss-load-config').Config} */
+const config = {
   plugins: {
     "postcss-import": {},
     "tailwindcss/nesting": {},
@@ -7,4 +8,6 @@ module.exports = {
       browsers: ">= .25%",
     },
   },
-}
+};
+
+export default config;
