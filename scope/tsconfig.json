@@ -31,10 +31,7 @@
       ],
       "@scope/*": [
         "./scope/*"
-      ],
-      "@/utils": [
-        "./utils"
-      ],
+      ]
     }
   },
   "include": [
