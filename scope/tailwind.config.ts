@@ -42,6 +42,9 @@ const config: Config = {
       // blue: colors.blue,
       // yellow: colors.yellow,
     },
+    fontFamily: {
+      organetto: ["var(--font-organetto)"],
+    },
     extend: {
       colors: {
         dark: '#111'

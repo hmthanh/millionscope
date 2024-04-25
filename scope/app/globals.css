@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @import '../styles/variables.css';
-@import '../styles/code-block.css';
+/*@import '../styles/code-block.css';
 @import '../styles/subheading-anchor.css';
 @import '../styles/scrollbar.css';
 @import '../styles/steps.css';
-@import '../styles/cards.css';
+@import '../styles/cards.css'; */
 
 html {
     @apply nx-scroll-pt-5;
@@ -46,3 +46,8 @@ html {
   .footnotes a[data-footnote-backref] {
     font-family: initial;
   }
+
+
+html{
+  font-family: var(--font-latexmath);
+}
