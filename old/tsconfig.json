@@ -23,16 +23,16 @@
     ],
     "paths": {
       "@*": [
-        "./*"
+        "*"
       ],
       "@scope/components": [
-        "./scope/components"
+        "scope/components"
       ],
       "@scope/icons": [
-        "./scope/icons"
+        "scope/icons"
       ],
       "flexsearch": [
-        "./node_modules/@types/flexsearch"
+        "node_modules/@types/flexsearch"
       ]
     }
   },
