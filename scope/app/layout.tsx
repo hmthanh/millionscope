@@ -23,11 +23,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${myFont.variable}`}>
+    <html lang="en" className={`${myFont.variable} js-focus-visible light`} style={{ colorScheme: "light" }} dir="ltr" data-js-focus-visible>
       <body>
-        <Header></Header>
-        <BodyBlog>{children}</BodyBlog>
-        <Footer></Footer>
+        <div className="" dir="ltr">
+          <Header></Header>
+          <BodyBlog>{children}</BodyBlog>
+          <Footer></Footer>
+        </div>
       </body>
     </html>
   )
