@@ -2,10 +2,10 @@
 
 import cn from "clsx"
 import { useRouter } from "next/router"
-import type { Heading } from "@scope/types"
+import type { Heading } from "@scopeui/types"
 import { useFSRoute, useMounted } from "@/utils/hooks"
-import { ArrowRightIcon, ExpandIcon } from "@scope/icons"
-import type { Item, MenuItem, PageItem } from "@scope/config/normalize-pages"
+import { ArrowRightIcon, ExpandIcon } from "@scopeui/icons"
+import type { Item, MenuItem, PageItem } from "@scopeui/config/normalize-pages"
 import type { ReactElement } from "react"
 import { createContext, memo, useContext, useEffect, useMemo, useRef, useState } from "react"
 import scrollIntoView from "scroll-into-view-if-needed"

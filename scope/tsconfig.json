@@ -23,14 +23,14 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@scope/components": [
-        "./scope/components"
+      "@scopeui/components": [
+        "./scope-core/components"
       ],
-      "@scope/icons": [
-        "./scope/icons"
+      "@scopeui/icons": [
+        "./scope-core/icons"
       ],
-      "@scope/*": [
-        "./scope/*"
+      "@scopeui/*": [
+        "./scope-core/*"
       ]
     }
   },

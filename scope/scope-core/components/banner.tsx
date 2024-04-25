@@ -1,5 +1,5 @@
 import cn from "clsx"
-import { XIcon } from "@scope/icons"
+import { XIcon } from "@scopeui/icons"
 import type { ReactElement } from "react"
 import { useConfig } from "@/contexts"
 import { renderComponent } from "@/utils"

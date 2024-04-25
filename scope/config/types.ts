@@ -1,4 +1,4 @@
-import type { PageOpts } from "@scope/types"
+import type { PageOpts } from "@scopeui/types"
 import type { ReactNode } from "react"
 // import type { DocsThemeConfig } from "@/config/constants"
 

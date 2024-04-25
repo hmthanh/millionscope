@@ -1,5 +1,5 @@
 import { matchSorter } from "match-sorter"
-// import type { Item as NormalItem } from "@scope/config/normalize-pages"
+// import type { Item as NormalItem } from "@scopeui/config/normalize-pages"
 import type { ReactElement } from "react"
 import { useMemo, useState } from "react"
 // import type { SearchResult } from "../../.old/config/types"

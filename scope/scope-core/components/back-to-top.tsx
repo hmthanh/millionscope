@@ -1,5 +1,5 @@
 import cn from "clsx"
-import { ArrowRightIcon } from "@scope/icons"
+import { ArrowRightIcon } from "@scopeui/icons"
 import type { ReactElement } from "react"
 import { useEffect, useRef } from "react"
 

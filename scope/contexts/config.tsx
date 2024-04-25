@@ -1,8 +1,8 @@
 "use client"
 
 import { ThemeProvider } from "next-themes"
-import type { FrontMatter, PageMapItem, PageOpts } from "@scope/types"
-// import { metaSchema } from "@scope/config/normalize-pages"
+import type { FrontMatter, PageMapItem, PageOpts } from "@scopeui/types"
+// import { metaSchema } from "@scopeui/config/normalize-pages"
 import type { ReactElement, ReactNode } from "react"
 import { createContext, useContext, useState } from "react"
 import type { ZodError } from "zod"

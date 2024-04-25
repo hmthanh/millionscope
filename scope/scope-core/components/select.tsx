@@ -1,7 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react"
 import cn from "clsx"
 import { useMounted } from "@/utils/hooks"
-import { CheckIcon } from "@scope/icons"
+import { CheckIcon } from "@scopeui/icons"
 import type { ReactElement, ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { usePopper } from "@/utils"
