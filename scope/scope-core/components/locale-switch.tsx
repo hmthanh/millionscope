@@ -1,3 +1,5 @@
+"use client"
+
 import { addBasePath } from "next/dist/client/add-base-path"
 import { useRouter } from "next/router"
 import { GlobeIcon } from "@scopeui/icons"

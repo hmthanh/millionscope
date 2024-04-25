@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/router"
 // import { useMounted } from "@/utils/hooks"
 import type { ReactElement } from "react"

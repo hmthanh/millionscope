@@ -1,6 +1,8 @@
+"use client"
+
 import cn from "clsx"
-import type { Heading } from "@scopeui/types"
 import type { ReactElement } from "react"
+import type { Heading } from "@scopeui/types"
 import { useEffect, useMemo, useRef } from "react"
 import scrollIntoView from "scroll-into-view-if-needed"
 import { useActiveAnchor, useConfig } from "@/contexts"

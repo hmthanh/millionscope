@@ -22,6 +22,7 @@
     "clsx": "^2.1.1",
     "git-url-parse": "^14.0.0",
     "gray-matter": "^4.0.3",
+    "intersection-observer": "^0.12.2",
     "katex": "^0.16.10",
     "match-sorter": "^6.3.4",
     "next": "14.2.3",

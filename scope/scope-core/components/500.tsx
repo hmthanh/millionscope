@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/router"
 import type { ReactElement } from "react"
 // import { useConfig } from "@/contexts"
