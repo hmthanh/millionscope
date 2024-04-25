@@ -1,9 +1,7 @@
-"use client"
-
 import cn from "clsx"
 import type { ComponentProps, ReactElement } from "react"
 
-export const Button = ({ children, className, ...props }: ComponentProps<"button">): ReactElement => {
+export const Counter = ({ children, className, ...props }: ComponentProps<"button">): ReactElement => {
   return (
     <button
       className={cn(
