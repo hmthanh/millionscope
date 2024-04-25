@@ -2,32 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@import '../styles/variables.css';
+@import '../styles/code-block.css';
+@import '../styles/subheading-anchor.css';
+@import '../styles/scrollbar.css';
+@import '../styles/steps.css';
+@import '../styles/cards.css';
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+html {
+    @apply nx-scroll-pt-5;
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  
+  body {
+    @apply nx-px-4;
   }
-}
+  
+  article {
+    @apply nx-mx-auto nx-block nx-pt-20 nx-pb-32;
+  }
+  
+  article img {
+    @apply nx-mx-auto;
+  }
+  
+  h1 {
+    letter-spacing: -0.03em;
+  }
+  
+  .nx-prose code {
+    &:before,
+    &:after {
+      @apply nx-hidden;
+    }
+    .line {
+      @apply nx-font-normal;
+    }
+  }
+  
+  .nx-prose .nextra-callout p {
+    @apply nx-m-0;
+  }
+  
+  .footnotes a[data-footnote-backref] {
+    font-family: initial;
+  }
