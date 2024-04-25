@@ -10,15 +10,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
-<<<<<<< HEAD
-    "@mdx-js/mdx": "^3.0.1",
-    "@next/mdx": "^14.2.3",
-    "@theguild/remark-mermaid": "^0.0.6",
-    "@theguild/remark-npm2yarn": "^0.3.0",
-    "clsx": "^2.1.1",
-    "gray-matter": "^4.0.3",
-    "next": "14.2.3",
-=======
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/mdx": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
@@ -36,7 +27,6 @@
     "next": "14.2.3",
     "next-seo": "^6.5.0",
     "next-themes": "^0.3.0",
->>>>>>> origin/dev
     "react": "^18",
     "react-dom": "^18",
     "rehype-katex": "^7.0.0",
@@ -45,9 +35,6 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
-<<<<<<< HEAD
-    "remark-reading-time": "^2.0.1"
-=======
     "remark-reading-time": "^2.0.1",
     "remark-toc": "^9.0.0",
     "scroll-into-view-if-needed": "^3.1.0",
@@ -55,7 +42,6 @@
     "slash": "^5.1.0",
     "title": "^3.5.3",
     "zod": "^3.23.4"
->>>>>>> origin/dev
   },
   "devDependencies": {
     "@types/node": "^20",
