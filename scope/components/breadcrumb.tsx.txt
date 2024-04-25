@@ -1,6 +1,6 @@
 import cn from "clsx"
 import { ArrowRightIcon } from "@scope/icons"
-// import type { Item } from "nextra/normalize-pages"
+// import type { Item } from "@scope/config/normalize-pages"
 import type { ReactElement } from "react"
 import { Fragment } from "react"
 import { Anchor } from "./anchor"

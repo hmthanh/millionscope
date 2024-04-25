@@ -1,13 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @import '../styles/variables.css';
-/*@import '../styles/code-block.css';
+@import '../styles/code-block.css';
+/* 
 @import '../styles/subheading-anchor.css';
 @import '../styles/scrollbar.css';
 @import '../styles/steps.css';
 @import '../styles/cards.css'; */
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
 
 html {
     @apply nx-scroll-pt-5;

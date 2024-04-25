@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,15 +22,31 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
+      "@/*": [
+        "./*"
+      ],
       "@scope/components": [
         "./scope/components"
       ],
       "@scope/icons": [
         "./scope/icons"
       ],
+      "@scope/*": [
+        "./scope/*"
+      ],
+      "@/utils": [
+        "./utils"
+      ],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/diffusion/page.mdx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/diffusion/page.mdx"
+, "components/breadcrumb.tsx.tx"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

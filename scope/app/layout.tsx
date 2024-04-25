@@ -1,4 +1,5 @@
 import localFont from 'next/font/local'
+import { ThemeProvider } from 'next-themes'
 
 import "./globals.css"
 
@@ -20,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${myFont.variable}`}>
-      <body>{children}</body>
+      <body>
+        
+        {children}</body>
     </html>
   )
 }
