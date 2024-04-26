@@ -22,11 +22,33 @@ import { createProcessor } from '@mdx-js/mdx'
 // import type { Options as RehypePrettyCodeOptions } from 'rehype-pretty-code'
 // import type { Pluggable } from 'unified'
 
+// const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS = {
+//     // @ts-expect-error -- TODO: fix type error
+//     theme,
+//     onVisitLine(node) {
+//       // Prevent lines from collapsing in `display: grid` mode, and
+//       // allow empty lines to be copy/pasted
+//       if (node.children.length === 0) {
+//         node.children = [{ type: 'text', value: ' ' }]
+//       }
+//     },
+//     onVisitHighlightedLine(node) {
+//       node.properties.className.push('highlighted')
+//     },
+//     onVisitHighlightedWord(node) {
+//       node.properties.className = ['highlighted']
+//     },
+//     // filterMetaString: (meta) =>
+//     //   meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
+//   }
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 };
+
+
 
 const withMDX = createMDX({
     // Add markdown plugins here, as desired
