@@ -7,6 +7,7 @@ import "./custom.css"
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import BodyBlog from '@/components/body'
+import Blog from '@/components/blog'
 
 const myFont = localFont({
   src: "../public/fonts/latinmodern-math.woff2",
@@ -29,7 +30,8 @@ export default function RootLayout({
       <body>
         <div className="" dir="ltr">
           <Header></Header>
-          <BodyBlog>{children}</BodyBlog>
+          {/* <BodyBlog>{children}</BodyBlog> */}
+          <Blog>{children}</Blog>
           <Footer></Footer>
         </div>
       </body>
