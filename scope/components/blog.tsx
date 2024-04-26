@@ -324,13 +324,7 @@ export default function MyBlog({ children }: any) {
                         </svg>
                         <div className="nx-whitespace-nowrap nx-transition-colors nx-font-medium nx-text-gray-700 contrast-more:nx-font-bold contrast-more:nx-text-current dark:nx-text-gray-400 contrast-more:dark:nx-text-current" title="Getting Started">Getting Started</div>
                     </div>
-                    <h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100">Getting Started</h1>
-
-                    <h2 className="nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400">Quick Start<span className="nx-absolute -nx-mt-20" id="quick-start">
-                    </span>
-                        <a href="#quick-start" className="subheading-anchor" aria-label="Permalink for this section">
-                        </a>
-                    </h2>
+                    
                     {children}
                 </main>
             </article>
