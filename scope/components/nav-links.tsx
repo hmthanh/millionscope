@@ -1,6 +1,6 @@
 import cn from "clsx"
 import { ArrowRightIcon } from "@scopeui/icons"
-import type { Item } from "@scopeui/config/normalize-pages"
+import type { Item } from "@scopeui/config"
 import type { ReactElement } from "react"
 import { useConfig } from "@/contexts"
 import type { DocsThemeConfig } from "@/config/constants"

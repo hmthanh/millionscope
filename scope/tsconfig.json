@@ -31,6 +31,12 @@
       "@scopeui/icons": [
         "./scope-core/icons"
       ],
+      "@scopeui/mdx-plugins": [
+        "./scope-core/mdx-plugins"
+      ],
+      "@scopeui/config": [
+        "./scope-core/config"
+      ],
       "@scopeui/*": [
         "./scope-core/*"
       ]

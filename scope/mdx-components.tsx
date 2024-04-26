@@ -9,8 +9,8 @@ import { Children, cloneElement, useEffect, useRef, useState } from 'react'
 // import { Anchor, Collapse } from '@/components'
 // import type { AnchorProps } from '@/components/anchor'
 // import type { DocsThemeConfig } from '@/config'
-// import { DetailsProvider, useDetails, useSetActiveAnchor } from './contexts'
-// import { useIntersectionObserver, useSlugs } from './contexts/active-anchor'
+import { DetailsProvider, useDetails, useSetActiveAnchor } from './contexts'
+import { useIntersectionObserver, useSlugs } from './contexts/active-anchor'
 
 import Image, { type ImageProps } from 'next/image'
 import { createElement } from 'react'
@@ -129,6 +129,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         h2: ({ children }) => (
             <h2 className='nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400'>{children}</h2>
         ),
+        // h3: props => <HeadingLink tag="h3" context={context} {...props} />,
+        // h4: props => <HeadingLink tag="h4" context={context} {...props} />,
+        // h5: props => <HeadingLink tag="h5" context={context} {...props} />,
+        // h6: props => <HeadingLink tag="h6" context={context} {...props} />,
         p: ({ children }) => (
             <p className='nx-mt-6 nx-leading-7 first:nx-mt-0'>{children}</p>
         ),
