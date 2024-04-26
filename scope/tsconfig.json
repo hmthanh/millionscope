@@ -22,7 +22,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
+      "@/*": [
+        "./*"
+      ],
       "@scopeui/components": [
         "./scope-core/components"
       ],
@@ -39,10 +41,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/diffusion/page.mdx"
-, "components/breadcrumb.tsx.tx"  ],
+    "app/diffusion/page.mdx",
+    "components/breadcrumb.tsx.tx"
+  ],
   "exclude": [
     "node_modules"
   ]
 }
-
