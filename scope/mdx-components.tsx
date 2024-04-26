@@ -1,12 +1,14 @@
+
+
 import cn from 'clsx'
 import type { MDXComponents } from 'mdx/types'
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import { Children, cloneElement, useEffect, useRef, useState } from 'react'
 // import { Anchor, Collapse } from '@/components'
 // import type { AnchorProps } from '@/components/anchor'
-// import { Code, Pre, Table, Td, Th, Tr } from '@/components'
+import { Code, Pre, Table, Td, Th, Tr } from '@scopeui/components'
 // import type { Components } from 'nextra/mdx'
-// import { Anchor, Collapse } from '@/components'
+import { Anchor, Collapse } from '@/components'
 // import type { AnchorProps } from '@/components/anchor'
 // import type { DocsThemeConfig } from '@/config'
 import { DetailsProvider, useDetails, useSetActiveAnchor } from './contexts'
@@ -14,6 +16,9 @@ import { useIntersectionObserver, useSlugs } from './contexts/active-anchor'
 
 import Image, { type ImageProps } from 'next/image'
 import { createElement } from 'react'
+import { Details } from '@/components/detail'
+
+
 
 
 // Anchor links
@@ -84,23 +89,25 @@ import { createElement } from 'react'
 //     )
 // }
 
-// const Summary = (props: ComponentProps<'summary'>): ReactElement => {
-//     const setOpen = useDetails()
-//     return (
-//       <summary
-//         className={cn(
-//           'nx-flex nx-items-center nx-cursor-pointer nx-list-none nx-p-1 nx-transition-colors hover:nx-bg-gray-100 dark:hover:nx-bg-neutral-800',
-//           "before:nx-mr-1 before:nx-inline-block before:nx-transition-transform before:nx-content-[''] dark:before:nx-invert before:nx-shrink-0",
-//           'rtl:before:nx-rotate-180 [[data-expanded]>&]:before:nx-rotate-90'
-//         )}
-//         {...props}
-//         onClick={e => {
-//           e.preventDefault()
-//           setOpen(v => !v)
-//         }}
-//       />
-//     )
-//   }
+
+
+const Summary = (props: ComponentProps<'summary'>): ReactElement => {
+    const setOpen = useDetails()
+    return (
+        <summary
+            className={cn(
+                'nx-flex nx-items-center nx-cursor-pointer nx-list-none nx-p-1 nx-transition-colors hover:nx-bg-gray-100 dark:hover:nx-bg-neutral-800',
+                "before:nx-mr-1 before:nx-inline-block before:nx-transition-transform before:nx-content-[''] dark:before:nx-invert before:nx-shrink-0",
+                'rtl:before:nx-rotate-180 [[data-expanded]>&]:before:nx-rotate-90'
+            )}
+            {...props}
+            onClick={e => {
+                e.preventDefault()
+                setOpen(v => !v)
+            }}
+        />
+    )
+}
 
 // const EXTERNAL_HREF_REGEX = /https?:\/\//
 
@@ -133,14 +140,57 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         // h4: props => <HeadingLink tag="h4" context={context} {...props} />,
         // h5: props => <HeadingLink tag="h5" context={context} {...props} />,
         // h6: props => <HeadingLink tag="h6" context={context} {...props} />,
-        p: ({ children }) => (
-            <p className='nx-mt-6 nx-leading-7 first:nx-mt-0'>{children}</p>
-        ),
+        // p: ({ children }) => (
+        //     <p className='nx-mt-6 nx-leading-7 first:nx-mt-0'>{children}</p>
+        // ),
         img: (props: any) =>
             createElement(
                 typeof props.src === 'object' ? Image : 'img',
                 props as ImageProps
             ),
+        ul: props => (
+            <ul
+                className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+                {...props}
+            />
+        ),
+        ol: props => (
+            <ol
+                className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+                {...props}
+            />
+        ),
+        li: props => <li className="nx-my-2" {...props} />,
+        blockquote: props => (
+            <blockquote
+                className={cn(
+                    'nx-mt-6 nx-border-gray-300 nx-italic nx-text-gray-700 dark:nx-border-gray-700 dark:nx-text-gray-400',
+                    'first:nx-mt-0 ltr:nx-border-l-2 ltr:nx-pl-6 rtl:nx-border-r-2 rtl:nx-pr-6'
+                )}
+                {...props}
+            />
+        ),
+        hr: props => (
+            <hr
+                className="nx-my-8 nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400"
+                {...props}
+            />
+        ),
+        // a: Link,
+        table: props => (
+            <Table
+                className="nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0"
+                {...props}
+            />
+        ),
+        p: props => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
+        tr: Tr,
+        th: Th,
+        td: Td,
+        details: Details,
+        summary: Summary,
+        pre: Pre,
+        code: Code,
         ...components,
     }
 }
