@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 
-export default class Header extends Component {
+export default class MyHeader extends Component {
     render() {
         return (
             <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">

@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import type { ReactElement } from "react"
 // import { useConfig } from "@/contexts"
 // import { getGitIssueUrl, renderComponent } from "@/utils"
-import { Anchor } from "./anchor"
+import { Anchor } from "@/components/anchor"
 
 export function NotFoundPage(): ReactElement | null {
   // const config = useConfig()

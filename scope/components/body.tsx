@@ -1,6 +1,6 @@
 "use client"
 import React, { Component } from "react";
-export default function BodyBlog({ children }: any) {
+export default function MyBodyBlog({ children }: any) {
     return (
         <div className="nx-mx-auto nx-flex nx-max-w-[90rem]">
             <div className="motion-reduce:nx-transition-none [transition:background-color_1.5s_ease] nx-bg-transparent">

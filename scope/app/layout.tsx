@@ -4,10 +4,10 @@ import { ThemeProvider } from 'next-themes'
 import "./globals.css"
 import "./styles.css"
 import "./custom.css"
-import Header from '@/components/header'
-import Footer from '@/components/footer'
-import BodyBlog from '@/components/body'
-import Blog from '@/components/blog'
+import MyHeader from '@/components/myheader'
+import MyFooter from '@/components/myfooter'
+import MyBodyBlog from '@/components/body'
+import MyBlog from '@/components/blog'
 
 const myFont = localFont({
   src: "../public/fonts/latinmodern-math.woff2",
@@ -29,10 +29,10 @@ export default function RootLayout({
     <html lang="en" className={`${myFont.variable} js-focus-visible light`} style={{ colorScheme: "light" }} dir="ltr" data-js-focus-visible>
       <body>
         <div className="" dir="ltr">
-          <Header></Header>
+          <MyHeader></MyHeader>
           {/* <BodyBlog>{children}</BodyBlog> */}
-          <Blog>{children}</Blog>
-          <Footer></Footer>
+          <MyBlog>{children}</MyBlog>
+          <MyFooter></MyFooter>
         </div>
       </body>
     </html>
