@@ -46,7 +46,7 @@ export const PostList: React.FC<PostListProps> = ({ posts }) => {
                                     {post.tags.map((tag, index) => {
                                         return (
                                             <li key={index}>
-                                                <Tag href={`/posts/tagged/${slugify(tag)}`}>{tag}</Tag>
+                                                <Tag href={`/posts/tag/${slugify(tag)}`}>{tag}</Tag>
                                             </li>
                                         );
                                     })}
