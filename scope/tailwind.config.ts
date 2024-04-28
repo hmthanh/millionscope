@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 const colors = require("tailwindcss/colors")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 const makePrimaryColor = (l: number, opacityValue: number): string => {
 
@@ -19,6 +20,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./styles/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: 'nx-',
   theme: {
@@ -73,12 +75,15 @@ const config: Config = {
       organetto: ["var(--font-organetto)"],
     },
     extend: {
+      fontFamily: {
+        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         dark: '#111'
       }
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
   darkMode: ['class', 'html[class~="dark"]']
 };
 export default config;
