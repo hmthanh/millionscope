@@ -11,18 +11,19 @@ import { MDXFrontMatter } from "@/lib/types";
 import { Page } from "@/components/page";
 import { components } from "@/components/mdx";
 import { cx } from "@/lib/utils";
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from "remark-gfm";
 // import { remarkMermaid } from "@theguild/remark-mermaid"
 import type { Pluggable } from 'unified'
 
 import remarkFrontmatter from 'remark-frontmatter'
 import grayMatter from "gray-matter"
-import rehypeKatex from "rehype-katex"
+import rehypeKatex from 'rehype-katex'
 import rehypePrettyCode from "rehype-pretty-code"
 import remarkMath from "remark-math"
 import remarkReadingTime from "remark-reading-time"
-import rehypeRaw from 'rehype-raw'
 import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
+import { remarkRemoveImports } from "@/lib/mdx-plugins";
 
 interface ContextProps extends ParsedUrlQuery {
     slug: string;
@@ -105,7 +106,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const { frontMatter, content } = post;
     const mdxContent = await serialize(content, {
         mdxOptions: {
-            remarkPlugins: [remarkGfm],
+            remarkPlugins: [ // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
+                remarkGfm, remarkGfm, remarkMath],
             rehypePlugins: [],
         },
         scope: frontMatter,

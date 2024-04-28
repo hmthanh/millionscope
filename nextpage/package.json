@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/code-frame": "^7.24.2",
     "@headlessui/react": "^1.7.19",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/mdx": "^3.0.1",
@@ -18,6 +19,7 @@
     "@sindresorhus/slugify": "^2.2.1",
     "@theguild/remark-mermaid": "^0.0.6",
     "@theguild/remark-npm2yarn": "^0.3.0",
+    "@types/babel__code-frame": "^7.0.6",
     "@types/graceful-fs": "^4.1.9",
     "@types/mdx": "^2.0.13",
     "@types/title": "^3.4.3",
