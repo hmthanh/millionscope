@@ -27,6 +27,8 @@ const Posts: NextPage<PostsProps> = ({ tag, posts }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
+  const tags = Array.from(new Set(mdxFiles.map((file) => file.tags)))
+  console.log("\n tags", tags,"tags \n")
   return {
     paths: Array.from(new Set(mdxFiles.map((file) => file.tags).flat())).map(
       (tag) => {
