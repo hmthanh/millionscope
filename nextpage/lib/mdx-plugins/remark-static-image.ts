@@ -4,7 +4,8 @@ import slash from 'slash'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 import { EXTERNAL_URL_REGEX, PUBLIC_DIR } from '../constants'
-import { existsSync } from '../file-system'
+// import { existsSync } from '../file-system'
+import {existsSync} from 'graceful-fs'
 import { truthy } from '../utils'
 
 /**

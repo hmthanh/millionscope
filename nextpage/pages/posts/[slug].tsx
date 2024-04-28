@@ -12,6 +12,18 @@ import { Page } from "@/components/page";
 import { components } from "@/components/mdx";
 import { cx } from "@/lib/utils";
 import remarkGfm from "remark-gfm";
+// import { remarkMermaid } from "@theguild/remark-mermaid"
+import type { Pluggable } from 'unified'
+
+import remarkFrontmatter from 'remark-frontmatter'
+import grayMatter from "gray-matter"
+import rehypeKatex from "rehype-katex"
+import rehypePrettyCode from "rehype-pretty-code"
+import remarkMath from "remark-math"
+import remarkReadingTime from "remark-reading-time"
+import rehypeRaw from 'rehype-raw'
+import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
+
 interface ContextProps extends ParsedUrlQuery {
     slug: string;
 }
