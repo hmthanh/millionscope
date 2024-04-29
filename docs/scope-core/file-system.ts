@@ -1,5 +1,5 @@
 import fs from 'graceful-fs'
-import * as findPagesDirImport from 'next/dist/lib/find-pages-dir.js'
+import * as findPagesDirImport from 'next/dist/lib/find-pages-dir'
 import { CWD } from './constants'
 import { getDefault } from './utils'
 
