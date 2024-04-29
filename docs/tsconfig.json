@@ -23,6 +23,9 @@
       "@default-constants": [
         "./config/default/constants.ts"
       ],
+      "@default-config": [
+        "./config/default/config.ts"
+      ],
       "@default-types": [
         "./config/default/types.ts"
       ],
@@ -41,10 +44,10 @@
       "@scopeui/*": [
         "./scope-core/*"
       ],
-      "@mdx-remote":[
+      "@mdx-remote": [
         "./mdx-remote"
       ],
-      "@mdx-remote/*":[
+      "@mdx-remote/*": [
         "./mdx-remote/*"
       ]
     }

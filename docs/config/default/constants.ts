@@ -1,5 +1,5 @@
 import path from 'node:path'
-import type {NextraConfig} from './types'
+import {NextraConfig} from "@default-config";
 
 export const MARKDOWN_EXTENSION_REGEX = /\.mdx?$/
 

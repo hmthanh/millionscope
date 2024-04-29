@@ -36,14 +36,6 @@ export class PageMapCache {
     }
 }
 
-export interface LoaderOptions extends NextraConfig {
-    isMetaImport?: boolean
-    isPageImport?: boolean
-    locales: string[]
-    defaultLocale: string
-    pageMapCache: PageMapCache
-    newNextLinkBehavior?: boolean
-}
 
 export interface Folder<FileType = PageMapItem> {
     kind: 'Folder'
@@ -131,7 +123,6 @@ export type ReadingTime = {
     words: number
 }
 
-type Theme = string
 export type Flexsearch =
     | boolean
     | {
@@ -152,45 +143,7 @@ export type Flexsearch =
         locale?: string
     ) => null | string
 }
-type Transform = (
-    result: string,
-    options: {
-        route: string
-    }
-) => string | Promise<string>
 
-export type NextraConfig = {
-    theme: Theme
-    themeConfig?: string
-    defaultShowCopyCode?: boolean
-    flexsearch?: Flexsearch
-    staticImage?: boolean
-    readingTime?: boolean
-    latex?: boolean
-    codeHighlight?: boolean
-    /**
-     * A function to modify the code of compiled MDX pages.
-     * @experimental
-     */
-    transform?: Transform
-    /**
-     * A function to modify the `pageOpts` prop passed to theme layouts.
-     * @experimental
-     */
-    transformPageOpts?: (pageOpts: PageOpts) => PageOpts
-    mdxOptions?: Pick<ProcessorOptions, 'rehypePlugins' | 'remarkPlugins'> & {
-        format?: 'detect' | 'mdx' | 'md'
-        rehypePrettyCodeOptions?: Partial<RehypePrettyCodeOptions>
-    }
-}
-
-export type Nextra = (
-    ...args: [NextraConfig] | [theme: Theme, themeConfig: string]
-) => (nextConfig: NextConfig) => NextConfig
-
-const nextra: Nextra = () => () => ({})
-
-export default nextra
 
 export type ThemeConfig = any | null
 

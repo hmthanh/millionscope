@@ -19,6 +19,8 @@ export const remarkStaticImage: Plugin<[], Root> =
   () => (tree, _file, done) => {
     const importsToInject: { variableName: string; importPath: string }[] = []
 
+    console.log("tree", tree)
+
     visit(tree, 'image', node => {
       // https://github.com/shuding/nextra/issues/1344
       let url = decodeURI(node.url)

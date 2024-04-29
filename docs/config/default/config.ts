@@ -1,41 +1,57 @@
-import path from 'node:path'
-import type {NextraConfig} from './types'
+import type {ProcessorOptions} from "@mdx-js/mdx";
+import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code";
+import {Flexsearch, PageMapCache, PageOpts} from "@default-types";
+import type {NextConfig} from "next";
 
-export const MARKDOWN_EXTENSION_REGEX = /\.mdx?$/
+type Theme = string
 
-export const MARKDOWN_URL_EXTENSION_REGEX = /\.mdx?(?:(?=[#?])|$)/
+type Transform = (
+    result: string,
+    options: {
+        route: string
+    }
+) => string | Promise<string>
 
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-
-export const LOCALE_REGEX = /\.([a-z]{2}(-[A-Z]{2})?)$/
-
-export const DEFAULT_LOCALE = 'en-US'
-
-export const DEFAULT_CONFIG: Omit<NextraConfig, 'theme'> = {
-    staticImage: true,
-    flexsearch: {
-        codeblocks: true
-    },
-    codeHighlight: true
+export type NextraConfig = {
+    theme: Theme
+    themeConfig?: string
+    defaultShowCopyCode?: boolean
+    flexsearch?: Flexsearch
+    staticImage?: boolean
+    readingTime?: boolean
+    latex?: boolean
+    codeHighlight?: boolean
+    /**
+     * A function to modify the code of compiled MDX pages.
+     * @experimental
+     */
+    transform?: Transform
+    /**
+     * A function to modify the `pageOpts` prop passed to theme layouts.
+     * @experimental
+     */
+    transformPageOpts?: (pageOpts: PageOpts) => PageOpts
+    mdxOptions?: Pick<ProcessorOptions, 'rehypePlugins' | 'remarkPlugins'> & {
+        format?: 'detect' | 'mdx' | 'md'
+        rehypePrettyCodeOptions?: Partial<RehypePrettyCodeOptions>
+    }
 }
 
-export const OFFICIAL_THEMES = ['nextra-theme-docs', 'nextra-theme-blog']
+export type ThemeConfig = any | null
 
-export const META_FILENAME = '_meta.json'
-export const DYNAMIC_META_FILENAME = '_meta.js'
+export type Nextra = (
+    ...args: [NextraConfig] | [theme: Theme, themeConfig: string]
+) => (nextConfig: NextConfig) => NextConfig
 
-export const CWD = process.cwd()
+const nextra: Nextra = () => () => ({})
 
-export const MARKDOWN_EXTENSIONS = ['md', 'mdx'] as const
+export default nextra
 
-export const PUBLIC_DIR = path.join(CWD, 'public')
-
-export const EXTERNAL_URL_REGEX = /^https?:\/\//
-
-export const NEXTRA_INTERNAL = Symbol.for('__nextra_internal__')
-
-export const CODE_BLOCK_FILENAME_REGEX = /filename="([^"]+)"/
-
-export const DEFAULT_LOCALES = ['']
-
-export const ERROR_ROUTES = new Set(['/404', '/500'])
+export interface LoaderOptions extends NextraConfig {
+    isMetaImport?: boolean
+    isPageImport?: boolean
+    locales: string[]
+    defaultLocale: string
+    pageMapCache: PageMapCache
+    newNextLinkBehavior?: boolean
+}

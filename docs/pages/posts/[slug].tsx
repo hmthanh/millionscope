@@ -1,5 +1,12 @@
 "use client"
 
+import path from 'node:path'
+import { createRequire } from 'node:module'
+
+import type { ProcessorOptions } from '@mdx-js/mdx'
+import { createProcessor } from '@mdx-js/mdx'
+// import type { Processor } from '@mdx-js/mdx/lib/core'
+
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import Link from "next/link";
@@ -119,6 +126,25 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     // *************** Config ***************
     const isRemoteContent = false
+    const staticImage = {}
+    const flexsearch = {}
+    const readingTime = true
+    const latex = true
+    const codeHighlight = {}
+    const defaultShowCopyCode = {}
+    const route = ''
+    const locale = ['en']
+    const mdxOptions = {}
+    const filePath = ''
+    const useCachedCompiler = {}
+    const isPageImport = true
+    console.log("\n\n **************Start here \n\n")
+
+    // const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
+
+
+    // const isFileOutsideCWD = !isPageImport && path.relative(CWD, filePath).startsWith('..')
+    const isFileOutsideCWD = {}
     // *************** Config ***************
 
 
@@ -141,13 +167,28 @@ export const getStaticProps: GetStaticProps = async (context) => {
                     // Replace the <summary> and <details> with customized components
                     { whiteList: ['details', 'summary'] }
                 ] satisfies Pluggable,
-                remarkCustomHeadingId, [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
+                remarkCustomHeadingId,
+                [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
+                [remarkStructurize, flexsearch] satisfies Pluggable,
+                // staticImage && remarkStaticImage,
+                readingTime && remarkReadingTime,
+                latex && remarkMath,
+                // isFileOutsideCWD && remarkReplaceImports,
+
             ],
 
-            rehypePlugins: [],
+            rehypePlugins: [
+                // [
+                //     // To render <details /> and <summary /> correctly
+                //     rehypeRaw,
+                //     // fix Error: Cannot compile `mdxjsEsm` node for npm2yarn and mermaid
+                //     { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }
+                // ],
+            ],
         },
         scope: frontMatter,
     });
+    console.log("\n\nGo here\n\n")
     return {
         props: {
             frontMatter,
