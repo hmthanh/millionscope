@@ -20,6 +20,12 @@
       "@/*": [
         "./*"
       ],
+      "@default-constants": [
+        "./config/default/constants.ts"
+      ],
+      "@default-types": [
+        "./config/default/types.ts"
+      ],
       "@scopeui/components": [
         "./scope-core/components"
       ],

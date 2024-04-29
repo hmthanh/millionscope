@@ -1,13 +1,13 @@
 import path from 'path'
 import slash from 'slash'
 import title from 'title'
-import { LOCALE_REGEX } from './constants'
-import type { Folder, MdxFile, Meta } from './types'
+import {LOCALE_REGEX} from './constants'
+import type {Folder, MdxFile, Meta} from './types'
 
 import clsx from "clsx";
 import slugify from "@sindresorhus/slugify";
-export { slugify, clsx as cx };
 
+export {slugify, clsx as cx};
 
 
 export function parseFileName(filePath: string): {
@@ -16,7 +16,7 @@ export function parseFileName(filePath: string): {
     ext: string
 } {
     // Get file name and extension from file path
-    const { name, ext } = path.parse(filePath)
+    const {name, ext} = path.parse(filePath)
     const locale = name.match(LOCALE_REGEX)?.[1] || ''
     return {
         name: locale ? name.replace(LOCALE_REGEX, '') : name,
@@ -32,7 +32,7 @@ export function truthy<T>(value: T): value is Truthy<T> {
 }
 
 export function normalizeMeta(meta: Meta): Exclude<Meta, string> {
-    return typeof meta === 'string' ? { title: meta } : meta
+    return typeof meta === 'string' ? {title: meta} : meta
 }
 
 export function normalizePageRoute(parentRoute: string, route: string): string {
@@ -47,7 +47,7 @@ export function sortPages(
     pages: (
         | Pick<MdxFile, 'kind' | 'name' | 'frontMatter' | 'locale'>
         | Pick<Folder, 'kind' | 'name'>
-    )[],
+        )[],
     locale?: string
 ): [string, string][] {
     if (locale === '') {
@@ -72,7 +72,7 @@ export function sortPages(
             if (b.date) {
                 return 1 // sort a after b
             }
-            return a.title.localeCompare(b.title, locale, { numeric: true })
+            return a.title.localeCompare(b.title, locale, {numeric: true})
         })
         .map(item => [item.name, item.title])
 }
