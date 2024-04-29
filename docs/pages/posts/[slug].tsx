@@ -23,7 +23,19 @@ import rehypePrettyCode from "rehype-pretty-code"
 import remarkMath from "remark-math"
 import remarkReadingTime from "remark-reading-time"
 import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
-import { remarkRemoveImports } from "@/lib/mdx-plugins";
+// import { remarkRemoveImports } from "@/lib/mdx-plugins";
+import {
+    attachMeta,
+    parseMeta,
+    remarkCustomHeadingId,
+    remarkHeadings,
+    remarkLinkRewrite,
+    remarkMdxDisableExplicitJsx,
+    remarkRemoveImports,
+    remarkReplaceImports,
+    remarkStaticImage,
+    remarkStructurize
+} from '@scopeui/mdx-plugins';
 
 interface ContextProps extends ParsedUrlQuery {
     slug: string;
@@ -104,10 +116,34 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === slug);
     const post = mdxFiles[postIndex];
     const { frontMatter, content } = post;
+
+    // *************** Config ***************
+    const isRemoteContent = false
+    // *************** Config ***************
+
+
     const mdxContent = await serialize(content, {
         mdxOptions: {
             remarkPlugins: [ // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-                remarkGfm as Pluggable, remarkGfm as Pluggable, remarkMath],
+                [
+                    remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
+                    {
+                        packageName: 'nextra/components',
+                        tabNamesProp: 'items',
+                        storageKey: 'selectedPackageManager'
+                    }
+                ] satisfies Pluggable,
+                remarkRemoveImports,
+                remarkGfm as Pluggable,
+                remarkMath,
+                [
+                    remarkMdxDisableExplicitJsx,
+                    // Replace the <summary> and <details> with customized components
+                    { whiteList: ['details', 'summary'] }
+                ] satisfies Pluggable,
+                remarkCustomHeadingId, [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
+            ],
+
             rehypePlugins: [],
         },
         scope: frontMatter,

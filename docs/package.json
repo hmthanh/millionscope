@@ -1,5 +1,5 @@
 {
-  "name": "nextpage",
+  "name": "scope-docs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -58,6 +58,7 @@
     "zod": "^3.23.4"
   },
   "devDependencies": {
+    "request": "^2.88.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -66,5 +67,6 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.3",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

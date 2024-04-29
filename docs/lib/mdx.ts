@@ -13,6 +13,8 @@ export const getMdx = (fileName: string) => {
 
   const { data, content } = matter(docSource);
 
+  let searchIndexKey: string | null = null
+
   return {
     frontMatter: {
       ...data,
