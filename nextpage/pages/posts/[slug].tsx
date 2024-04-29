@@ -3,8 +3,8 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import Link from "next/link";
-import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote } from "next-mdx-remote";
+import { serialize } from "@mdx-remote/serialize";
+import { MDXRemote } from "@mdx-remote";
 import rehypePrism from "rehype-prism-plus";
 import { getAllMdx, getMdx } from "@/lib/mdx";
 import { MDXFrontMatter } from "@/lib/types";
@@ -107,7 +107,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const mdxContent = await serialize(content, {
         mdxOptions: {
             remarkPlugins: [ // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-                remarkGfm, remarkGfm, remarkMath],
+                remarkGfm as Pluggable, remarkGfm as Pluggable, remarkMath],
             rehypePlugins: [],
         },
         scope: frontMatter,

@@ -55,7 +55,7 @@ export function createFormattedMDXError(error: any, source: string) {
         )
         : ''
 
-    const formattedError = new Error(`[next-mdx-remote] error compiling MDX:
+    const formattedError = new Error(`[mdx-remote] error compiling MDX:
 ${error?.message}
 ${codeFrames ? '\n' + codeFrames + '\n' : ''}
 More information: https://mdxjs.com/docs/troubleshooting-mdx`)

@@ -1,6 +1,6 @@
-import { MDXRemote } from 'next-mdx-remote'
+// import { MDXRemote } from '@mdx-remote'
 // import {compileMDX} from 'next-mdx-remote/rsc'
-import { serialize } from "next-mdx-remote/serialize";
+// import { serialize } from "@mdx-remote/serialize";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { Suspense } from 'react'
@@ -15,28 +15,6 @@ const components = {
       {props.children}
     </h1>
   ),
-}
-
-async function getData() {
-  // const source = await fetch('https://raw.githubusercontent.com/hmthanh/millionscope/main/scope/app/getting-started/page.mdx')
-
-  // const data = await source.text()
-  const source = "";
-  const fileContents = fs.readFileSync("/Users/thanh/Workspace/millionscope/scope/app/getting-started/page.mdx", 'utf8');
-
-  const mdxSource = await serialize(source, {
-    mdxOptions: {
-      remarkPlugins: [remarkMath],
-      // rehypePlugins: [rehypeKatex]
-    }
-  });
-
-  // console.log(mdxSource)
-  return {
-    props: {
-      mdxSource
-    }
-  };
 }
 
 
@@ -68,9 +46,6 @@ async function getData() {
 // return res.json()
 
 export default async function RemoteMdxPage({ mdxSource }: any) {
-  // const data = await getData()
-  // const source = await fetch('https://raw.githubusercontent.com/hmthanh/millionscope/main/scope/app/getting-started/page.mdx')
-  const data = await getData()
   // const directoryPath = "../../blogs/"
 
   // console.log(fileContents)
