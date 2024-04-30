@@ -220,6 +220,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
                         // ...rehypePrettyCodeOptions
                     }
                 ] as any),
+                attachMeta
             ],
         },
         scope: frontMatter,

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@/styles/styles.css";
 import "@/styles/custom.css";
+import 'katex/dist/katex.min.css';
 import type { AppProps } from "next/app";
 import Layout from "@/components/layout/layout";
 
