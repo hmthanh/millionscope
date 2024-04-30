@@ -97,6 +97,11 @@ export function MDXRemote<TScope, TFrontmatter>({
         )
 
         return hydrateFn.apply(hydrateFn, values).default
+        // return function ContentComponent() {
+        //     const content = hydrateFn.apply(hydrateFn, values).default;
+        //     // Render the content
+        //     return content;
+        // };
     }, [scope, compiledSource])
 
     if (!isReadyToRender) {

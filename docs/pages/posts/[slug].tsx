@@ -31,6 +31,7 @@ import remarkMath from "remark-math"
 import remarkReadingTime from "remark-reading-time"
 import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
 // import { remarkRemoveImports } from "@/lib/mdx-plugins";
+import remarkEmbedImages from 'remark-embed-images'
 import {
     attachMeta,
     parseMeta,
@@ -171,10 +172,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
                 [remarkStructurize, flexsearch] satisfies Pluggable,
                 // staticImage && remarkStaticImage,
+                remarkEmbedImages,
                 readingTime && remarkReadingTime,
                 latex && remarkMath,
                 // isFileOutsideCWD && remarkReplaceImports,
-
             ],
 
             rehypePlugins: [
