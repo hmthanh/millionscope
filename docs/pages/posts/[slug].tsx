@@ -31,7 +31,13 @@ import remarkMath from "remark-math"
 import remarkReadingTime from "remark-reading-time"
 import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
 // import { remarkRemoveImports } from "@/lib/mdx-plugins";
-import remarkEmbedImages from 'remark-embed-images'
+// import remarkEmbedImages from 'remark-embed-images'
+import { remarkEmbedImages } from "@/utils"
+import type { Options as RehypePrettyCodeOptions } from 'rehype-pretty-code'
+import { CODE_BLOCK_FILENAME_REGEX } from '@default-constants';
+import themeConfig from './theme.json'
+
+
 import {
     attachMeta,
     parseMeta,
@@ -108,6 +114,26 @@ const Post: NextPage<PostProps> = ({ frontMatter, mdx, previous, next }) => {
     );
 };
 
+const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
+    // @ts-expect-error -- TODO: fix type error
+    themeConfig,
+    onVisitLine(node: any) {
+        // Prevent lines from collapsing in `display: grid` mode, and
+        // allow empty lines to be copy/pasted
+        if (node.children.length === 0) {
+            node.children = [{ type: 'text', value: ' ' }]
+        }
+    },
+    onVisitHighlightedLine(node: any) {
+        node.properties.className.push('highlighted')
+    },
+    onVisitHighlightedChars(node: any) {
+        node.properties.className = ['highlighted']
+    },
+    filterMetaString: (meta: string) =>
+        meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
     const mdxFiles = getAllMdx();
     return {
@@ -139,7 +165,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const filePath = ''
     const useCachedCompiler = {}
     const isPageImport = true
-    console.log("\n\n **************Start here \n\n")
 
     // const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
 
@@ -147,6 +172,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // const isFileOutsideCWD = !isPageImport && path.relative(CWD, filePath).startsWith('..')
     const isFileOutsideCWD = {}
     // *************** Config ***************
+
 
 
     const mdxContent = await serialize(content, {
@@ -172,24 +198,32 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
                 [remarkStructurize, flexsearch] satisfies Pluggable,
                 // staticImage && remarkStaticImage,
-                remarkEmbedImages,
+                [remarkEmbedImages, { dirname: "./posts" }],
                 readingTime && remarkReadingTime,
                 latex && remarkMath,
                 // isFileOutsideCWD && remarkReplaceImports,
             ],
 
             rehypePlugins: [
-                // [
-                //     // To render <details /> and <summary /> correctly
-                //     rehypeRaw,
-                //     // fix Error: Cannot compile `mdxjsEsm` node for npm2yarn and mermaid
-                //     { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }
-                // ],
+                [
+                    // To render <details /> and <summary /> correctly
+                    rehypeRaw,
+                    // fix Error: Cannot compile `mdxjsEsm` node for npm2yarn and mermaid
+                    { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }
+                ],
+                latex && rehypeKatex,
+                codeHighlight !== false &&
+                ([
+                    rehypePrettyCode,
+                    {
+                        ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
+                        // ...rehypePrettyCodeOptions
+                    }
+                ] as any),
             ],
         },
         scope: frontMatter,
     });
-    console.log("\n\nGo here\n\n")
     return {
         props: {
             frontMatter,
