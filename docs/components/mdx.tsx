@@ -7,6 +7,7 @@ import {createPortal} from "react-dom";
 import Link from "next/link";
 import {Code, Pre, Table, Td, Th, Tr} from "@scopeui/components";
 import cn from "clsx";
+import {Anchor, AnchorProps} from "@/components/anchor";
 
 export const HeadingContext = createContext<
     RefObject<HTMLHeadingElement | null>
@@ -40,7 +41,16 @@ function HeadingLink(
                 // can be added by footnotes
                 className === 'sr-only'
                     ? 'nx-sr-only'
-                    : `nx-not-prose subheading-${Tag}`
+                    : cn(
+                        'nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100',
+                        {
+                            h2: 'nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400',
+                            h3: 'nx-mt-8 nx-text-2xl',
+                            h4: 'nx-mt-8 nx-text-xl',
+                            h5: 'nx-mt-8 nx-text-lg',
+                            h6: 'nx-mt-8 nx-text-base'
+                        }[Tag]
+                    )
             }
             {...props}
         >
@@ -153,10 +163,32 @@ const DEFAULT_COMPONENTS = {
 } satisfies MDXComponents
 // satisfies Components
 
+export const CustomLink = ({href = '', className, ...props}: AnchorProps) => (
+    <a
+        href={href}
+        // newWindow={EXTERNAL_HREF_REGEX.test(href)}
+        className={cn(
+            'nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]',
+            className
+        )}
+        {...props}
+    />
+)
+
+// const A = ({href = '', ...props}) => (
+//     <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
+// )
+
 export const components = {
     Image,
     Note,
     ...DEFAULT_COMPONENTS,
+    h1: ({...props}: ComponentProps<'h1'>) => (
+        <h1
+            className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100"
+            {...props}
+        />
+    ),
     h2: ({...props}: ComponentProps<'h2'>) => <HeadingLink tag="h2" {...props} />,
     h3: ({...props}: ComponentProps<'h3'>) => <HeadingLink tag="h3" {...props} />,
     h4: ({...props}: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
@@ -168,6 +200,7 @@ export const components = {
             {...props}
         />
     ),
+    a: CustomLink,
     ol: ({...props}: ComponentProps<'ol'>) => (
         <ol
             className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
@@ -190,7 +223,7 @@ export const components = {
             {...props}
         />
     ),
-    a: A,
+    // a: A,
 
     // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
     p: ({...props}: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,

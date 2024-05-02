@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { promisify } from 'node:util'
+import {promisify} from 'node:util'
 import matter from "gray-matter";
-import type { MDXFrontMatter } from "@/lib/types";
-import { MARKDOWN_EXTENSION_REGEX } from "@/lib/constants";
+import type {MDXFrontMatter} from "@/lib/types";
+import {MARKDOWN_EXTENSION_REGEX} from "@/lib/constants";
 
 const root = process.cwd();
 
@@ -18,7 +18,7 @@ export const getMdx = (fileName: string) => {
     }
     const docSource = fs.readFileSync(fullPath, "utf-8");
 
-    const { data, content } = matter(docSource);
+    const {data, content} = matter(docSource);
 
     let searchIndexKey: string | null = null
 
