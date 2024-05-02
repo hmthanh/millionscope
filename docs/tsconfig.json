@@ -29,6 +29,12 @@
       "@default-types": [
         "./config/default/types.ts"
       ],
+      "@theme-context": [
+        "./config/theme/context.ts"
+      ],
+       "@theme-constants": [
+        "./config/theme/constants.ts"
+      ],
       "@scopeui/components": [
         "./scope-core/components"
       ],
