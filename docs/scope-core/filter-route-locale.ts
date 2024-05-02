@@ -1,4 +1,4 @@
-import { META_FILENAME } from './constants'
+import { META_FILENAME } from '@/global/constants'
 import type { PageMapItem } from './types'
 import { truthy } from './utils'
 

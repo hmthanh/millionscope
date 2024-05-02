@@ -2,9 +2,9 @@ import Slugger from 'github-slugger'
 import type { Parent, Root } from 'mdast'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
-import { MARKDOWN_EXTENSION_REGEX } from '../constants'
 import type { Heading } from '../types'
 import type { HProperties } from './remark-custom-heading-id'
+import {MARKDOWN_EXTENSION_REGEX} from "@/global/constants";
 
 const getFlattenedValue = (node: Parent): string =>
   node.children

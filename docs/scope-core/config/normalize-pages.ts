@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { ERROR_ROUTES } from './constants'
 import type { Folder, MdxFile, PageMapItem } from './types'
+import {ERROR_ROUTES} from "@/global/constants";
 
 const DEFAULT_PAGE_THEME: PageTheme = {
     breadcrumb: true,

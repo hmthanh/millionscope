@@ -9,7 +9,7 @@ import {
     DYNAMIC_META_FILENAME,
     MARKDOWN_EXTENSION_REGEX,
     META_FILENAME
-} from './constants'
+} from '@/global/constants'
 import type {
     FileMap,
     Folder,

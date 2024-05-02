@@ -1,6 +1,6 @@
 import fs from 'graceful-fs'
 import * as findPagesDirImport from 'next/dist/lib/find-pages-dir'
-import { CWD } from './constants'
+import { CWD } from '@/global/constants'
 import { getDefault } from './utils'
 
 const { findPagesDir } = getDefault(findPagesDirImport)

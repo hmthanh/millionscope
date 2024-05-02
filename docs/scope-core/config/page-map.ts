@@ -1,4 +1,3 @@
-import { IS_PRODUCTION } from './constants'
 import filterRouteLocale from './filter-route-locale'
 import type {
   DynamicMetaDescriptor,
@@ -6,6 +5,7 @@ import type {
   MdxPath,
   PageMapItem
 } from './types'
+import {IS_PRODUCTION} from "@/global/constants";
 
 type PageMapProps = {
   filePath: string

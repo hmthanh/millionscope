@@ -1,11 +1,11 @@
-import { useMDXComponents as originalUseMDXComponents } from '@mdx-js/react'
+import {useMDXComponents as originalUseMDXComponents} from '@mdx-js/react'
 // import type { Components } from '@mdx-js/react/lib'
 import type {MDXComponents as Components} from "mdx/types"
-import Image, { type ImageProps } from 'next/image'
-import { createElement } from 'react'
+import Image, {type ImageProps} from 'next/image'
+import {createElement} from 'react'
 
 const DEFAULT_COMPONENTS = {
-    img: (props:any) =>
+    img: (props: any) =>
         createElement(
             typeof props.src === 'object' ? Image : 'img',
             props as ImageProps
@@ -19,6 +19,6 @@ export const useMDXComponents: typeof originalUseMDXComponents = components => {
     })
 }
 
-export { MDXProvider } from '@mdx-js/react'
+export {MDXProvider} from '@mdx-js/react'
 
-export type { Components }
+export type {Components}
