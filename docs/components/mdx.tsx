@@ -162,17 +162,48 @@ export const components = {
     h4: ({...props}: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
     h5: ({...props}: ComponentProps<'h5'>) => <HeadingLink tag="h5" {...props} />,
     h6: ({...props}: ComponentProps<'h6'>) => <HeadingLink tag="h6" {...props} />,
+    ul: ({...props}: ComponentProps<'ul'>) => (
+        <ul
+            className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+            {...props}
+        />
+    ),
+    ol: ({...props}: ComponentProps<'ol'>) => (
+        <ol
+            className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+            {...props}
+        />
+    ),
+    li: ({...props}: ComponentProps<'li'>) => <li className="nx-my-2" {...props} />,
+    blockquote: ({...props}: ComponentProps<'blockquote'>) => (
+        <blockquote
+            className={cn(
+                'nx-mt-6 nx-border-gray-300 nx-italic nx-text-gray-700 dark:nx-border-gray-700 dark:nx-text-gray-400',
+                'first:nx-mt-0 ltr:nx-border-l-2 ltr:nx-pl-6 rtl:nx-border-r-2 rtl:nx-pr-6'
+            )}
+            {...props}
+        />
+    ),
+    hr: ({...props}: ComponentProps<'hr'>) => (
+        <hr
+            className="nx-my-8 nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400"
+            {...props}
+        />
+    ),
     a: A,
+
+    // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
+    p: ({...props}: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
+    tr: Tr,
+    th: Th,
+    td: Td,
+    table: ({...props}) => <Table className="nx-not-prose nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0" {...props} />,
+    // detail:
+    // summary:
     pre: ({children, ...props}: any) => (
         <div className="nx-not-prose">
             <Pre {...props}>{children}</Pre>
         </div>
     ),
-    // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
-    tr: Tr,
-    th: Th,
-    td: Td,
-    table: ({...props}) => <Table className="nx-not-prose" {...props} />,
     code: Code,
-
 };
