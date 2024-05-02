@@ -7,7 +7,7 @@ import {resolvePageMap} from "@scopeui/config";
 // import { CWD } from '../src/constants'
 // import { getDynamicMeta, resolvePageMap } from '../src/page-map'
 // import { collectFiles } from '../src/plugin'
-// import type { FileMap, PageMapItem } from '../src/types'
+// import type { FileMap, PageMapItem } from '../src/types.ts'
 
 const PAGES_DIR = path.join(CWD, '..', '..', 'examples', 'swr-site', 'pages')
 const filePath = (name: string) => path.join(PAGES_DIR, name)

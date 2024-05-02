@@ -7,6 +7,7 @@ export const Code = ({
   ...props
 }: ComponentProps<'code'>): ReactElement => {
   const hasLineNumbers = 'data-line-numbers' in props
+  // const hasLineNumbers = true
   return (
     <code
       className={cn(

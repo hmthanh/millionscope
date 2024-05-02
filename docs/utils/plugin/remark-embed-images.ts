@@ -6,10 +6,9 @@ import { visit } from 'unist-util-visit'
 import { Node as UnistNode } from 'unist';
 import { Image, Root } from "mdast"
 import { VFile } from 'vfile';
-import { EXTERNAL_URL_REGEX } from '@default-constants';
-import { PUBLIC_DIR } from '../../config/default/constants';
 import { existsSync } from "graceful-fs"
 import slash from "slash"
+import {EXTERNAL_URL_REGEX, PUBLIC_DIR} from "@/global/constants";
 
 
 const VALID_BLUR_EXT = ['.jpeg', '.png', '.webp', '.avif', '.jpg']

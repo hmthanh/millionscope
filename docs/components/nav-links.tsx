@@ -3,8 +3,8 @@ import { ArrowRightIcon } from "@scopeui/icons"
 import type { Item } from "@scopeui/config"
 import type { ReactElement } from "react"
 import { useConfig } from "@/contexts"
-import type { DocsThemeConfig } from "@/config/constants"
 import { Anchor } from "./anchor"
+import {DocsThemeConfig} from "@theme-constants";
 
 interface NavLinkProps {
   currentIndex: number

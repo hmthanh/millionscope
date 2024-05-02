@@ -10,7 +10,7 @@ import { matter } from 'vfile-matter'
 import { createFormattedMDXError } from './format-mdx-error'
 import { removeImportsExportsPlugin } from '../mdx-plugin/remove-imports-exports'
 
-// types
+// types.ts
 import { MDXRemoteSerializeResult, SerializeOptions } from './types'
 
 function getCompileOptions(

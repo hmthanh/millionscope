@@ -5,7 +5,7 @@ import {createRequire} from 'node:module'
 
 import type {ProcessorOptions} from '@mdx-js/mdx'
 import {createProcessor} from '@mdx-js/mdx'
-// import type { Processor } from '@mdx-js/mdx/lib/core'
+// import type { Processor } from '@mdx-js/mdx/lib/global'
 
 import {GetStaticPaths, GetStaticProps, NextPage} from "next";
 import {ParsedUrlQuery} from "querystring";
@@ -34,7 +34,7 @@ import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
 // import remarkEmbedImages from 'remark-embed-images'
 import {remarkEmbedImages} from "@/utils"
 import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
-import {CODE_BLOCK_FILENAME_REGEX} from '@default-constants';
+import {CODE_BLOCK_FILENAME_REGEX} from '@/global/constants';
 import themeConfig from './theme.json'
 
 
@@ -67,48 +67,48 @@ const Post: NextPage<PostProps> = ({frontMatter, mdx, previous, next}) => {
         <>
             <Page {...frontMatter}>
                 <MDXRemote {...mdx} components={components}/>
-                {previous || next ? (
-                    <nav
-                        className={cx(
-                            "mt-8 pt-8 grid grid-cols-2 gap-8 border-t",
-                            "border-gray-200",
-                            "dark:border-gray-700"
-                        )}
-                    >
-                        {previous ? (
-                            <div>
-                                <p
-                                    className={cx(
-                                        "mb-2 uppercase tracking-wider text-sm",
-                                        "text-gray-500",
-                                        "dark:text-gray-400"
-                                    )}
-                                >
-                                    Previous
-                                </p>
-                                <Link href={`/posts/${previous?.slug}`} className="font-bold">
-                                    {previous?.title}
-                                </Link>
-                            </div>
-                        ) : null}
-                        {next ? (
-                            <div className="col-start-2 text-right">
-                                <p
-                                    className={cx(
-                                        "mb-2 uppercase tracking-wider text-sm",
-                                        "text-gray-500",
-                                        "dark:text-gray-400"
-                                    )}
-                                >
-                                    Next
-                                </p>
-                                <Link href={`/posts/${next?.slug}`} className="font-bold">
-                                    {next?.title}
-                                </Link>
-                            </div>
-                        ) : null}
-                    </nav>
-                ) : null}
+                {/*{previous || next ? (*/}
+                {/*    <nav*/}
+                {/*        className={cx(*/}
+                {/*            "mt-8 pt-8 grid grid-cols-2 gap-8 border-t",*/}
+                {/*            "border-gray-200",*/}
+                {/*            "dark:border-gray-700"*/}
+                {/*        )}*/}
+                {/*    >*/}
+                {/*        {previous ? (*/}
+                {/*            <div>*/}
+                {/*                <p*/}
+                {/*                    className={cx(*/}
+                {/*                        "mb-2 uppercase tracking-wider text-sm",*/}
+                {/*                        "text-gray-500",*/}
+                {/*                        "dark:text-gray-400"*/}
+                {/*                    )}*/}
+                {/*                >*/}
+                {/*                    Previous*/}
+                {/*                </p>*/}
+                {/*                <Link href={`/posts/${previous?.slug}`} className="font-bold">*/}
+                {/*                    {previous?.title}*/}
+                {/*                </Link>*/}
+                {/*            </div>*/}
+                {/*        ) : null}*/}
+                {/*        {next ? (*/}
+                {/*            <div className="col-start-2 text-right">*/}
+                {/*                <p*/}
+                {/*                    className={cx(*/}
+                {/*                        "mb-2 uppercase tracking-wider text-sm",*/}
+                {/*                        "text-gray-500",*/}
+                {/*                        "dark:text-gray-400"*/}
+                {/*                    )}*/}
+                {/*                >*/}
+                {/*                    Next*/}
+                {/*                </p>*/}
+                {/*                <Link href={`/posts/${next?.slug}`} className="font-bold">*/}
+                {/*                    {next?.title}*/}
+                {/*                </Link>*/}
+                {/*            </div>*/}
+                {/*        ) : null}*/}
+                {/*    </nav>*/}
+                {/*) : null}*/}
             </Page>
         </>
     );

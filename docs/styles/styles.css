@@ -1,14 +1,14 @@
 :root {
-    --nextra-primary-hue: ${lightHue}deg;
-    --nextra-primary-saturation: ${lightSaturation}%;
+    --nextra-primary-hue: 212deg;
+    --nextra-primary-saturation: 100%;
     --nextra-navbar-height: 4rem;
     --nextra-menu-height: 3.75rem;
     --nextra-banner-height: 2.5rem;
   }
   
   .dark {
-    --nextra-primary-hue: ${darkHue}deg;
-    --nextra-primary-saturation: ${darkSaturation}%;
+    --nextra-primary-hue: 204deg;
+    --nextra-primary-saturation: 100%;
   }
 
 html {
@@ -38,7 +38,7 @@ summary {
 }
 
 .nextra-content {
-  @apply nx-text-slate-700 dark:nx-text-slate-200;
+  @apply nx-text-slate-950 dark:nx-text-slate-200;
 }
 
 @media (max-width: 767px) {

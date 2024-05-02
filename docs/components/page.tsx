@@ -40,33 +40,33 @@ export const Page: React.FC<PageProps> = ({
                     content={`${siteConfig.siteUrl}${metaThumbnail}`}
                 />
             </Head>
-            <header
-                className={cx(
-                    "nx-mb-8 nx-pb-8 nx-border-b",
-                    "nx-border-gray-200",
-                    "dark:nx-border-gray-700"
-                )}
-            >
-                {date ? (
-                    <time
-                        className={cx("nx-block mb-2", "nx-text-gray-500", "dark:nx-text-gray-400")}
-                    >
-                        {formatDate(date)}
-                    </time>
-                ) : null}
-                <h1 className="nx-font-bold nx-text-3xl">{title}</h1>
-                {description ? (
-                    <div className="nx-mt-4">
-                        <Prose>
-                        {typeof description === "string" ? (
-                            <p>{description}</p>
-                        ) : (
-                            description
-                        )}
-                        </Prose>
-                    </div>
-                ) : null}
-            </header>
+            {/*<header*/}
+            {/*    className={cx(*/}
+            {/*        "nx-mb-8 nx-pb-8 nx-border-b",*/}
+            {/*        "nx-border-gray-200",*/}
+            {/*        "dark:nx-border-gray-700"*/}
+            {/*    )}*/}
+            {/*>*/}
+            {/*    {date ? (*/}
+            {/*        <time*/}
+            {/*            className={cx("nx-block mb-2", "nx-text-gray-500", "dark:nx-text-gray-400")}*/}
+            {/*        >*/}
+            {/*            {formatDate(date)}*/}
+            {/*        </time>*/}
+            {/*    ) : null}*/}
+            {/*    <h1 className="nx-font-bold nx-text-3xl">{title}</h1>*/}
+            {/*    {description ? (*/}
+            {/*        <div className="nx-mt-4">*/}
+            {/*            <Prose>*/}
+            {/*            {typeof description === "string" ? (*/}
+            {/*                <p>{description}</p>*/}
+            {/*            ) : (*/}
+            {/*                description*/}
+            {/*            )}*/}
+            {/*            </Prose>*/}
+            {/*        </div>*/}
+            {/*    ) : null}*/}
+            {/*</header>*/}
             {children}
         </>
     );

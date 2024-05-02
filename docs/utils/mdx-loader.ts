@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { promisify } from 'node:util'
+import {promisify} from 'node:util'
 import fs from 'graceful-fs'
 import grayMatter from 'gray-matter'
 import pLimit from 'p-limit'
@@ -10,7 +10,7 @@ import {
     DYNAMIC_META_FILENAME,
     MARKDOWN_EXTENSION_REGEX,
     META_FILENAME
-} from '@default-constants'
+} from '@/global/constants'
 
 import type {
     FileMap,
@@ -21,7 +21,7 @@ import type {
     MetaJsonPath,
     PageMapItem
 } from '@default-types'
-import { normalizePageRoute, parseFileName, isSerializable, sortPages, truthy } from "@/utils/utils";
+import {normalizePageRoute, parseFileName, isSerializable, sortPages, truthy} from "@/utils/utils";
 
 const readdir = promisify(fs.readdir)
 const readFile = promisify(fs.readFile)
@@ -34,32 +34,33 @@ export const collectMdx = async (
     filePath: string,
     route = ''
 ): Promise<MdxFile> => {
-    const { name, locale } = parseFileName(filePath)
+    const {name, locale} = parseFileName(filePath)
 
     const content = await readFile(filePath, 'utf8')
-    const { data } = grayMatter(content)
+    const {data} = grayMatter(content)
     return {
         kind: 'MdxPage',
         name,
         route,
-        ...(locale && { locale }),
-        ...(Object.keys(data).length && { frontMatter: data })
+        ...(locale && {locale}),
+        ...(Object.keys(data).length && {frontMatter: data})
     }
 }
 
-export async function collectFiles({ dir,
-    locales = DEFAULT_LOCALES,
-    route = '/',
-    fileMap = Object.create(null),
-    isFollowingSymlink = false
-}: {
+export async function collectFiles({
+                                       dir,
+                                       locales = DEFAULT_LOCALES,
+                                       route = '/',
+                                       fileMap = Object.create(null),
+                                       isFollowingSymlink = false
+                                   }: {
     dir: string
     locales?: string[]
     route?: string
     fileMap?: FileMap
     isFollowingSymlink?: boolean
 }): Promise<{ items: PageMapItem[]; fileMap: FileMap }> {
-    const files = await readdir(dir, { withFileTypes: true })
+    const files = await readdir(dir, {withFileTypes: true})
 
     const promises = files.map(async f => {
         const filePath = path.join(dir, f.name)
@@ -75,9 +76,9 @@ export async function collectFiles({ dir,
             }
         }
 
-        const { name, locale, ext } = isDirectory
+        const {name, locale, ext} = isDirectory
             ? // directory couldn't have extensions
-            { name: path.basename(filePath), locale: '', ext: '' }
+            {name: path.basename(filePath), locale: '', ext: ''}
             : parseFileName(filePath)
         // We need to filter out dynamic routes, because we can't get all the
         // paths statically from here — they'll be generated separately.
@@ -87,7 +88,7 @@ export async function collectFiles({ dir,
 
         if (isDirectory) {
             if (fileRoute === '/api') return
-            const { items } = await collectFiles({
+            const {items} = await collectFiles({
                 dir: filePath,
                 locales,
                 route: fileRoute,
@@ -112,7 +113,7 @@ export async function collectFiles({ dir,
                 fileMap[fp] = await collectMdx(fp, fileRoute)
 
                 if (symlinkSource) {
-                    fileMap[symlinkSource as MdxPath] = { ...fileMap[fp] }
+                    fileMap[symlinkSource as MdxPath] = {...fileMap[fp]}
                 }
 
                 return fileMap[fp]
@@ -125,7 +126,7 @@ export async function collectFiles({ dir,
                     const content = await readFile(fp, 'utf8')
                     fileMap[fp] = {
                         kind: 'Meta',
-                        ...(locale && { locale }),
+                        ...(locale && {locale}),
                         data: JSON.parse(content)
                     }
                     return fileMap[fp]
@@ -144,7 +145,7 @@ export async function collectFiles({ dir,
                         // Dynamic. Add a special key (__nextra_src) and set data as empty.
                         fileMap[fp] = {
                             kind: 'Meta',
-                            ...(locale && { locale }),
+                            ...(locale && {locale}),
                             __nextra_src: filePath,
                             data: {}
                         }
@@ -152,10 +153,10 @@ export async function collectFiles({ dir,
                         // Static content, can be statically optimized.
                         fileMap[fp] = {
                             kind: 'Meta',
-                            ...(locale && { locale }),
+                            ...(locale && {locale}),
                             // we spread object because default title could be incorrectly set when _meta.json/js
                             // is imported/exported by another _meta.js
-                            data: { ...meta }
+                            data: {...meta}
                         }
                     } else {
                         console.error(
@@ -219,7 +220,7 @@ ${(err as Error).name}: ${(err as Error).message}`
             // Create a new meta file if it doesn't exist.
             const meta = {
                 kind: 'Meta' as const,
-                ...(locale && { locale }),
+                ...(locale && {locale}),
                 data: Object.fromEntries(defaultMeta)
             }
             fileMap[metaPath] = meta
@@ -229,7 +230,7 @@ ${(err as Error).name}: ${(err as Error).message}`
 
         if (metaIndex !== undefined) {
             // Fill with the fallback. Note that we need to keep the original order.
-            const meta = { ...items[metaIndex] } as MetaJsonFile
+            const meta = {...items[metaIndex]} as MetaJsonFile
             for (const [key, capitalizedTitle] of defaultMeta) {
                 meta.data[key] ||= capitalizedTitle
                 const metaItem = meta.data[key]
@@ -242,5 +243,5 @@ ${(err as Error).name}: ${(err as Error).message}`
         }
     }
 
-    return { items, fileMap }
+    return {items, fileMap}
 }

@@ -1,33 +1,11 @@
-import type {ProcessorOptions} from "@mdx-js/mdx"
-import type {GrayMatterFile} from "gray-matter"
-import type {Heading as MDASTHeading} from "mdast"
-import type {NextConfig} from "next"
-import type {FC, ReactNode} from "react"
-import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code"
-import type {MARKDOWN_EXTENSIONS, META_FILENAME, NEXTRA_INTERNAL} from "./constants"
-
-export class PageMapCache {
-    cache: {
-        items: PageMapItem[]
-        fileMap: FileMap
-    } | null = {
-        items: [],
-        fileMap: Object.create(null),
-    }
-
-    set(data: { items: PageMapItem[]; fileMap: FileMap }) {
-        this.cache!.items = data.items
-        this.cache!.fileMap = data.fileMap
-    }
-
-    clear() {
-        this.cache = null
-    }
-
-    get() {
-        return this.cache
-    }
-}
+import type {FC, ReactNode} from 'react'
+import {GrayMatterFile} from "gray-matter";
+import {MARKDOWN_EXTENSIONS, META_FILENAME, NEXTRA_INTERNAL} from "@/global/constants";
+import type {ProcessorOptions} from '@mdx-js/mdx'
+import type {Heading as MDASTHeading} from 'mdast'
+import type {NextConfig} from 'next'
+import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
+import {PageMapCache} from "@/global/page-map";
 
 type MetaFilename = typeof META_FILENAME
 type MarkdownExtension = (typeof MARKDOWN_EXTENSIONS)[number]
@@ -42,14 +20,14 @@ export interface LoaderOptions extends NextraConfig {
 }
 
 export interface Folder<FileType = PageMapItem> {
-    kind: "Folder"
+    kind: 'Folder'
     name: string
     route: string
     children: FileType[]
 }
 
 export type MetaJsonFile = {
-    kind: "Meta"
+    kind: 'Meta'
     locale?: string
     data: {
         [fileName: string]: Meta
@@ -59,7 +37,7 @@ export type MetaJsonFile = {
 }
 
 export type DynamicFolder = {
-    type: "folder"
+    type: 'folder'
     items: DynamicMeta
     title?: string
 }
@@ -69,16 +47,16 @@ export type DynamicMetaItem = Meta | DynamicFolder
 export type DynamicMeta = Record<string, DynamicMetaItem>
 
 export type DynamicMetaJsonFile = {
-    kind: "Meta"
+    kind: 'Meta'
     locale?: string
     data: DynamicMeta
 }
 
-export type FrontMatter = GrayMatterFile<string>["data"]
+export type FrontMatter = GrayMatterFile<string>['data']
 export type Meta = string | Record<string, any>
 
 export type MdxFile<FrontMatterType = FrontMatter> = {
-    kind: "MdxPage"
+    kind: 'MdxPage'
     name: string
     route: string
     locale?: string
@@ -101,7 +79,7 @@ export type Page = (MdxFile | Folder<Page>) & {
 }
 
 export type Heading = {
-    depth: MDASTHeading["depth"]
+    depth: MDASTHeading['depth']
     value: string
     id: string
 }
@@ -142,7 +120,11 @@ export type Flexsearch =
      * A site can have multiple indexes, by default they're separated by
      * locales as multiple index files.
      */
-    indexKey?: (filepath: string, route: string, locale?: string) => null | string
+    indexKey?: (
+        filepath: string,
+        route: string,
+        locale?: string
+    ) => null | string
 }
 type Transform = (
     result: string,
@@ -170,8 +152,8 @@ export type NextraConfig = {
      * @experimental
      */
     transformPageOpts?: (pageOpts: PageOpts) => PageOpts
-    mdxOptions?: Pick<ProcessorOptions, "rehypePlugins" | "remarkPlugins"> & {
-        format?: "detect" | "mdx" | "md"
+    mdxOptions?: Pick<ProcessorOptions, 'rehypePlugins' | 'remarkPlugins'> & {
+        format?: 'detect' | 'mdx' | 'md'
         rehypePrettyCodeOptions?: Partial<RehypePrettyCodeOptions>
     }
 }
@@ -226,27 +208,3 @@ export type SearchData = {
         data: StructurizedData
     }
 }
-
-
-export type SiteConfig = {
-    avatar?: string;
-    siteUrl: string;
-    siteName: string;
-    siteDescription: string;
-    siteThumbnail: string;
-    nav: Array<{ label: string; href: string }>;
-    social?: {
-        github?: string;
-        twitter?: string;
-        linkedin?: string;
-        instagram?: string;
-    };
-};
-
-export type MDXFrontMatter = {
-    slug: string;
-    title: string;
-    description?: string;
-    date: string;
-    tags?: Array<string>;
-};

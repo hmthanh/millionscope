@@ -4,11 +4,7 @@ import type {Heading as MDASTHeading} from 'mdast'
 import type {NextConfig} from 'next'
 import type {FC, ReactNode} from 'react'
 import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
-import type {
-    MARKDOWN_EXTENSIONS,
-    META_FILENAME,
-    NEXTRA_INTERNAL
-} from './constants'
+import {META_FILENAME, MARKDOWN_EXTENSIONS, NEXTRA_INTERNAL} from "@/global/constants";
 
 type MetaFilename = typeof META_FILENAME
 type MarkdownExtension = (typeof MARKDOWN_EXTENSIONS)[number]

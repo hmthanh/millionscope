@@ -8,7 +8,7 @@ import { createContext, useContext, useState } from "react"
 import type { ZodError } from "zod"
 // import type { DocsThemeConfig } from "@/config/constants"
 // import { DEEP_OBJECT_KEYS, DEFAULT_THEME, themeSchema } from "@/config/constants"
-// import type { Context } from "@/config/types"
+// import type { Context } from "@/config/types.ts"
 import { MenuProvider } from "./menu"
 
 // type Config<FrontMatterType = FrontMatter> = DocsThemeConfig &
