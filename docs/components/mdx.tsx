@@ -77,7 +77,7 @@ function HeadingLink(
 //                          ...props
 //                      }: ComponentProps<'h2'> & {
 //     tag: `h${2 | 3 | 4 | 5 | 6}`
-//     context: { index: number }
+//     context: { index.ts: number }
 // }): ReactElement {
 //     // const setActiveAnchor = useSetActiveAnchor()
 //     // const slugs = useSlugs()
@@ -88,7 +88,7 @@ function HeadingLink(
 //         if (!id) return
 //         const heading = obRef.current
 //         if (!heading) return
-//         slugs.set(heading, [id, (context.index += 1)])
+//         slugs.set(heading, [id, (context.index.ts += 1)])
 //         observer?.observe(heading)
 //
 //         return () => {

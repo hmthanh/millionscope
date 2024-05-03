@@ -31,7 +31,7 @@ export {slugify, clsx as cx};
 // }
 //
 // export function normalizePageRoute(parentRoute: string, route: string): string {
-//     return slash(path.join(parentRoute, route.replace(/^index$/, '')))
+//     return slash(path.join(parentRoute, route.replace(/^index.ts$/, '')))
 // }
 //
 // export function pageTitleFromFilename(fileName: string) {

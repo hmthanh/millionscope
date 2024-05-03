@@ -132,15 +132,15 @@ export type Flexsearch =
     | boolean
     | {
     /**
-     * Whether to index code blocks
+     * Whether to index.ts code blocks
      * @default true
      */
     codeblocks: boolean
     /**
      * A filter function to filter out files from indexing, and return the
-     * index file key, or null to skip indexing.
+     * index.ts file key, or null to skip indexing.
      * A site can have multiple indexes, by default they're separated by
-     * locales as multiple index files.
+     * locales as multiple index.ts files.
      */
     indexKey?: (filepath: string, route: string, locale?: string) => null | string
 }

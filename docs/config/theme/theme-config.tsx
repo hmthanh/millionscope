@@ -130,7 +130,7 @@ import {useGitEditUrl} from "@/config/theme/utils/use-git-edit-url";
 //         No results found.
 //       </span>
 //     ),
-//     error: 'Failed to load search index.',
+//     error: 'Failed to load search index.ts.',
 //     loading: function useLoading() {
 //       const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
 //       const text =

@@ -8,9 +8,9 @@ import {
     CWD,
     DEFAULT_LOCALES,
     DYNAMIC_META_FILENAME,
-    MARKDOWN_EXTENSION_REGEX,
     META_FILENAME
 } from '@/global/constants'
+import {MARKDOWN_EXTENSION_REGEX} from "@/global/global"
 
 import type {
     FileMap,
