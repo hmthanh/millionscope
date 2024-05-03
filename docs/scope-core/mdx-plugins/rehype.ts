@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import {CODE_BLOCK_FILENAME_REGEX} from "@/global/constants";
+import {CODE_BLOCK_FILENAME_REGEX} from "@/server/constants";
 
 function visit(node, tagNames, handler) {
   if (tagNames.includes(node.tagName)) {

@@ -1,4 +1,4 @@
-import {IS_PRODUCTION} from '@/global/constants'
+import {IS_PRODUCTION} from '@/server/constants'
 import filterRouteLocale from './filter-route-locale'
 import type {
     DynamicMetaDescriptor,

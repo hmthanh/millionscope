@@ -1,18 +1,18 @@
 "use client"
 
-import { ThemeProvider } from "next-themes"
-import type { FrontMatter, PageMapItem, PageOpts } from "@scopeui/types"
+import {ThemeProvider} from "next-themes"
+import type {FrontMatter, PageMapItem, PageOpts} from "@scopeui/types"
 // import { metaSchema } from "@scopeui/config"
-import type { ReactElement, ReactNode } from "react"
-import { createContext, useContext, useState } from "react"
-import type { ZodError } from "zod"
+import type {ReactElement, ReactNode} from "react"
+import {createContext, useContext, useState} from "react"
+import type {ZodError} from "zod"
 // import type { DocsThemeConfig } from "@/config/constants"
 // import { DEEP_OBJECT_KEYS, DEFAULT_THEME, themeSchema } from "@/config/constants"
-// import type { Context } from "@/config/types.ts"
-import { MenuProvider } from "./menu"
+// import type { Context } from "@/config/customtypes.ts"
+import {MenuProvider} from "./menu"
 
 // type Config<FrontMatterType = FrontMatter> = DocsThemeConfig &
-  // Pick<PageOpts<FrontMatterType>, "flexsearch" | "newNextLinkBehavior" | "title" | "frontMatter">
+// Pick<PageOpts<FrontMatterType>, "flexsearch" | "newNextLinkBehavior" | "title" | "frontMatter">
 
 // const ConfigContext = createContext<Config>({
 //   title: "",
@@ -21,41 +21,41 @@ import { MenuProvider } from "./menu"
 // })
 
 export function useConfig<FrontMatterType = FrontMatter>() {
-  // @ts-expect-error TODO: fix Type 'Config<{ [key: string]: any; }>' is not assignable to type 'Config<FrontMatterType>'.
-  return useContext<Config<FrontMatterType>>(ConfigContext)
+    // @ts-expect-error TODO: fix Type 'Config<{ [key: string]: any; }>' is not assignable to type 'Config<FrontMatterType>'.
+    return useContext<Config<FrontMatterType>>(ConfigContext)
 }
 
 // let theme: DocsThemeConfig
 let isValidated = false
 
 function normalizeZodMessage(error: unknown): string {
-  return (error as ZodError).issues
-    .flatMap((issue) => {
-      const themePath = issue.path.length > 0 && `Path: "${issue.path.join(".")}"`
-      const unionErrors = "unionErrors" in issue ? issue.unionErrors.map(normalizeZodMessage) : []
-      return [[issue.message, themePath].filter(Boolean).join(". "), ...unionErrors]
-    })
-    .join("\n")
+    return (error as ZodError).issues
+        .flatMap((issue) => {
+            const themePath = issue.path.length > 0 && `Path: "${issue.path.join(".")}"`
+            const unionErrors = "unionErrors" in issue ? issue.unionErrors.map(normalizeZodMessage) : []
+            return [[issue.message, themePath].filter(Boolean).join(". "), ...unionErrors]
+        })
+        .join("\n")
 }
 
 function validateMeta(pageMap: PageMapItem[]) {
-  for (const pageMapItem of pageMap) {
-    if (pageMapItem.kind === "Meta") {
-      for (const [key, data] of Object.entries(pageMapItem.data)) {
-        try {
-          // metaSchema.parse(data)
-        } catch (error) {
-          console.error(
-            `[nextra-theme-docs] Error validating _meta.json file for "${key}" property.\n\n${normalizeZodMessage(
-              error
-            )}`
-          )
+    for (const pageMapItem of pageMap) {
+        if (pageMapItem.kind === "Meta") {
+            for (const [key, data] of Object.entries(pageMapItem.data)) {
+                try {
+                    // metaSchema.parse(data)
+                } catch (error) {
+                    console.error(
+                        `[nextra-theme-docs] Error validating _meta.json file for "${key}" property.\n\n${normalizeZodMessage(
+                            error
+                        )}`
+                    )
+                }
+            }
+        } else if (pageMapItem.kind === "Folder") {
+            validateMeta(pageMapItem.children)
         }
-      }
-    } else if (pageMapItem.kind === "Folder") {
-      validateMeta(pageMapItem.children)
     }
-  }
 }
 
 // export const ConfigProvider = ({

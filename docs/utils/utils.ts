@@ -7,7 +7,7 @@ import slugify from "@sindresorhus/slugify";
 
 export {slugify, clsx as cx};
 
-import {LOCALE_REGEX} from '@/global/constants'
+import {LOCALE_REGEX} from '@/server/constants'
 import type {Folder, MdxFile, Meta} from '@default-types'
 
 

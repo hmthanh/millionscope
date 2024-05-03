@@ -1,7 +1,7 @@
 // // import path from 'path'
 // import slash from 'slash'
 // import title from 'title'
-// import {LOCALE_REGEX} from '@/global/constants'
+// import {LOCALE_REGEX} from '@/server/constants'
 // import type {Folder, MdxFile, Meta} from './types'
 //
 import clsx from "clsx";

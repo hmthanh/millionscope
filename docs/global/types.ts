@@ -1,56 +1,9 @@
-import type {FC, ReactNode} from 'react'
+import {NEXTRA_INTERNAL} from "@/global/global";
+import type {FC} from "react";
 import {GrayMatterFile} from "gray-matter";
-import {MARKDOWN_EXTENSIONS, META_FILENAME, NEXTRA_INTERNAL} from "@/global/constants";
-import type {ProcessorOptions} from '@mdx-js/mdx'
-import type {Heading as MDASTHeading} from 'mdast'
-import type {NextConfig} from 'next'
-import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
-import {PageMapCache} from "@/global/page-map";
+import type {Heading as MDASTHeading} from "mdast";
 
-type MetaFilename = typeof META_FILENAME
-type MarkdownExtension = (typeof MARKDOWN_EXTENSIONS)[number]
-
-export interface LoaderOptions extends NextraConfig {
-    isMetaImport?: boolean
-    isPageImport?: boolean
-    locales: string[]
-    defaultLocale: string
-    pageMapCache: PageMapCache
-    newNextLinkBehavior?: boolean
-}
-
-export interface Folder<FileType = PageMapItem> {
-    kind: 'Folder'
-    name: string
-    route: string
-    children: FileType[]
-}
-
-export type MetaJsonFile = {
-    kind: 'Meta'
-    locale?: string
-    data: {
-        [fileName: string]: Meta
-    }
-    // The path to the _meta.json file. This is a private property needed by the loader.
-    __nextra_src?: string
-}
-
-export type DynamicFolder = {
-    type: 'folder'
-    items: DynamicMeta
-    title?: string
-}
-
-export type DynamicMetaItem = Meta | DynamicFolder
-
-export type DynamicMeta = Record<string, DynamicMetaItem>
-
-export type DynamicMetaJsonFile = {
-    kind: 'Meta'
-    locale?: string
-    data: DynamicMeta
-}
+export type ThemeConfig = any | null
 
 export type FrontMatter = GrayMatterFile<string>['data']
 export type Meta = string | Record<string, any>
@@ -63,46 +16,29 @@ export type MdxFile<FrontMatterType = FrontMatter> = {
     frontMatter?: FrontMatterType
 }
 
-export type MetaJsonPath = `${string}/${MetaFilename}`
-export type MdxPath = `${string}.${MarkdownExtension}`
+export type MetaJsonFile = {
+    kind: 'Meta'
+    locale?: string
+    data: {
+        [fileName: string]: Meta
+    }
+    // The path to the _meta.json file. This is a private property needed by the loader.
+    __nextra_src?: string
+}
 
-export type FileMap = {
-    [jsonPath: MetaJsonPath]: MetaJsonFile
-    [mdxPath: MdxPath]: MdxFile
+export interface Folder<FileType = PageMapItem> {
+    kind: 'Folder'
+    name: string
+    route: string
+    children: FileType[]
 }
 
 export type PageMapItem = Folder | MdxFile | MetaJsonFile
-
-// PageMapItem without MetaJsonFile and with its meta from _meta.json
-export type Page = (MdxFile | Folder<Page>) & {
-    meta?: Exclude<Meta, string>
-}
 
 export type Heading = {
     depth: MDASTHeading['depth']
     value: string
     id: string
-}
-
-export type PageOpts<FrontMatterType = FrontMatter> = {
-    filePath: string
-    route: string
-    frontMatter: FrontMatterType
-    pageMap: PageMapItem[]
-    title: string
-    headings: Heading[]
-    hasJsxInH1?: boolean
-    timestamp?: number
-    flexsearch?: Flexsearch
-    newNextLinkBehavior?: boolean
-    readingTime?: ReadingTime
-}
-
-export type ReadingTime = {
-    text: string
-    minutes: number
-    time: number
-    words: number
 }
 
 type Theme = string
@@ -126,53 +62,26 @@ export type Flexsearch =
         locale?: string
     ) => null | string
 }
-type Transform = (
-    result: string,
-    options: {
-        route: string
-    }
-) => string | Promise<string>
 
-export type NextraConfig = {
-    theme: Theme
-    themeConfig?: string
-    defaultShowCopyCode?: boolean
-    flexsearch?: Flexsearch
-    staticImage?: boolean
-    readingTime?: boolean
-    latex?: boolean
-    codeHighlight?: boolean
-    /**
-     * A function to modify the code of compiled MDX pages.
-     * @experimental
-     */
-    transform?: Transform
-    /**
-     * A function to modify the `pageOpts` prop passed to theme layouts.
-     * @experimental
-     */
-    transformPageOpts?: (pageOpts: PageOpts) => PageOpts
-    mdxOptions?: Pick<ProcessorOptions, 'rehypePlugins' | 'remarkPlugins'> & {
-        format?: 'detect' | 'mdx' | 'md'
-        rehypePrettyCodeOptions?: Partial<RehypePrettyCodeOptions>
-    }
+export type ReadingTime = {
+    text: string
+    minutes: number
+    time: number
+    words: number
 }
 
-export type Nextra = (
-    ...args: [NextraConfig] | [theme: Theme, themeConfig: string]
-) => (nextConfig: NextConfig) => NextConfig
-
-const nextra: Nextra = () => () => ({})
-
-export default nextra
-
-export type ThemeConfig = any | null
-
-export type NextraThemeLayoutProps = {
-    pageOpts: PageOpts
-    pageProps: any
-    themeConfig: ThemeConfig
-    children: ReactNode
+export type PageOpts<FrontMatterType = FrontMatter> = {
+    filePath: string
+    route: string
+    frontMatter: FrontMatterType
+    pageMap: PageMapItem[]
+    title: string
+    headings: Heading[]
+    hasJsxInH1?: boolean
+    timestamp?: number
+    flexsearch?: Flexsearch
+    newNextLinkBehavior?: boolean
+    readingTime?: ReadingTime
 }
 
 export type NextraInternalGlobal = typeof globalThis & {
@@ -191,20 +100,5 @@ export type NextraInternalGlobal = typeof globalThis & {
         Layout: FC<any>
         themeConfig?: ThemeConfig
         flexsearch?: Flexsearch
-    }
-}
-
-export type DynamicMetaDescriptor = {
-    metaFilePath: string
-    metaObjectKeyPath: string
-    metaParentKeyPath: string
-}
-
-export type StructurizedData = Record<string, string>
-
-export type SearchData = {
-    [route: string]: {
-        title: string
-        data: StructurizedData
     }
 }

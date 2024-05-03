@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { assert, describe, it, beforeAll, expect } from 'vitest'
+import {assert, describe, it, beforeAll, expect} from 'vitest'
 import {CWD, FileMap, PageMapItem} from "@/config/default";
 import {collectFiles} from "@/utils/mdx-loader";
 import {getDynamicMeta} from "@scopeui/page-map";
@@ -7,7 +7,7 @@ import {resolvePageMap} from "@scopeui/config";
 // import { CWD } from '../src/constants'
 // import { getDynamicMeta, resolvePageMap } from '../src/page-map'
 // import { collectFiles } from '../src/plugin'
-// import type { FileMap, PageMapItem } from '../src/types.ts'
+// import type { FileMap, PageMapItem } from '../src/customtypes.ts'
 
 const PAGES_DIR = path.join(CWD, '..', '..', 'examples', 'swr-site', 'pages')
 const filePath = (name: string) => path.join(PAGES_DIR, name)
@@ -20,8 +20,8 @@ describe('Page Process', () => {
     beforeAll(async () => {
         const nextConfig = await import(
             path.join(CWD, '..', '..', 'examples', 'swr-site', 'next.config.mjs')
-        )
-        const { items, fileMap: data } = await collectFiles({
+            )
+        const {items, fileMap: data} = await collectFiles({
             dir: PAGES_DIR,
             locales: nextConfig.default.i18n.locales
         })
@@ -66,7 +66,7 @@ describe('Page Process', () => {
     })
 
     it("should not add `_meta.json` file if folder doesn't contain markdown files", async () => {
-        const { items } = await collectFiles({
+        const {items} = await collectFiles({
             dir: path.join(
                 CWD,
                 '__test__',
@@ -79,7 +79,7 @@ describe('Page Process', () => {
     })
 
     it('should add `_meta.json` file if it missing', async () => {
-        const { items } = await collectFiles({
+        const {items} = await collectFiles({
             dir: path.join(
                 CWD,
                 '__test__',
@@ -89,14 +89,14 @@ describe('Page Process', () => {
             )
         })
         expect(items).toEqual([
-            { kind: 'MdxPage', name: 'callout', route: '/callout' },
-            { kind: 'MdxPage', name: 'tabs', route: '/tabs' },
-            { kind: 'Meta', data: { callout: 'Callout', tabs: 'Tabs' } }
+            {kind: 'MdxPage', name: 'callout', route: '/callout'},
+            {kind: 'MdxPage', name: 'tabs', route: '/tabs'},
+            {kind: 'Meta', data: {callout: 'Callout', tabs: 'Tabs'}}
         ])
     })
 
     it('should resolve symlinked files and directories', async () => {
-        const { items } = await collectFiles({
+        const {items} = await collectFiles({
             dir: path.join(
                 CWD,
                 '__test__',
@@ -112,12 +112,12 @@ describe('Page Process', () => {
                 name: 'docs',
                 route: '/docs',
                 children: [
-                    { kind: 'MdxPage', name: 'test2', route: '/docs/test2' },
-                    { kind: 'Meta', data: { test2: 'Test2' } }
+                    {kind: 'MdxPage', name: 'test2', route: '/docs/test2'},
+                    {kind: 'Meta', data: {test2: 'Test2'}}
                 ]
             },
-            { kind: 'MdxPage', name: 'test1', route: '/test1' },
-            { kind: 'Meta', data: { test1: 'Test1' } }
+            {kind: 'MdxPage', name: 'test1', route: '/test1'},
+            {kind: 'Meta', data: {test1: 'Test1'}}
         ])
     })
 

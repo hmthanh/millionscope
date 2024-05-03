@@ -8,7 +8,7 @@ import type {
   MARKDOWN_EXTENSIONS,
   META_FILENAME,
   NEXTRA_INTERNAL
-} from '@/global/constants'
+} from '@/server/constants'
 import type { PageMapCache } from './page-map'
 
 type MetaFilename = typeof META_FILENAME

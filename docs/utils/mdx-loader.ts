@@ -9,7 +9,7 @@ import {
     DEFAULT_LOCALES,
     DYNAMIC_META_FILENAME,
     META_FILENAME
-} from '@/global/constants'
+} from '@/server/constants'
 import {MARKDOWN_EXTENSION_REGEX} from "@/global/global"
 
 import type {

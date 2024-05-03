@@ -8,7 +8,7 @@ import { Image, Root } from "mdast"
 import { VFile } from 'vfile';
 import { existsSync } from "graceful-fs"
 import slash from "slash"
-import {EXTERNAL_URL_REGEX, PUBLIC_DIR} from "@/global/constants";
+import {EXTERNAL_URL_REGEX, PUBLIC_DIR} from "@/server/constants";
 
 
 const VALID_BLUR_EXT = ['.jpeg', '.png', '.webp', '.avif', '.jpg']

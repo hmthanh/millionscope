@@ -2,8 +2,8 @@
 // import type { NextraInternalGlobal, Page, PageMapItem } from '../types'
 // import { isFolder, isMeta, normalizeMeta } from './utils.js'
 
-import {NEXTRA_INTERNAL} from "@/global/constants";
-import {NextraInternalGlobal, PageMapItem, Page} from "@/global/types";
+import {NEXTRA_INTERNAL} from "@/server/constants";
+import {NextraInternalGlobal, PageMapItem, Page} from "@/global/customtypes";
 import {isFolder, isMeta, normalizeMeta} from "@/lib/utils/utils";
 
 function getContext(functionName: string): {

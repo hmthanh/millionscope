@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-import { compile, CompileOptions } from '@mdx-js/mdx'
-import { VFile, VFileCompatible } from 'vfile'
-import { matter } from 'vfile-matter'
+import {compile, CompileOptions} from '@mdx-js/mdx'
+import {VFile, VFileCompatible} from 'vfile'
+import {matter} from 'vfile-matter'
 
-import { createFormattedMDXError } from './format-mdx-error'
-import { removeImportsExportsPlugin } from '../mdx-plugin/remove-imports-exports'
+import {createFormattedMDXError} from './format-mdx-error'
+import {removeImportsExportsPlugin} from '../mdx-plugin/remove-imports-exports'
 
-// types.ts
-import { MDXRemoteSerializeResult, SerializeOptions } from './types'
+// customtypes.ts
+import {MDXRemoteSerializeResult, SerializeOptions} from './types'
 
 function getCompileOptions(
     mdxOptions: SerializeOptions['mdxOptions'] = {},
@@ -55,7 +55,7 @@ export async function serialize<
 
     // makes frontmatter available via vfile.data.matter
     if (parseFrontmatter) {
-        matter(vfile, { strip: true })
+        matter(vfile, {strip: true})
     }
 
     let compiledMdx: VFile

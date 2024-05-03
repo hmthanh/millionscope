@@ -1,0 +1,84 @@
+{
+  "banner": {
+    "dismissible": true,
+    "key": "string",
+    "text": {}
+  },
+  "chat": {
+    "icon": {},
+    "link": "https://example.com"
+  },
+  "components": {},
+  "darkMode": true,
+  "direction": "ltr",
+  "docsRepositoryBase": "https://example.com",
+  "editLink": {
+    "component": null,
+    "text": {}
+  },
+  "faviconGlyph": "string",
+  "feedback": {
+    "content": {},
+    "labels": "string",
+    "useLink": "function () {...}"
+  },
+  "footer": {
+    "component": {},
+    "text": {}
+  },
+  "gitTimestamp": {},
+  "head": {},
+  "i18n": {},
+  "logo": {},
+  "logoLink": true,
+  "main": {},
+  "navbar": {
+    "component": {},
+    "extraContent": {}
+  },
+  "navigation": true,
+  "nextThemes": {
+    "defaultTheme": "string",
+    "forcedTheme": "string",
+    "storageKey": "string"
+  },
+  "notFound": {
+    "content": {},
+    "labels": "string"
+  },
+  "primaryHue": 123,
+  "primarySaturation": 123,
+  "project": {
+    "icon": {},
+    "link": "https://example.com"
+  },
+  "search": {
+    "component": {},
+    "emptyResult": {},
+    "error": "string",
+    "loading": {},
+    "placeholder": "string"
+  },
+  "serverSideError": {
+    "content": {},
+    "labels": "string"
+  },
+  "sidebar": {
+    "autoCollapse": true,
+    "defaultMenuCollapseLevel": 1,
+    "titleComponent": {},
+    "toggleButton": true
+  },
+  "themeSwitch": {
+    "component": {},
+    "useOptions": {}
+  },
+  "toc": {
+    "backToTop": true,
+    "component": {},
+    "extraContent": {},
+    "float": true,
+    "headingComponent": {},
+    "title": {}
+  }
+}

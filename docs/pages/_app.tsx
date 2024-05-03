@@ -2,23 +2,70 @@ import "@/styles/globals.css";
 import "@/styles/styles.css";
 import "@/styles/custom.css";
 import 'katex/dist/katex.min.css';
-import type {AppProps} from "next/app";
+import type {AppContext, AppProps} from "next/app";
 import Layout from "@/components/layout/layout";
 
 import "@/styles/new.css";
-import {useRouter} from "next/router";
+import {useEffect} from "react";
+import {GlobalProvider} from "@/global/context";
+import {NextraInternalGlobal} from "@/global/types";
+import {NEXTRA_INTERNAL} from "@/global/global";
+import {createLogger} from "vite";
+// import {useRouter} from "next/router";
+
+type IPageMeta = {
+    title: string
+    // age: number
+}
+
+// interface Window {
+//     globalData: {
+//         title: IPageMeta;
+//     };
+// }
 
 export default function App({Component, pageProps}: AppProps) {
-    const router = useRouter()
-    const {asPath, query} = router
+    const fetchData = async () => {
+        // const response = await fetch('/data.json')
+        // const data = await response.json() as IPageMeta
+        const data: IPageMeta = {title: "Thanh"} as IPageMeta
 
-    const slug = asPath.split('/')[1]
+        // const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL] ||= Object.create(null)
+        // globalThis.globalData = data
+
+    }
+
+    // console.log("pageProps", pageProps)
+    // useEffect(() => {
+    //     // Do something with initialData
+    //     console.log('Initial Data:', pageProps.initialData);
+    // }, [pageProps.initialData]);
+
+    // const router = useRouter()
+    // const {asPath, query} = router
+
+    // const slug = asPath.split('/')[1]
     // const langSlug = languages.includes(slug) && slug
     // const language = query.lang || langSlug || defaultLanguage
 
     return (
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
+        <GlobalProvider>
+            <Layout>
+                <Component {...pageProps} />
+                hello
+            </Layout>
+        </GlobalProvider>
     )
 }
+
+
+export async function getStaticProps(context: AppContext) {
+    const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL] ||= Object.create(null)
+
+    return {
+        props: {
+            hello: "Message"
+        },
+    };
+}
+

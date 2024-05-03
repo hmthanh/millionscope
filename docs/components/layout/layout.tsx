@@ -3,7 +3,7 @@ import MyFooter from "../myfooter";
 import MyHeader from "../myheader";
 
 
-export default function Layout({ children }: any) {
+export default function Layout({children}: any) {
     return (
         <>
             <MyHeader></MyHeader>
@@ -13,3 +13,4 @@ export default function Layout({ children }: any) {
         </>
     )
 }
+

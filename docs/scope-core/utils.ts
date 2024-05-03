@@ -1,7 +1,7 @@
 import path from 'node:path'
 import slash from 'slash'
 import title from 'title'
-import { LOCALE_REGEX } from '@/global/constants'
+import { LOCALE_REGEX } from '@/server/constants'
 import type { Folder, MdxFile, Meta } from './types'
 
 export function parseFileName(filePath: string): {

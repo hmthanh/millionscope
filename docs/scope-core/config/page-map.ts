@@ -5,7 +5,7 @@ import type {
   MdxPath,
   PageMapItem
 } from './types'
-import {IS_PRODUCTION} from "@/global/constants";
+import {IS_PRODUCTION} from "@/server/constants";
 
 type PageMapProps = {
   filePath: string

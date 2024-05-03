@@ -1,5 +1,5 @@
-import {META_FILENAME} from '@/global/constants'
-import type {PageMapItem} from '@/global/types'
+import {META_FILENAME} from '@/server/constants'
+import type {PageMapItem} from '@/global/customtypes'
 import {truthy} from "@/utils/typescript-utils";
 
 export default function filterRouteLocale(

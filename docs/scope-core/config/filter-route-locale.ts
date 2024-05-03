@@ -1,6 +1,6 @@
 import type { PageMapItem } from './types'
 import { truthy } from './utils'
-import {META_FILENAME} from "@/global/constants";
+import {META_FILENAME} from "@/server/constants";
 
 export default function filterRouteLocale(
   pageMap: PageMapItem[],

@@ -4,12 +4,12 @@
  */
 
 import './idle-callback-polyfill'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, {useEffect, useState, useMemo} from 'react'
 import * as mdx from '@mdx-js/react'
-import { MDXRemoteSerializeResult } from './types'
-import { jsxRuntime } from './jsx-runtime'
+import {MDXRemoteSerializeResult} from './types'
+import {jsxRuntime} from './jsx-runtime'
 
-// requestIdleCallback types.ts found here: https://github.com/microsoft/TypeScript/issues/21309
+// requestIdleCallback customtypes.ts found here: https://github.com/microsoft/TypeScript/issues/21309
 type RequestIdleCallbackHandle = number
 type RequestIdleCallbackOptions = {
     timeout?: number
@@ -46,18 +46,18 @@ export type MDXRemoteProps<
     lazy?: boolean
 }
 
-export type { MDXRemoteSerializeResult }
+export type {MDXRemoteSerializeResult}
 
 /**
  * Renders compiled source from mdx-remote/serialize.
  */
 export function MDXRemote<TScope, TFrontmatter>({
-    compiledSource,
-    frontmatter,
-    scope,
-    components = {},
-    lazy,
-}: MDXRemoteProps<TScope, TFrontmatter>) {
+                                                    compiledSource,
+                                                    frontmatter,
+                                                    scope,
+                                                    components = {},
+                                                    lazy,
+                                                }: MDXRemoteProps<TScope, TFrontmatter>) {
     const [isReadyToRender, setIsReadyToRender] = useState(
         !lazy || typeof window === 'undefined'
     )
@@ -79,8 +79,8 @@ export function MDXRemote<TScope, TFrontmatter>({
         // first we set up the scope which has to include the mdx custom
         // create element function as well as any components we're using
         const fullScope = Object.assign(
-            { opts: { ...mdx, ...jsxRuntime } },
-            { frontmatter },
+            {opts: {...mdx, ...jsxRuntime}},
+            {frontmatter},
             scope
         )
         const keys = Object.keys(fullScope)
@@ -107,7 +107,7 @@ export function MDXRemote<TScope, TFrontmatter>({
     if (!isReadyToRender) {
         // If we're not ready to render, return an empty div to preserve SSR'd markup
         return (
-            <div dangerouslySetInnerHTML={{ __html: '' }} suppressHydrationWarning />
+            <div dangerouslySetInnerHTML={{__html: ''}} suppressHydrationWarning/>
         )
     }
 
@@ -115,7 +115,7 @@ export function MDXRemote<TScope, TFrontmatter>({
     // markdown components (such as "h1" or "a") with the "components" object
     const content = (
         <mdx.MDXProvider components={components}>
-            <Content />
+            <Content/>
         </mdx.MDXProvider>
     )
 

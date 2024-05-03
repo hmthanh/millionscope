@@ -34,7 +34,7 @@ import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
 // import remarkEmbedImages from 'remark-embed-images'
 import {remarkEmbedImages} from "@/utils"
 import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
-import {CODE_BLOCK_FILENAME_REGEX} from '@/global/constants';
+import {CODE_BLOCK_FILENAME_REGEX} from '@/server/constants';
 import themeConfig from './theme.json'
 
 

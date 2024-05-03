@@ -1,7 +1,26 @@
-import type {PageMapItem} from './types'
+declare module 'title' {
+    export default function title(
+        title: string,
+        special?: {
+            special: string[]
+        }
+    )
+}
+
+interface IPageMeta {
+    title: string
+}
 
 declare global {
-    function __nextra_temp_do_not_use(): void
+    import type {PageMapItem} from './types'
 
-    function __nextra_resolvePageMap(): Promise<PageMapItem[]>
+    var __nextra_resolvePageMap: Record<string, () => Promise<PageMapItem[]>>
+    var globalData: IPageMeta = {}
+}
+
+declare module '*.svg' {
+    import type {ComponentPropsWithRef, ReactElement} from 'react'
+    export const ReactComponent: (
+        _props: ComponentPropsWithRef<'svg'>
+    ) => ReactElement
 }

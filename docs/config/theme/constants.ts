@@ -1,6 +1,6 @@
 /* eslint sort-keys: error */
 import type {NextSeoProps} from 'next-seo'
-import {useRouter} from 'next/router'
+// import {useRouter} from 'next/router'
 // import { DiscordIcon, GitHubIcon } from '@scopeui/icons'
 import type {Item} from '@scopeui/config/normalize-pages'
 import type {FC, ReactNode} from 'react'

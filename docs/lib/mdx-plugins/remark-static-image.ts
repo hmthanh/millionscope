@@ -6,7 +6,7 @@ import { visit } from 'unist-util-visit'
 // import { existsSync } from '../file-system'
 import {existsSync} from 'graceful-fs'
 // import { truthy } from '../utils'
-import {EXTERNAL_URL_REGEX, PUBLIC_DIR} from "@/global/constants";
+import {EXTERNAL_URL_REGEX, PUBLIC_DIR} from "@/server/constants";
 import {truthy} from "@/utils/typescript-utils";
 
 /**
