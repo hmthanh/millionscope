@@ -1,56 +1,111 @@
 "use client"
 
 import path from 'node:path'
-import {createRequire} from 'node:module'
-
 import type {ProcessorOptions} from '@mdx-js/mdx'
 import {createProcessor} from '@mdx-js/mdx'
-// import type { Processor } from '@mdx-js/mdx/lib/global'
+// import type {Processor} from '@mdx-js/mdx/lib/core'
+// import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
+// import {remarkMermaid} from '@theguild/remark-mermaid'
+import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
+import type {Program} from 'estree'
+import rehypeKatex from 'rehype-katex'
+import rehypePrettyCode from 'rehype-pretty-code'
+import rehypeRaw from 'rehype-raw'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import remarkReadingTime from 'remark-reading-time'
+import remarkSmartypants from 'remark-smartypants'
+import type {Pluggable, Plugin} from 'unified'
+import type {
+    FrontMatter,
+    LoaderOptions,
+    PageOpts,
+    ReadingTime,
+    StructurizedData
+} from '@/global/types'
+import {
+    CWD,
+    DEFAULT_LOCALE,
+    ERROR_ROUTES,
+    MARKDOWN_URL_EXTENSION_REGEX
+} from '@/server/constants'
+// import {
+//     recmaRewriteFunctionBody,
+//     recmaRewriteJsx
+// } from './recma-plugins/index.js'
+// import {
+//     DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
+//     rehypeAttachCodeMeta,
+//     rehypeBetterReactMathjax,
+//     rehypeExtractTocContent,
+//     rehypeIcon,
+//     rehypeParseCodeMeta
+// } from './rehype-plugins/index.js'
+import {
+    remarkCustomHeadingId,
+    remarkHeadings,
+    remarkLinkRewrite,
+    remarkMdxDisableExplicitJsx,
+    remarkMdxFrontMatter,
+    remarkMdxTitle,
+    remarkRemoveImports,
+    remarkStaticImage,
+    remarkStructurize
+} from '@/server/remark-plugins/index'
+import {logger, truthy} from '@/server/utils'
+
 
 import {GetStaticPaths, GetStaticProps, NextPage} from "next";
 import {ParsedUrlQuery} from "querystring";
 import Link from "next/link";
 import {serialize} from "@mdx-remote/serialize";
 import {MDXRemote} from "@mdx-remote";
-import rehypePrism from "rehype-prism-plus";
+// import rehypePrism from "rehype-prism-plus";
 import {getAllMdx, getMdx} from "@/lib/mdx";
-// import {MDXFrontMatter} from "@/lib/types";
 import {MDXFrontMatter} from "@/components/postlist"
+// // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 import {Page} from "@/components/page";
 import {components} from "@/components/mdx";
-import {cx} from "@/lib/utils";
-import rehypeRaw from 'rehype-raw'
-import remarkGfm from "remark-gfm";
-// import { remarkMermaid } from "@theguild/remark-mermaid"
-import type {Pluggable} from 'unified'
+// import rehypeRaw from 'rehype-raw'
+// import remarkGfm from "remark-gfm";
+//
+// import type {Pluggable} from 'unified'
+//
+// import remarkFrontmatter from 'remark-frontmatter'
+// import grayMatter from "gray-matter"
+// import rehypeKatex from 'rehype-katex'
+// import rehypePrettyCode from "rehype-pretty-code"
+// import remarkMath from "remark-math"
+// import remarkReadingTime from "remark-reading-time"
+// import remarkSmartypants from 'remark-smartypants'
+// // import { remarkRemoveImports } from "@/lib/mdx-plugins";
+// // import remarkEmbedImages from 'remark-embed-images'
 
-import remarkFrontmatter from 'remark-frontmatter'
-import grayMatter from "gray-matter"
-import rehypeKatex from 'rehype-katex'
-import rehypePrettyCode from "rehype-pretty-code"
-import remarkMath from "remark-math"
-import remarkReadingTime from "remark-reading-time"
-import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
-// import { remarkRemoveImports } from "@/lib/mdx-plugins";
-// import remarkEmbedImages from 'remark-embed-images'
-import {remarkEmbedImages} from "@/utils"
 import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 import themeConfig from './theme.json'
 
+import {remarkEmbedImages} from "@/utils"
 
+
+// import {
+//     attachMeta,
+//     parseMeta,
+//     remarkCustomHeadingId,
+//     remarkHeadings,
+//     remarkLinkRewrite,
+//     remarkMdxDisableExplicitJsx,
+//     remarkRemoveImports,
+//     remarkReplaceImports,
+//     // remarkStaticImage,
+//     remarkStructurize
+// } from '@scopeui/mdx-plugins';
 import {
     attachMeta,
-    parseMeta,
-    remarkCustomHeadingId,
-    remarkHeadings,
-    remarkLinkRewrite,
-    remarkMdxDisableExplicitJsx,
-    remarkRemoveImports,
-    remarkReplaceImports,
-    // remarkStaticImage,
-    remarkStructurize
+    remarkReplaceImports
 } from '@scopeui/mdx-plugins';
-import {rehypeExtractTocContent} from "@/server/rehype-plugins";
+// import {rehypeExtractTocContent} from "@/server/rehype-plugins";
+// import {remarkMdxFrontMatter} from "@/server/remark-plugins/remark-mdx-frontmatter";
 
 
 interface ContextProps extends ParsedUrlQuery {
@@ -183,15 +238,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const mdxContent = await serialize(content, {
         mdxOptions: {
             remarkPlugins: [ // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-                [
-                    remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-                    {
-                        packageName: 'nextra/components',
-                        tabNamesProp: 'items',
-                        storageKey: 'selectedPackageManager'
-                    }
-                ] satisfies Pluggable,
-                remarkRemoveImports,
+                // [
+                //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
+                //     {
+                //         packageName: 'nextra/components',
+                //         tabNamesProp: 'items',
+                //         storageKey: 'selectedPackageManager'
+                //     }
+                // ] satisfies Pluggable,
+                isRemoteContent && remarkRemoveImports,
+                remarkFrontmatter, // parse and attach yaml node
+                // [remarkMdxFrontMatter] satisfies Pluggable,
                 remarkGfm as Pluggable,
                 remarkMath,
                 [
@@ -206,7 +263,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [remarkEmbedImages, {dirname: "./posts"}],
                 readingTime && remarkReadingTime,
                 latex && remarkMath,
-                // isFileOutsideCWD && remarkReplaceImports,
+                isFileOutsideCWD && remarkReplaceImports,
             ],
             rehypePlugins: [
                 [
