@@ -26,6 +26,7 @@
     "@types/mdx": "^2.0.13",
     "@types/title": "^3.4.3",
     "@vercel/og": "^0.6.2",
+    "better-react-mathjax": "^2.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "flexsearch": "^0.7.43",
