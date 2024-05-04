@@ -6,7 +6,7 @@ import {createPortal} from "react-dom";
 import Link from "next/link";
 import {Code, Pre, Table, Td, Th, Tr} from "@/client/components";
 import cn from "clsx";
-import {Anchor, AnchorProps} from "@/components/anchor";
+// import {Anchor, AnchorProps} from "@/theme/components/anchor";
 
 export const HeadingContext = createContext<
     RefObject<HTMLHeadingElement | null>
@@ -162,7 +162,7 @@ const DEFAULT_COMPONENTS = {
 } satisfies MDXComponents
 // satisfies Components
 
-export const CustomLink = ({href = '', className, ...props}: AnchorProps) => (
+export const CustomLink = ({href = '', className, ...props}: any) => (
     <a
         href={href}
         // newWindow={EXTERNAL_HREF_REGEX.test(href)}

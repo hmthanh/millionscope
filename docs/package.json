@@ -28,6 +28,7 @@
     "@vercel/og": "^0.6.2",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "flexsearch": "^0.7.43",
     "git-url-parse": "^14.0.0",
     "graceful-fs": "^4.2.11",
     "gray-matter": "^4.0.3",

@@ -10,7 +10,7 @@
 //     DYNAMIC_META_FILENAME,
 //     META_FILENAME
 // } from '@/server/constants'
-// import {MARKDOWN_EXTENSION_REGEX} from "@/global/global"
+// import {MARKDOWN_EXTENSION_REGEX} from "@/global/constants"
 
 // import type {
 //     FileMap,

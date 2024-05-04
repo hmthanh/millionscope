@@ -3,7 +3,7 @@
 import cn from "clsx"
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import { Children, cloneElement, useEffect, useRef, useState } from 'react'
-import { Collapse } from "./collapse"
+import { Collapse } from "../theme/components/collapse"
 import { DetailsProvider } from "@/contexts"
 
 const findSummary = (children: ReactNode) => {

@@ -1,9 +1,18 @@
 import Link from "next/link";
 import {formatDate} from "@/lib/formatDate";
-import type {MDXFrontMatter} from "@/lib/types";
+// import type {MDXFrontMatter} from "@/lib/types";
 import {cx, slugify} from "@/lib/utils";
 import {Prose} from "./prose";
 import {Tag} from "./tag";
+
+export type MDXFrontMatter = {
+    slug: string;
+    title: string;
+    description?: string;
+    date: string;
+    tags?: Array<string>;
+};
+
 
 interface PostListProps {
     posts: Array<MDXFrontMatter>;

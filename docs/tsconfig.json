@@ -54,7 +54,7 @@
     "**/*.ts",
     "**/*.tsx",
     "global.d.ts"
-  ],
+, "theme/components/footer.tsx.tvt"  ],
   "exclude": [
     "node_modules"
   ]

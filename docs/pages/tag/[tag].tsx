@@ -2,7 +2,7 @@ import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { getAllMdx } from "@/lib/mdx";
 import { slugify } from "@/lib/utils";
-import { MDXFrontMatter } from "@/lib/types";
+import { MDXFrontMatter } from "@/components/postlist";
 import { Page } from "@/components/page";
 import { PostList } from "@/components/postlist";
 
@@ -43,8 +43,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   //   fallback: false,
   // };
   return {
-    paths:[],
-    fallback:false
+    paths: [],
+    fallback: false
   }
 };
 

@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import { useEffect } from "react";
 import { NextraInternalGlobal } from "@/global/types";
-import { NEXTRA_INTERNAL } from "@/global/global";
+import { NEXTRA_INTERNAL } from "@/global/constants";
 
 
 export default function Home({ tag, posts }: any) {

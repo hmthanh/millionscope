@@ -2,7 +2,7 @@ import { fc, reactNode } from '@/server/schemas'
 import type { FC, ReactNode } from 'react'
 import { z } from 'zod'
 import type { NavBarProps } from '@/theme/components/navbar'
-import type { TOCProps } from '@/components/toc'
+import type { TOCProps } from '@/theme/components/toc'
 
 const i18nSchema = /* @__PURE__ */ (() =>
     z.array(

@@ -1,11 +1,11 @@
-import type {GetStaticProps, NextPage} from "next";
-import {getAllMdx} from "@/lib/mdx";
-import {MDXFrontMatter} from "@/lib/types";
-import {Page} from "@/components/page";
-import {PostList} from "@/components/postlist";
-import {useEffect} from "react";
-import {NextraInternalGlobal} from "@/global/types";
-import {NEXTRA_INTERNAL} from "@/global/global";
+import type { GetStaticProps, NextPage } from "next";
+import { getAllMdx } from "@/lib/mdx";
+import { MDXFrontMatter } from "@/components/postlist";
+import { Page } from "@/components/page";
+import { PostList } from "@/components/postlist";
+import { useEffect } from "react";
+import { NextraInternalGlobal } from "@/global/types";
+import { NEXTRA_INTERNAL } from "@/global/constants";
 // import { Page } from "@/components/Page";
 // import { PostList } from "@/components/PostList";
 
@@ -13,7 +13,7 @@ interface PostsProps {
     posts: Array<MDXFrontMatter>;
 }
 
-const Posts: NextPage<PostsProps> = ({posts}) => {
+const Posts: NextPage<PostsProps> = ({ posts }) => {
     useEffect(() => {
         const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL] ||= Object.create(null)
         console.log("__nextra_internal__", __nextra_internal__)
@@ -25,7 +25,7 @@ const Posts: NextPage<PostsProps> = ({posts}) => {
                 title="Posts"
                 description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
             >
-                <PostList posts={posts}/>
+                <PostList posts={posts} />
             </Page>
         </>
     );

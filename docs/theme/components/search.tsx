@@ -10,7 +10,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react"
 import { useConfig, useMenu } from "@/contexts"
 import type { SearchResult } from "@/config/types"
 import { renderComponent, renderString } from "@/utils"
-import { Anchor } from "./anchor"
+import { Anchor } from "@/theme/components/anchor"
 import { Input } from "./input"
 
 type SearchProps = {
@@ -160,13 +160,13 @@ export function Search({
         {value && focused
           ? "ESC"
           : mounted &&
-            (navigator.userAgent.includes("Macintosh") ? (
-              <>
-                <span className="nx-text-xs">⌘</span>K
-              </>
-            ) : (
-              "CTRL K"
-            ))}
+          (navigator.userAgent.includes("Macintosh") ? (
+            <>
+              <span className="nx-text-xs">⌘</span>K
+            </>
+          ) : (
+            "CTRL K"
+          ))}
       </kbd>
     </Transition>
   )

@@ -1,4 +1,20 @@
-import type {SiteConfig} from "@/lib/types";
+
+
+export type SiteConfig = {
+    avatar?: string;
+    siteUrl: string;
+    siteName: string;
+    siteDescription: string;
+    siteThumbnail: string;
+    nav: Array<{ label: string; href: string }>;
+    social?: {
+        github?: string;
+        twitter?: string;
+        linkedin?: string;
+        instagram?: string;
+    };
+};
+
 
 const siteConfig: SiteConfig = {
     avatar: "/avatar.png",
@@ -8,8 +24,8 @@ const siteConfig: SiteConfig = {
         "Starter template for a personal website blog, built with Next.js, MDX, and Tailwind CSS.",
     siteThumbnail: "/og-image.png",
     nav: [
-        {label: "Posts", href: "/posts"},
-        {label: "About", href: "/about"},
+        { label: "Posts", href: "/posts" },
+        { label: "About", href: "/about" },
     ],
     social: {
         github: "https://github.com/alexcarpenter",

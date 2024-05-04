@@ -9,7 +9,7 @@ import "@/styles/new.css";
 import {useEffect} from "react";
 import {GlobalProvider} from "@/global/context";
 import {NextraInternalGlobal} from "@/global/types";
-import {NEXTRA_INTERNAL} from "@/global/global";
+import {NEXTRA_INTERNAL} from "@/global/constants";
 import {createLogger} from "vite";
 // import {useRouter} from "next/router";
 

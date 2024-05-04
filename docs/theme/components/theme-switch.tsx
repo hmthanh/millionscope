@@ -4,7 +4,7 @@ import { MoonIcon, SunIcon } from "@/client/icons"
 import type { ReactElement } from "react"
 import { z } from "zod"
 import { useConfig } from "@/contexts"
-import { Select } from "./select"
+import { Select } from "../../components/select"
 
 type ThemeSwitchProps = {
   lite?: boolean

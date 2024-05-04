@@ -8,5 +8,5 @@ export {
   type RemarkLinkRewriteOptions
 } from './remark-link-rewrite'
 export { remarkMdxDisableExplicitJsx } from './remark-mdx-disable-explicit-jsx'
-export { remarkStaticImage } from './remark-static-image'
+// export { remarkStaticImage } from './remark-static-image'
 export { remarkStructurize } from './remark-structurize'
