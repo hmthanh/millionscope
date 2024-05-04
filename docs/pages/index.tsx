@@ -1,14 +1,11 @@
 import Image from "next/image";
-import type {GetStaticProps, GetStaticPaths, NextPage} from "next";
-import {collectMdx, collectFiles} from '../utils/mdx-loader';
-import path from "path"
-import {useEffect} from "react";
-import {NextraInternalGlobal} from "@/global/types";
-import {NEXTRA_INTERNAL} from "@/global/global";
+import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
+import { useEffect } from "react";
+import { NextraInternalGlobal } from "@/global/types";
+import { NEXTRA_INTERNAL } from "@/global/global";
 
-// const inter = Inter({subsets: ["latin"]});
 
-export default function Home({tag, posts}: any) {
+export default function Home({ tag, posts }: any) {
     // console.log("tag", tag)${inter.className}
     useEffect(() => {
         const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL] ||= Object.create(null)

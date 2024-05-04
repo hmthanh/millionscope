@@ -1,5 +1,5 @@
 import {ThemeProvider} from 'next-themes'
-import type {FrontMatter, PageMapItem, PageOpts} from '@default-types'
+import type {FrontMatter, PageMapItem, PageOpts} from '@/global/types'
 // import { metaSchema } from 'nextra/normalize-pages'
 import type {ReactElement, ReactNode} from 'react'
 import {createContext, useContext, useState} from 'react'
