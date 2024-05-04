@@ -1,28 +1,28 @@
 "use client"
 
 import path from 'node:path'
-import { createRequire } from 'node:module'
+import {createRequire} from 'node:module'
 
-import type { ProcessorOptions } from '@mdx-js/mdx'
-import { createProcessor } from '@mdx-js/mdx'
+import type {ProcessorOptions} from '@mdx-js/mdx'
+import {createProcessor} from '@mdx-js/mdx'
 // import type { Processor } from '@mdx-js/mdx/lib/global'
 
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { ParsedUrlQuery } from "querystring";
+import {GetStaticPaths, GetStaticProps, NextPage} from "next";
+import {ParsedUrlQuery} from "querystring";
 import Link from "next/link";
-import { serialize } from "@mdx-remote/serialize";
-import { MDXRemote } from "@mdx-remote";
+import {serialize} from "@mdx-remote/serialize";
+import {MDXRemote} from "@mdx-remote";
 import rehypePrism from "rehype-prism-plus";
-import { getAllMdx, getMdx } from "@/lib/mdx";
+import {getAllMdx, getMdx} from "@/lib/mdx";
 // import {MDXFrontMatter} from "@/lib/types";
-import { MDXFrontMatter } from "@/components/postlist"
-import { Page } from "@/components/page";
-import { components } from "@/components/mdx";
-import { cx } from "@/lib/utils";
+import {MDXFrontMatter} from "@/components/postlist"
+import {Page} from "@/components/page";
+import {components} from "@/components/mdx";
+import {cx} from "@/lib/utils";
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from "remark-gfm";
 // import { remarkMermaid } from "@theguild/remark-mermaid"
-import type { Pluggable } from 'unified'
+import type {Pluggable} from 'unified'
 
 import remarkFrontmatter from 'remark-frontmatter'
 import grayMatter from "gray-matter"
@@ -30,11 +30,11 @@ import rehypeKatex from 'rehype-katex'
 import rehypePrettyCode from "rehype-pretty-code"
 import remarkMath from "remark-math"
 import remarkReadingTime from "remark-reading-time"
-import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
+import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
 // import { remarkRemoveImports } from "@/lib/mdx-plugins";
 // import remarkEmbedImages from 'remark-embed-images'
-import { remarkEmbedImages } from "@/utils"
-import type { Options as RehypePrettyCodeOptions } from 'rehype-pretty-code'
+import {remarkEmbedImages} from "@/utils"
+import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 import themeConfig from './theme.json'
 
 
@@ -50,6 +50,8 @@ import {
     // remarkStaticImage,
     remarkStructurize
 } from '@scopeui/mdx-plugins';
+import {rehypeExtractTocContent} from "@/server/rehype-plugins";
+
 
 interface ContextProps extends ParsedUrlQuery {
     slug: string;
@@ -62,11 +64,11 @@ interface PostProps {
     next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ frontMatter, mdx, previous, next }) => {
+const Post: NextPage<PostProps> = ({frontMatter, mdx, previous, next}) => {
     return (
         <>
             <Page {...frontMatter}>
-                <MDXRemote {...mdx} components={components} />
+                <MDXRemote {...mdx} components={components}/>
                 {/*{previous || next ? (*/}
                 {/*    <nav*/}
                 {/*        className={cx(*/}
@@ -124,7 +126,7 @@ const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
         // Prevent lines from collapsing in `display: grid` mode, and
         // allow empty lines to be copy/pasted
         if (node.children.length === 0) {
-            node.children = [{ type: 'text', value: ' ' }]
+            node.children = [{type: 'text', value: ' '}]
         }
     },
     onVisitHighlightedLine(node: any) {
@@ -141,21 +143,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const mdxFiles = getAllMdx();
     return {
         paths: mdxFiles.map((file) => ({
-            params: { slug: file.frontMatter.slug },
+            params: {slug: file.frontMatter.slug},
         })),
         fallback: false,
     };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const { slug } = context.params as ContextProps;
+    const {slug} = context.params as ContextProps;
     const mdxFiles = getAllMdx();
     const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === slug);
     const post = mdxFiles[postIndex];
-    const { frontMatter, content } = post;
+    const {frontMatter, content} = post;
 
     // *************** Config ***************
-    const isRemoteContent = false
+    // const isRemoteContent = false
+    const isRemoteContent = true
     const staticImage = {}
     const flexsearch = {}
     const readingTime = true
@@ -194,24 +197,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [
                     remarkMdxDisableExplicitJsx,
                     // Replace the <summary> and <details> with customized components
-                    { whiteList: ['details', 'summary'] }
+                    {whiteList: ['details', 'summary']}
                 ] satisfies Pluggable,
                 remarkCustomHeadingId,
-                [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
+                [remarkHeadings, {isRemoteContent}] satisfies Pluggable,
                 [remarkStructurize, flexsearch] satisfies Pluggable,
                 // staticImage && remarkStaticImage,
-                [remarkEmbedImages, { dirname: "./posts" }],
+                [remarkEmbedImages, {dirname: "./posts"}],
                 readingTime && remarkReadingTime,
                 latex && remarkMath,
                 // isFileOutsideCWD && remarkReplaceImports,
             ],
-
             rehypePlugins: [
                 [
                     // To render <details /> and <summary /> correctly
                     rehypeRaw,
                     // fix Error: Cannot compile `mdxjsEsm` node for npm2yarn and mermaid
-                    { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }
+                    {passThrough: ['mdxjsEsm', 'mdxJsxFlowElement']}
                 ],
                 latex && rehypeKatex,
                 codeHighlight !== false &&
@@ -222,7 +224,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
                         // ...rehypePrettyCodeOptions
                     }
                 ] as any),
-                attachMeta
+                attachMeta,
+                // [rehypeExtractTocContent, {isRemoteContent}]
             ],
         },
         scope: frontMatter,
