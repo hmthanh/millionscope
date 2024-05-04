@@ -2,11 +2,11 @@ import { Menu, Transition } from "@headlessui/react"
 import cn from "clsx"
 import { useFSRoute } from "@/utils/hooks"
 import { ArrowRightIcon, MenuIcon } from "@/client/icons"
-import type { Item, MenuItem, PageItem } from "@scopeui/config"
+import type { Item, MenuItem, PageItem } from "@/global/normalize-pages"
 import type { ReactElement, ReactNode } from "react"
 import { useConfig, useMenu } from "@/contexts"
 import { renderComponent } from "@/utils"
-import { Anchor } from "./anchor"
+import { Anchor } from "../../components/anchor"
 
 export type NavBarProps = {
   flatDirectories: Item[]

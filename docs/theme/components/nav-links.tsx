@@ -1,6 +1,6 @@
 import cn from "clsx"
 import { ArrowRightIcon } from "@/client/icons"
-import type { Item } from "@scopeui/config"
+import type { Item } from "@/global/normalize-pages"
 import type { ReactElement } from "react"
 import { useConfig } from "@/contexts"
 import { Anchor } from "../../components/anchor"

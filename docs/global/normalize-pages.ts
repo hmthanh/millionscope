@@ -1,6 +1,12 @@
-import { z } from 'zod'
-import type { Folder, MdxFile, PageMapItem } from './types'
-import {ERROR_ROUTES} from "@/server/constants";
+import type { z } from 'zod'
+import { ERROR_ROUTES } from '@/global/constants'
+import type {
+    displaySchema,
+    menuItemSchema,
+    pageThemeSchema
+} from '@/server/schemas'
+import type { Folder, MdxFile, PageMapItem } from '@/global/types'
+import { isMeta } from '@/client/utils'
 
 const DEFAULT_PAGE_THEME: PageTheme = {
     breadcrumb: true,
@@ -15,75 +21,30 @@ const DEFAULT_PAGE_THEME: PageTheme = {
     typesetting: 'default'
 }
 
-const pageThemeSchema = z.strictObject({
-    breadcrumb: z.boolean(),
-    collapsed: z.boolean(),
-    footer: z.boolean(),
-    layout: z.enum(['default', 'full', 'raw']),
-    navbar: z.boolean(),
-    pagination: z.boolean(),
-    sidebar: z.boolean(),
-    timestamp: z.boolean(),
-    toc: z.boolean(),
-    typesetting: z.enum(['default', 'article'])
-})
-
 export type PageTheme = z.infer<typeof pageThemeSchema>
-
-/**
- * An option to control how an item should be displayed in the sidebar:
- * - `normal`: the default behavior, item will be displayed
- * - `hidden`: the item will not be displayed in the sidebar entirely
- * - `children`: if the item is a folder, itself will be hidden but all its children will still be processed
- */
-const displaySchema = z.enum(['normal', 'hidden', 'children'])
-const titleSchema = z.string()
-
-const linkItemSchema = z.strictObject({
-    href: z.string(),
-    newWindow: z.boolean(),
-    title: titleSchema
-})
-
-const menuItemSchema = z.strictObject({
-    display: displaySchema.optional(),
-    items: z.record(linkItemSchema.partial({ href: true, newWindow: true })),
-    title: titleSchema,
-    type: z.literal('menu')
-})
-
-const separatorItemSchema = z.strictObject({
-    title: titleSchema.optional(),
-    type: z.literal('separator')
-})
-
-const itemSchema = linkItemSchema
-    .extend({
-        display: displaySchema,
-        theme: pageThemeSchema,
-        title: titleSchema,
-        type: z.enum(['page', 'doc'])
-    })
-    .deepPartial()
 
 type Display = z.infer<typeof displaySchema>
 type IMenuItem = z.infer<typeof menuItemSchema>
 
-export const metaSchema = z
-    .string()
-    .or(menuItemSchema)
-    .or(separatorItemSchema)
-    .or(itemSchema)
-
 function extendMeta(
-    meta: string | Record<string, any> = {},
-    fallback: Record<string, any>
-) {
-    if (typeof meta === 'string') {
-        meta = { title: meta }
+    _meta: string | Record<string, any> = {},
+    fallback: Record<string, any>,
+    metadata: Record<string, any>
+): Record<string, any> {
+    if (typeof _meta === 'string') {
+        _meta = { title: _meta }
     }
-    const theme: PageTheme = Object.assign({}, fallback.theme, meta.theme)
-    return Object.assign({}, fallback, meta, { theme })
+    const theme: PageTheme = {
+        ...fallback.theme,
+        ..._meta.theme,
+        ...metadata.theme
+    }
+    return {
+        ...fallback,
+        ..._meta,
+        display: metadata.display || _meta.display || fallback.display,
+        theme
+    }
 }
 
 type FolderWithoutChildren = Omit<Folder, 'children'>
@@ -134,32 +95,36 @@ function findFirstRoute(items: DocsItem[]): string | undefined {
     }
 }
 
+type NormalizedResult = {
+    activeType?: string
+    activeIndex: number
+    activeThemeContext: PageTheme
+    activePath: Item[]
+    directories: Item[]
+    flatDirectories: Item[]
+    docsDirectories: DocsItem[]
+    flatDocsDirectories: DocsItem[]
+    topLevelNavbarItems: (PageItem | MenuItem)[]
+}
+
 export function normalizePages({
     list,
-    locale,
-    defaultLocale,
     route,
     docsRoot = '',
     underCurrentDocsRoot = false,
     pageThemeContext = DEFAULT_PAGE_THEME
 }: {
     list: PageMapItem[]
-    locale: string
-    defaultLocale?: string
     route: string
     docsRoot?: string
     underCurrentDocsRoot?: boolean
     pageThemeContext?: PageTheme
-}) {
+}): NormalizedResult {
     let _meta: Record<string, any> | undefined
     for (const item of list) {
-        if (item.kind === 'Meta') {
-            if (item.locale === locale) {
-                _meta = item.data
-                break
-            }
-            // fallback
-            _meta ||= item.data
+        if (isMeta(item)) {
+            _meta = item.data
+            break
         }
     }
     const meta = _meta || {}
@@ -184,7 +149,7 @@ export function normalizePages({
     const flatDocsDirectories: DocsItem[] = []
 
     // Page directories
-    const topLevelNavbarItems: PageItem[] = []
+    const topLevelNavbarItems: (PageItem | MenuItem)[] = []
 
     let activeType: string | undefined
     let activeIndex = 0
@@ -201,14 +166,9 @@ export function normalizePages({
     const items = list
         .filter(
             (a): a is MdxFile | Folder =>
-                // not meta
-                a.kind !== 'Meta' &&
+                !isMeta(a) &&
                 // not hidden routes
-                !a.name.startsWith('_') &&
-                // locale matches, or fallback to default locale
-                (!('locale' in a) ||
-                    !a.locale ||
-                    [locale, defaultLocale].includes(a.locale))
+                !a.name.startsWith('_')
         )
         .sort((a, b) => {
             const indexA = metaKeys.indexOf(a.name)
@@ -247,27 +207,35 @@ export function normalizePages({
         if (key !== '*') {
             items.push({
                 name: key,
-                route: '#',
                 ...meta[key]
             })
         }
     }
 
     for (let i = 0; i < items.length; i++) {
-        const a = items[i]
+        const currentItem = items[i]
+        const nextItem = items[i + 1]
 
         // If there are two items with the same name, they must be a directory and a
         // page. In that case we merge them, and use the page's link.
-        if (i + 1 < items.length && a.name === items[i + 1].name) {
-            items[i + 1] = { ...items[i + 1], withIndexPage: true }
-            if (a.children && !items[i + 1].children) {
-                items[i + 1].children = a.children
+        if (nextItem && nextItem.name == currentItem.name) {
+            items[i + 1] = {
+                ...nextItem,
+                withIndexPage: true,
+                children: nextItem.children || currentItem.children
             }
             continue
         }
 
         // Get the item's meta information.
-        const extendedMeta = extendMeta(meta[a.name], fallbackMeta)
+        const extendedMeta = extendMeta(
+            meta[currentItem.name],
+            fallbackMeta,
+            list.find(
+                (item): item is MdxFile =>
+                    'frontMatter' in item && item.name === currentItem.name
+            )?.frontMatter || {}
+        )
         const { display, type = 'doc' } = extendedMeta
         const extendedPageThemeContext = {
             ...pageThemeContext,
@@ -277,21 +245,26 @@ export function normalizePages({
         // If the doc is under the active page root.
         const isCurrentDocsTree = route.startsWith(docsRoot)
 
-        const normalizedChildren: any =
-            a.children &&
+        const normalizedChildren: undefined | NormalizedResult =
+            currentItem.children &&
             normalizePages({
-                list: a.children,
-                locale,
-                defaultLocale,
+                list: currentItem.children,
                 route,
-                docsRoot: type === 'page' || type === 'menu' ? a.route : docsRoot,
+                docsRoot:
+                    type === 'page' || type === 'menu' ? currentItem.route : docsRoot,
                 underCurrentDocsRoot: underCurrentDocsRoot || isCurrentDocsTree,
                 pageThemeContext: extendedPageThemeContext
             })
 
-        const title = extendedMeta.title || (type !== 'separator' && a.name)
+        const title =
+            extendedMeta.title ||
+            (type !== 'separator' &&
+                (currentItem.frontMatter?.sidebarTitle ||
+                    currentItem.frontMatter?.title ||
+                    currentItem.name))
+
         const getItem = (): Item => ({
-            ...a,
+            ...currentItem,
             type,
             ...(title && { title }),
             ...(display && { display }),
@@ -307,7 +280,7 @@ export function normalizePages({
         }
 
         // This item is currently active, we collect the active path etc.
-        if (a.route === route) {
+        if (currentItem.route === route) {
             activePath = [item]
             activeType = type
             // There can be multiple matches.
@@ -326,10 +299,7 @@ export function normalizePages({
                     activeIndex = flatDocsDirectories.length
             }
         }
-        if (
-            (display === 'hidden' && item.kind !== 'Folder') ||
-            ERROR_ROUTES.has(a.route)
-        ) {
+        if (display === 'hidden' || ERROR_ROUTES.has(currentItem.route)) {
             continue
         }
 
@@ -342,7 +312,14 @@ export function normalizePages({
             ) {
                 activeThemeContext = normalizedChildren.activeThemeContext
                 activeType = normalizedChildren.activeType
-                activePath = [item, ...normalizedChildren.activePath]
+                activePath = [
+                    item,
+                    // Do not include folder which shows only his children
+                    ...normalizedChildren.activePath.filter(
+                        item => item.display !== 'children'
+                    )
+                ]
+
                 switch (activeType) {
                     case 'page':
                     case 'menu':
@@ -354,7 +331,7 @@ export function normalizePages({
                             flatDocsDirectories.length + normalizedChildren.activeIndex
                         break
                 }
-                if (a.withIndexPage && type === 'doc') {
+                if (currentItem.withIndexPage && type === 'doc') {
                     activeIndex++
                 }
             }
@@ -399,8 +376,13 @@ export function normalizePages({
                 case 'menu':
                     topLevelNavbarItems.push(pageItem)
                     break
-                case 'doc':
-                    flatDocsDirectories.push(docsItem)
+                case 'doc': {
+                    const withHrefProp = 'href' in item
+                    // Do not include links with href in pagination
+                    if (!withHrefProp) {
+                        flatDocsDirectories.push(docsItem)
+                    }
+                }
             }
         }
 
@@ -428,6 +410,7 @@ export function normalizePages({
                 docsDirectories.push(item)
         }
     }
+
     return {
         activeType,
         activeIndex,
