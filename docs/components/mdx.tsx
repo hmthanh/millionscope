@@ -1,4 +1,3 @@
-import {Note} from "./note";
 import {useMDXComponents as originalUseMDXComponents} from '@mdx-js/react'
 import type {MDXComponents} from 'mdx/types'
 import Image, {type ImageProps} from 'next/image'
@@ -181,7 +180,6 @@ export const CustomLink = ({href = '', className, ...props}: AnchorProps) => (
 
 export const components = {
     Image,
-    Note,
     ...DEFAULT_COMPONENTS,
     h1: ({...props}: ComponentProps<'h1'>) => (
         <h1
