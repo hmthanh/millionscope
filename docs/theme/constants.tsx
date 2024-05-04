@@ -1,6 +1,6 @@
 // /* eslint sort-keys: error */
 // import {useRouter} from 'next/router'
-// import {DiscordIcon, GitHubIcon} from '@scopeui/icons'
+// import {DiscordIcon, GitHubIcon} from '@/client/icons'
 // import {isValidElement} from 'react'
 // import type {z} from 'zod'
 // import {

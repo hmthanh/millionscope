@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes"
 import { useMounted } from "@/utils/hooks"
-import { MoonIcon, SunIcon } from "@scopeui/icons"
+import { MoonIcon, SunIcon } from "@/client/icons"
 import type { ReactElement } from "react"
 import { z } from "zod"
 import { useConfig } from "@/contexts"

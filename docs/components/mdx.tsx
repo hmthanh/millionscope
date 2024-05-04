@@ -5,7 +5,7 @@ import Image, {type ImageProps} from 'next/image'
 import {ComponentProps, createContext, createElement, createRef, ReactElement, ReactNode, RefObject, useContext, useEffect, useRef, useState} from 'react'
 import {createPortal} from "react-dom";
 import Link from "next/link";
-import {Code, Pre, Table, Td, Th, Tr} from "@scopeui/components";
+import {Code, Pre, Table, Td, Th, Tr} from "@/client/components";
 import cn from "clsx";
 import {Anchor, AnchorProps} from "@/components/anchor";
 

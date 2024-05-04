@@ -2,7 +2,7 @@
 
 import { addBasePath } from "next/dist/client/add-base-path"
 import { useRouter } from "next/router"
-import { GlobeIcon } from "@scopeui/icons"
+import { GlobeIcon } from "@/client/icons"
 import type { ReactElement } from "react"
 import { useConfig } from "@/contexts"
 import { Select } from "./select"

@@ -1,5 +1,5 @@
 import cn from "clsx"
-import { ArrowRightIcon } from "@scopeui/icons"
+import { ArrowRightIcon } from "@/client/icons"
 // import type { Item } from "@scopeui/config"
 import type { ReactElement } from "react"
 import { Fragment } from "react"

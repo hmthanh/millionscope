@@ -1,7 +1,7 @@
 // import {useRouter} from "next/router";
 // import {Anchor, ThemeSwitch} from "@/components";
 // import {DEFAULT_LOCALE, DocsThemeConfig} from "@theme-constants";
-// import {DiscordIcon, GitHubIcon} from "@scopeui/icons";
+// import {DiscordIcon, GitHubIcon} from "@/client/icons";
 // import {useGitEditUrl} from "@/config/theme/utils/use-git-edit-url";
 
 // export const DEFAULT_THEME: DocsThemeConfig = {

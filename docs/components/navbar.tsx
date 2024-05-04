@@ -1,7 +1,7 @@
 import { Menu, Transition } from "@headlessui/react"
 import cn from "clsx"
 import { useFSRoute } from "@/utils/hooks"
-import { ArrowRightIcon, MenuIcon } from "@scopeui/icons"
+import { ArrowRightIcon, MenuIcon } from "@/client/icons"
 import type { Item, MenuItem, PageItem } from "@scopeui/config"
 import type { ReactElement, ReactNode } from "react"
 import { useConfig, useMenu } from "@/contexts"
