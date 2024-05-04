@@ -16,7 +16,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkReadingTime from 'remark-reading-time'
 import remarkSmartypants from 'remark-smartypants'
-import type {Pluggable, Plugin} from 'unified'
+import {Pluggable, Plugin, Processor} from 'unified'
 import type {
     FrontMatter,
     LoaderOptions,
@@ -52,8 +52,10 @@ import {
     remarkRemoveImports,
     remarkStaticImage,
     remarkStructurize
-} from '@/server/remark-plugins/index'
+} from '@/server/remark-plugins'
 import {logger, truthy} from '@/server/utils'
+
+import {compileMdx} from "@/server/compile"
 
 
 import {GetStaticPaths, GetStaticProps, NextPage} from "next";
@@ -100,10 +102,10 @@ import {remarkEmbedImages} from "@/utils"
 //     // remarkStaticImage,
 //     remarkStructurize
 // } from '@scopeui/mdx-plugins';
-import {
-    attachMeta,
-    remarkReplaceImports
-} from '@scopeui/mdx-plugins';
+// import {
+//     attachMeta,
+//     // remarkReplaceImports
+// } from '@scopeui/mdx-plugins';
 // import {rehypeExtractTocContent} from "@/server/rehype-plugins";
 // import {remarkMdxFrontMatter} from "@/server/remark-plugins/remark-mdx-frontmatter";
 
@@ -204,6 +206,39 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
 };
 
+// const cachedCompilerForFormat: Record<
+//     Exclude<ProcessorOptions['format'], undefined | null>,
+//     Processor
+// > = Object.create(null)
+//
+// type MdxOptions = LoaderOptions['mdxOptions'] &
+//     Pick<ProcessorOptions, 'jsx' | 'outputFormat'>
+//
+// // @ts-expect-error -- Without bind is unable to use `remarkLinkRewrite` with `buildDynamicMDX`
+// // because we already use `remarkLinkRewrite` function to remove .mdx? extensions
+// const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
+
+type MdxOptions = LoaderOptions['mdxOptions'] &
+    Pick<ProcessorOptions, 'jsx' | 'outputFormat'>
+
+type CompileMdxOptions = Pick<
+    LoaderOptions,
+    | 'staticImage'
+    | 'search'
+    | 'defaultShowCopyCode'
+    | 'readingTime'
+    | 'latex'
+    | 'codeHighlight'
+> & {
+    mdxOptions?: MdxOptions
+    route?: string
+    locale?: string
+    filePath?: string
+    useCachedCompiler?: boolean
+    isPageImport?: boolean
+    isPageMapImport?: boolean
+}
+
 export const getStaticProps: GetStaticProps = async (context) => {
     const {slug} = context.params as ContextProps;
     const mdxFiles = getAllMdx();
@@ -263,13 +298,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [remarkEmbedImages, {dirname: "./posts"}],
                 readingTime && remarkReadingTime,
                 latex && remarkMath,
-                isFileOutsideCWD && remarkReplaceImports,
+                // isFileOutsideCWD && remarkReplaceImports,
             ],
             rehypePlugins: [
                 [
                     // To render <details /> and <summary /> correctly
                     rehypeRaw,
-                    // fix Error: Cannot compile `mdxjsEsm` node for npm2yarn and mermaid
+                    // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
                     {passThrough: ['mdxjsEsm', 'mdxJsxFlowElement']}
                 ],
                 latex && rehypeKatex,
@@ -281,7 +316,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
                         // ...rehypePrettyCodeOptions
                     }
                 ] as any),
-                attachMeta,
+                // attachMeta,
                 // [rehypeExtractTocContent, {isRemoteContent}]
             ],
         },
