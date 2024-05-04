@@ -1,10 +1,10 @@
 import type { PageOpts } from "@scopeui/types"
 import type { ReactNode } from "react"
-import {DocsThemeConfig} from "@theme-constants";
+// import {DocsThemeConfig} from "@theme-constants";
 
 export type Context = {
   pageOpts: PageOpts
-  themeConfig: DocsThemeConfig
+  // themeConfig: DocsThemeConfig
 }
 
 export type SearchResult = {

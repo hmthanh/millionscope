@@ -1,8 +1,8 @@
-import {fc, reactNode} from '@/server/schemas'
-import type {FC, ReactNode} from 'react'
-import {z} from 'zod'
-import type {NavBarProps} from '@/components/navbar'
-import type {TOCProps} from '@/components/toc'
+import { fc, reactNode } from '@/server/schemas'
+import type { FC, ReactNode } from 'react'
+import { z } from 'zod'
+import type { NavBarProps } from '@/components/navbar'
+import type { TOCProps } from '@/components/toc'
 
 const i18nSchema = /* @__PURE__ */ (() =>
     z.array(

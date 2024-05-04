@@ -12,14 +12,14 @@ import type { z } from 'zod'
 //     TOC
 // } from '@/theme/components'
 // import { useConfig, useThemeConfig } from './contexts'
-// import type { publicThemeSchema, themeSchema } from './schemas'
+import type { publicThemeSchema, themeSchema } from './schemas'
 // import { getGitIssueUrl, useGitEditUrl } from './utils'
 
 export const DEFAULT_LOCALE = 'en-US'
 
 export const IS_BROWSER = typeof window !== 'undefined'
 
-// export type DocsThemeConfig = z.infer<typeof themeSchema>
+export type DocsThemeConfig = z.infer<typeof themeSchema>
 // export type PartialDocsThemeConfig = z.infer<typeof publicThemeSchema>
 
 // const LOADING_LOCALES: Record<string, string> = {
