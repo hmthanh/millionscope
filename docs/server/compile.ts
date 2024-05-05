@@ -7,7 +7,7 @@ import type {Processor} from '@mdx-js/mdx/lib/core'
 import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 // @ts-ignore
 import {remarkMermaid} from '@theguild/remark-mermaid'
-import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
+// import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
 import type {Program} from 'estree'
 import rehypeKatex from 'rehype-katex'
 import rehypePrettyCode from 'rehype-pretty-code'
@@ -105,6 +105,7 @@ export async function compileMdx(
         isPageMapImport
     }: CompileMdxOptions = {}
 ) {
+
     const {
         jsx = false,
         format: _format = 'mdx',
@@ -194,6 +195,7 @@ export async function compileMdx(
         if (frontMatter.mdxOptions) {
             throw new Error('`frontMatter.mdxOptions` is no longer supported')
         }
+        // console.log("sourc55x", result)
 
         return {
             result,
@@ -220,14 +222,14 @@ export async function compileMdx(
             remarkPlugins: [
                 ...(remarkPlugins || []),
                 remarkMermaid, // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-                [
-                    remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-                    {
-                        packageName: 'nextra/components',
-                        tabNamesProp: 'items',
-                        storageKey: 'selectedPackageManager'
-                    }
-                ] satisfies Pluggable,
+                // [
+                //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
+                //     {
+                //         packageName: 'nextra/components',
+                //         tabNamesProp: 'items',
+                //         storageKey: 'selectedPackageManager'
+                //     }
+                // ] satisfies Pluggable,
                 isRemoteContent && remarkRemoveImports,
                 remarkFrontmatter, // parse and attach yaml node
                 [remarkMdxFrontMatter] satisfies Pluggable,

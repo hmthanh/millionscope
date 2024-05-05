@@ -1,19 +1,20 @@
-import type { ReactElement, ReactNode } from 'react'
-import { createContext, useContext, useRef } from 'react'
-import type { DocsThemeConfig } from '@/theme/constants'
-import { DEEP_OBJECT_KEYS, DEFAULT_THEME } from '@/theme/constants'
+import type {ReactElement, ReactNode} from 'react'
+import {createContext, useContext, useRef} from 'react'
+import type {DocsThemeConfig} from '@/theme/constants'
+import {DEEP_OBJECT_KEYS, DEFAULT_THEME} from '@/theme/constants'
 
 const ThemeConfigContext = createContext<DocsThemeConfig>(DEFAULT_THEME)
 ThemeConfigContext.displayName = 'ThemeConfig'
 export const useThemeConfig = () => useContext(ThemeConfigContext)
 
-export function ThemeConfigProvider({
-    value,
-    children
-}: {
-    value: DocsThemeConfig
-    children: ReactNode
-}): ReactElement {
+export function ThemeConfigProvider(
+    {
+        value,
+        children
+    }: {
+        value: DocsThemeConfig
+        children: ReactNode
+    }): ReactElement {
     const storeRef = useRef<DocsThemeConfig>()
     storeRef.current ||= {
         ...DEFAULT_THEME,
@@ -23,7 +24,7 @@ export function ThemeConfigProvider({
                     key,
                     value && typeof value === 'object' && DEEP_OBJECT_KEYS.includes(key)
                         ? // @ts-expect-error -- key has always object value
-                        { ...DEFAULT_THEME[key], ...value }
+                        {...DEFAULT_THEME[key], ...value}
                         : value
                 ])
             ))
