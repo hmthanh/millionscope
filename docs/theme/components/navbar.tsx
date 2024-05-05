@@ -7,8 +7,8 @@ import { ArrowRightIcon, MenuIcon } from '@/client/icons'
 import type { MenuItem, PageItem } from '@/client/normalize-pages'
 import type { ReactElement, ReactNode } from 'react'
 import { useMenu, useThemeConfig } from '@/contexts'
-import { renderComponent } from '@/utils'
 import { Anchor } from './anchor'
+import { renderComponent } from '@/theme/utils/render';
 
 export type NavBarProps = {
   items: (PageItem | MenuItem)[]
