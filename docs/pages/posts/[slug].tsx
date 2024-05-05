@@ -3,6 +3,7 @@
 import path from 'node:path'
 import type {ProcessorOptions} from '@mdx-js/mdx'
 import {createProcessor} from '@mdx-js/mdx'
+import slash from 'slash'
 // import type {Processor} from '@mdx-js/mdx/lib/core'
 // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 // import {remarkMermaid} from '@theguild/remark-mermaid'
@@ -88,6 +89,8 @@ import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 import themeConfig from './theme.json'
 
 import {remarkEmbedImages} from "@/utils"
+import {PAGES_DIR} from "@/server/file-system";
+import {MARKDOWN_EXTENSION_REGEX} from "@/client/contants";
 
 
 // import {
@@ -101,10 +104,6 @@ import {remarkEmbedImages} from "@/utils"
 //     remarkReplaceImports,
 //     // remarkStaticImage,
 //     remarkStructurize
-// } from '@scopeui/mdx-plugins';
-// import {
-//     attachMeta,
-//     // remarkReplaceImports
 // } from '@scopeui/mdx-plugins';
 // import {rehypeExtractTocContent} from "@/server/rehype-plugins";
 // import {remarkMdxFrontMatter} from "@/server/remark-plugins/remark-mdx-frontmatter";
@@ -249,18 +248,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // *************** Config ***************
     // const isRemoteContent = false
     const isRemoteContent = true
-    const staticImage = {}
     const flexsearch = {}
-    const readingTime = true
-    const latex = true
-    const codeHighlight = {}
-    const defaultShowCopyCode = {}
-    const route = ''
-    const locale = ['en']
-    const mdxOptions = {}
     const filePath = ''
     const useCachedCompiler = {}
-    const isPageImport = true
+
 
     // const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
 
@@ -269,6 +260,95 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const isFileOutsideCWD = {}
     // *************** Config ***************
 
+    const isPageImport = true
+    const isPageMapImport = true
+    const isMetaFile = true
+    const theme = "nextra-theme-docs"
+    const themeConfig = './theme.config.tsx'
+    const defaultShowCopyCode = true
+    const search = {codeblocks: false}
+    const staticImage = true
+    const _readingTime = true
+    const latex = true
+    const codeHighlight = true
+    const transform = true
+    const mdxOptions = {}
+    const locales = ['en']
+
+    const mdxPath = "/Users/thanh/Workspace/millionscope/docs/posts/diffusion-models.mdx"
+    // const mdxPath = resourceResolveData
+    //     ? // to make it work with symlinks, resolve the mdx path based on the relative path
+    //     /*
+    //      * `context.rootContext` could include path chunk of
+    //      * `context._module.resourceResolveData.relativePath` use
+    //      * `context._module.resourceResolveData.descriptionFileRoot` instead
+    //      */
+    //     path.join(
+    //         this._module.resourceResolveData.descriptionFileRoot,
+    //         this._module.resourceResolveData.relativePath
+    //     )
+    //     : this.resourcePath
+
+    const currentPath = slash("./posts/") // slash(mdxPath)
+
+    if (currentPath.includes('/pages/api/')) {
+        logger.warn(
+            `Ignoring ${currentPath} because it is located in the "pages/api" folder.`
+        )
+    }
+
+    if (currentPath.includes('/pages/_app.mdx')) {
+        throw new Error(
+            'Nextra v3 no longer supports _app.mdx, use _app.{js,jsx} or _app.{ts,tsx} for TypeScript projects instead.'
+        )
+    }
+
+    const isLocalTheme = theme.startsWith('.') || theme.startsWith('/')
+    const layoutPath = isLocalTheme ? slash(path.resolve(theme)) : theme
+    const relativePath = slash(path.relative(PAGES_DIR, mdxPath))
+
+    let locale = locales[0] === '' ? '' : relativePath.split('/')[0]
+    // In case when partial document is placed outside `pages` directory
+    if (locale === '..') locale = ''
+
+    const route =
+        '/' +
+        relativePath
+            .replace(MARKDOWN_EXTENSION_REGEX, '')
+            .replace(/(^|\/)index$/, '')
+
+
+    // const rrr = await compileMdx("", {});
+    const {
+        result,
+        title,
+        _frontMatter,
+        structurizedData,
+        searchIndexKey,
+        hasJsxInH1,
+        readingTime
+    } = await compileMdx("", {
+        mdxOptions: {
+            ...mdxOptions,
+            jsx: true,
+            outputFormat: 'program',
+            format: 'detect'
+        },
+        readingTime: _readingTime,
+        defaultShowCopyCode,
+        staticImage,
+        search,
+        latex,
+        codeHighlight,
+        route,
+        locale,
+        filePath: mdxPath,
+        useCachedCompiler: true,
+        isPageImport,
+        isPageMapImport
+    })
+
+    console.log("structurizedData", structurizedData)
 
     const mdxContent = await serialize(content, {
         mdxOptions: {
@@ -296,7 +376,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
                 [remarkStructurize, flexsearch] satisfies Pluggable,
                 // staticImage && remarkStaticImage,
                 [remarkEmbedImages, {dirname: "./posts"}],
-                readingTime && remarkReadingTime,
+                _readingTime && remarkReadingTime,
                 latex && remarkMath,
                 // isFileOutsideCWD && remarkReplaceImports,
             ],
@@ -308,7 +388,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
                     {passThrough: ['mdxjsEsm', 'mdxJsxFlowElement']}
                 ],
                 latex && rehypeKatex,
-                codeHighlight !== false &&
+                // codeHighlight !== false &&
                 ([
                     rehypePrettyCode,
                     {
