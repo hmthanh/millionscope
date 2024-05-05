@@ -8,7 +8,7 @@ import {VFile, VFileCompatible} from 'vfile'
 import {matter} from 'vfile-matter'
 
 import {createFormattedMDXError} from './format-mdx-error'
-import {removeImportsExportsPlugin} from '../mdx-plugin/remove-imports-exports'
+import {removeImportsExportsPlugin} from './mdx-plugin/remove-imports-exports'
 
 // customtypes.ts
 import {MDXRemoteSerializeResult, SerializeOptions} from './types'
