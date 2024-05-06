@@ -3,7 +3,6 @@ import { onlyText } from "react-children-utilities";
 import { formatDate } from "@/lib/formatDate";
 import siteConfig from "@/config/siteConfig";
 import { cx } from "@/lib/utils";
-import { Prose } from "./prose";
 
 interface PageProps {
     date?: string;
@@ -57,13 +56,11 @@ export const Page: React.FC<PageProps> = ({
             {/*    <h1 className="nx-font-bold nx-text-3xl">{title}</h1>*/}
             {/*    {description ? (*/}
             {/*        <div className="nx-mt-4">*/}
-            {/*            <Prose>*/}
             {/*            {typeof description === "string" ? (*/}
             {/*                <p>{description}</p>*/}
             {/*            ) : (*/}
             {/*                description*/}
             {/*            )}*/}
-            {/*            </Prose>*/}
             {/*        </div>*/}
             {/*    ) : null}*/}
             {/*</header>*/}

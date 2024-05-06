@@ -1,10 +1,10 @@
-import {useMDXComponents as originalUseMDXComponents} from '@mdx-js/react'
-import type {MDXComponents} from 'mdx/types'
-import Image, {type ImageProps} from 'next/image'
-import {ComponentProps, createContext, createElement, createRef, ReactElement, ReactNode, RefObject, useContext, useEffect, useRef, useState} from 'react'
-import {createPortal} from "react-dom";
+import { useMDXComponents as originalUseMDXComponents } from '@mdx-js/react'
+import type { MDXComponents } from 'mdx/types'
+import Image, { type ImageProps } from 'next/image'
+import { ComponentProps, createContext, createElement, createRef, ReactElement, ReactNode, RefObject, useContext, useEffect, useRef, useState } from 'react'
+import { createPortal } from "react-dom";
 import Link from "next/link";
-import {Code, Pre, Table, Td, Th, Tr} from "@/client/components";
+import { Code, Pre, Table, Td, Th, Tr } from "@/client/components";
 import cn from "clsx";
 // import {Anchor, AnchorProps} from "@/theme/components/anchor";
 
@@ -137,7 +137,7 @@ function HeadingLink(
 
 const EXTERNAL_HREF_REGEX = /https?:\/\//
 
-const A = ({children, href = '', ...props}: ComponentProps<'a'>) => {
+const A = ({ children, href = '', ...props }: ComponentProps<'a'>) => {
     if (EXTERNAL_HREF_REGEX.test(href)) {
         return (
             <a href={href} target="_blank" rel="noreferrer" {...props}>
@@ -162,7 +162,7 @@ const DEFAULT_COMPONENTS = {
 } satisfies MDXComponents
 // satisfies Components
 
-export const CustomLink = ({href = '', className, ...props}: any) => (
+export const CustomLink = ({ href = '', className, ...props }: any) => (
     <a
         href={href}
         // newWindow={EXTERNAL_HREF_REGEX.test(href)}
@@ -181,32 +181,32 @@ export const CustomLink = ({href = '', className, ...props}: any) => (
 export const components = {
     Image,
     ...DEFAULT_COMPONENTS,
-    h1: ({...props}: ComponentProps<'h1'>) => (
+    h1: ({ ...props }: ComponentProps<'h1'>) => (
         <h1
             className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100"
             {...props}
         />
     ),
-    h2: ({...props}: ComponentProps<'h2'>) => <HeadingLink tag="h2" {...props} />,
-    h3: ({...props}: ComponentProps<'h3'>) => <HeadingLink tag="h3" {...props} />,
-    h4: ({...props}: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
-    h5: ({...props}: ComponentProps<'h5'>) => <HeadingLink tag="h5" {...props} />,
-    h6: ({...props}: ComponentProps<'h6'>) => <HeadingLink tag="h6" {...props} />,
-    ul: ({...props}: ComponentProps<'ul'>) => (
+    h2: ({ ...props }: ComponentProps<'h2'>) => <HeadingLink tag="h2" {...props} />,
+    h3: ({ ...props }: ComponentProps<'h3'>) => <HeadingLink tag="h3" {...props} />,
+    h4: ({ ...props }: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
+    h5: ({ ...props }: ComponentProps<'h5'>) => <HeadingLink tag="h5" {...props} />,
+    h6: ({ ...props }: ComponentProps<'h6'>) => <HeadingLink tag="h6" {...props} />,
+    ul: ({ ...props }: ComponentProps<'ul'>) => (
         <ul
             className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
             {...props}
         />
     ),
     a: CustomLink,
-    ol: ({...props}: ComponentProps<'ol'>) => (
+    ol: ({ ...props }: ComponentProps<'ol'>) => (
         <ol
             className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
             {...props}
         />
     ),
-    li: ({...props}: ComponentProps<'li'>) => <li className="nx-my-2" {...props} />,
-    blockquote: ({...props}: ComponentProps<'blockquote'>) => (
+    li: ({ ...props }: ComponentProps<'li'>) => <li className="nx-my-2" {...props} />,
+    blockquote: ({ ...props }: ComponentProps<'blockquote'>) => (
         <blockquote
             className={cn(
                 'nx-mt-6 nx-border-gray-300 nx-italic nx-text-gray-700 dark:nx-border-gray-700 dark:nx-text-gray-400',
@@ -215,7 +215,7 @@ export const components = {
             {...props}
         />
     ),
-    hr: ({...props}: ComponentProps<'hr'>) => (
+    hr: ({ ...props }: ComponentProps<'hr'>) => (
         <hr
             className="nx-my-8 nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400"
             {...props}
@@ -224,17 +224,13 @@ export const components = {
     // a: A,
 
     // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
-    p: ({...props}: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
+    p: ({ ...props }: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
     tr: Tr,
     th: Th,
     td: Td,
-    table: ({...props}) => <Table className="nx-not-prose nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0" {...props} />,
+    table: ({ ...props }) => <Table className="nx-not-prose nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0" {...props} />,
     // detail:
     // summary:
-    pre: ({children, ...props}: any) => (
-        <div className="nx-not-prose">
-            <Pre {...props}>{children}</Pre>
-        </div>
-    ),
+    pre: Pre,
     code: Code,
 };

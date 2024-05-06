@@ -1,9 +1,8 @@
 import Link from "next/link";
-import {formatDate} from "@/lib/formatDate";
+import { formatDate } from "@/lib/formatDate";
 // import type {MDXFrontMatter} from "@/lib/types";
-import {cx, slugify} from "@/lib/utils";
-import {Prose} from "./prose";
-import {Tag} from "./tag";
+import { cx, slugify } from "@/lib/utils";
+import { Tag } from "./tag";
 
 export type MDXFrontMatter = {
     slug: string;
@@ -18,7 +17,7 @@ interface PostListProps {
     posts: Array<MDXFrontMatter>;
 }
 
-export const PostList: React.FC<PostListProps> = ({posts}) => {
+export const PostList: React.FC<PostListProps> = ({ posts }) => {
     return (
         <ul
             className={cx(
@@ -45,9 +44,7 @@ export const PostList: React.FC<PostListProps> = ({posts}) => {
                             </h2>
                             {post.description ? (
                                 <div className="nx-mt-3">
-                                    <Prose>
-                                        <p>{post.description}</p>
-                                    </Prose>
+                                    <p>{post.description}</p>
                                 </div>
                             ) : null}
                             {post.tags ? (

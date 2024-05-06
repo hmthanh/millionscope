@@ -1,4 +1,4 @@
-import {serialize} from "@mdx-remote/serialize";
+import { serialize } from "@mdx-remote/serialize";
 // import {
 //     remarkCustomHeadingId,
 //     remarkHeadings,
@@ -10,26 +10,27 @@ import {serialize} from "@mdx-remote/serialize";
 //     remarkStaticImage,
 //     remarkStructurize
 // } from '@/server/remark-plugins'
-import {remarkCustomHeadingId, remarkHeadings, remarkMdxDisableExplicitJsx, remarkEmbedImages, remarkRemoveImports, remarkStructurize, remarkLinkRewrite, remarkMdxFrontMatter, remarkMdxTitle} from "@/server/remark-plugins";
+import { remarkCustomHeadingId, remarkHeadings, remarkMdxDisableExplicitJsx, remarkEmbedImages, remarkRemoveImports, remarkStructurize, remarkLinkRewrite, remarkMdxFrontMatter, remarkMdxTitle } from "@/server/remark-plugins";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
-import {Pluggable} from "unified";
-import type {PluggableList} from "unified"
+import { Pluggable } from "unified";
+import type { PluggableList } from "unified"
 import remarkMath from "remark-math";
 import remarkReadingTime from "remark-reading-time";
 import rehypeRaw from "rehype-raw";
-import rehypeKatex, {type Options as RehypeKatexOptions} from "rehype-katex";
-import rehypePrettyCode, {type Options as RehypePrettyCodeOptions} from "rehype-pretty-code";
-import {FrontMatter, LoaderOptions} from "@/global/types";
-import type {ProcessorOptions} from '@mdx-js/mdx'
+import rehypeKatex, { type Options as RehypeKatexOptions } from "rehype-katex";
+import rehypePrettyCode, { type Options as RehypePrettyCodeOptions } from "rehype-pretty-code";
+import { FrontMatter, LoaderOptions } from "@/global/types";
+import type { ProcessorOptions } from '@mdx-js/mdx'
 import themeCodeConfig from "@/server/theme.json";
-import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash'
 // import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
 // @ts-ignore
-import type {Processor} from '@mdx-js/mdx/lib/core'
-import {rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta} from "@/server/rehype-plugins";
-import {MARKDOWN_URL_EXTENSION_REGEX} from "@/server/constants";
-import {bundledLanguages, getHighlighter} from "shiki";
+import type { Processor } from '@mdx-js/mdx/lib/core'
+import { rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "@/server/rehype-plugins";
+import { MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
+import { bundledLanguages, getHighlighter } from "shiki";
+import rehypeShiki from '@shikijs/rehype'
 
 interface MyCompileMdxProps {
     content: string
@@ -79,32 +80,33 @@ const CODE_BLOCK_FILENAME_REGEX = /filename="([^"]+)"/
 const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
     // keepBackground: false,
     // grid: false,
-    // theme: {
-    //     light: 'github-light',
-    //     dark: 'github-dark'
+    defaultLang: "bash",
+    theme: {
+        light: 'github-light',
+        dark: 'github-dark'
+    },
+    // getHighlighter(opts) {
+    //     return getHighlighter({
+    //         ...opts,
+    //         // Without `getHighlighter` option ```mdx lang is not highlighted...
+    //         langs: Object.keys(bundledLanguages)
+    //     })
     // },
-    getHighlighter(opts) {
-        return getHighlighter({
-            ...opts,
-            // Without `getHighlighter` option ```mdx lang is not highlighted...
-            langs: Object.keys(bundledLanguages)
-        })
-    },
-    onVisitLine(node: any) {
-        // Prevent lines from collapsing in `display: grid` mode, and
-        // allow empty lines to be copy/pasted
-        if (node.children.length === 0) {
-            node.children = [{type: 'text', value: ' '}]
-        }
-    },
-    onVisitHighlightedLine(node: any) {
-        node.properties.className.push('highlighted')
-    },
-    onVisitHighlightedChars(node: any) {
-        node.properties.className = ['highlighted']
-    },
-    filterMetaString: (meta: string) =>
-        meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
+    // onVisitLine(node: any) {
+    //     // Prevent lines from collapsing in `display: grid` mode, and
+    //     // allow empty lines to be copy/pasted
+    //     if (node.children.length === 0) {
+    //         node.children = [{type: 'text', value: ' '}]
+    //     }
+    // },
+    // onVisitHighlightedLine(node: any) {
+    //     node.properties.className.push('highlighted')
+    // },
+    // onVisitHighlightedChars(node: any) {
+    //     node.properties.className = ['highlighted']
+    // },
+    // filterMetaString: (meta: string) =>
+    //     meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
 }
 // const CODE_BLOCK_FILENAME_REGEX = /filename="([^"]+)"/
 //
@@ -133,7 +135,7 @@ const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
 //     filterMetaString: meta => meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
 // }
 
-export async function myCompileMdx({content, frontMatter, isRemoteContent, flexsearch, readingTime, latex}: MyCompileMdxProps) {
+export async function myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex }: MyCompileMdxProps) {
     const {
         jsx = false,
         format: _format = 'mdx',
@@ -169,15 +171,15 @@ export async function myCompileMdx({content, frontMatter, isRemoteContent, flexs
                 [
                     remarkMdxDisableExplicitJsx,
                     // Replace the <summary> and <details> with customized components
-                    {whiteList: ['details', 'summary']}
+                    { whiteList: ['details', 'summary'] }
                 ] satisfies Pluggable,
                 remarkCustomHeadingId,
                 // remarkMdxTitle,
-                [remarkHeadings, {isRemoteContent}] satisfies Pluggable,
+                [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
                 // search && ([remarkStructurize, search] satisfies Pluggable),
                 [remarkStructurize, flexsearch] satisfies Pluggable,
                 // staticImage && remarkStaticImage,
-                [remarkEmbedImages, {dirname: "./posts"}],
+                [remarkEmbedImages, { dirname: "./posts" }],
                 // readingTime &&
                 remarkReadingTime,
                 // latex &&
@@ -195,14 +197,21 @@ export async function myCompileMdx({content, frontMatter, isRemoteContent, flexs
             ],
             rehypePlugins: [
                 ...(rehypePlugins || []),
+                // [
+                //     rehypePrettyCode,
+                //     {
+                //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
+                //         // ...rehypePrettyCodeOptions
+                //     }
+                // ] satisfies Pluggable,
                 [
                     // To render <details /> and <summary /> correctly
                     rehypeRaw,
                     // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
-                    {passThrough: ['mdxjsEsm', 'mdxJsxFlowElement']}
+                    { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }
                 ],
                 [rehypeIcon, rehypeAttachCodeMeta],
-                [rehypeParseCodeMeta, {defaultShowCopyCode}],
+                [rehypeParseCodeMeta, { defaultShowCopyCode }],
                 // [
                 //
                 //     !isRemoteContent && rehypeIcon,
@@ -233,14 +242,12 @@ export async function myCompileMdx({content, frontMatter, isRemoteContent, flexs
                 //     }
                 // ] as any),
                 // attachMeta,
-                [rehypeExtractTocContent, {isRemoteContent}],
-                [
-                    rehypePrettyCode,
-                    {
-                        ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-                        ...rehypePrettyCodeOptions
-                    }
-                ] satisfies Pluggable,
+                [rehypeShiki, {
+                    theme: 'github-dark'
+                    // themes: { dark: 'github-dark', light: "github-light" }
+                }] satisfies Pluggable,
+                [rehypeExtractTocContent, { isRemoteContent }],
+
             ],
         },
         scope: frontMatter,
