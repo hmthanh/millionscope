@@ -1,7 +1,7 @@
 "use client"
 
 import path from 'node:path'
-import type { ProcessorOptions } from '@mdx-js/mdx'
+import type {ProcessorOptions} from '@mdx-js/mdx'
 import slash from 'slash'
 import type {
     FrontMatter,
@@ -14,25 +14,25 @@ import {
     ERROR_ROUTES,
     MARKDOWN_URL_EXTENSION_REGEX
 } from '@/server/constants'
-import { logger, truthy } from '@/server/utils'
+import {logger, truthy} from '@/server/utils'
 
-import { compileMdx } from "@/server/compile"
+import {compileMdx} from "@/server/compile"
 
 
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { ParsedUrlQuery } from "querystring";
+import {GetStaticPaths, GetStaticProps, NextPage} from "next";
+import {ParsedUrlQuery} from "querystring";
 import Link from "next/link";
-import { serialize } from "@mdx-remote/serialize";
-import { MDXRemote } from "@mdx-remote";
+import {serialize} from "@mdx-remote/serialize";
+import {MDXRemote} from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import { getAllMdx, getMdx } from "@/lib/mdx";
-import { MDXFrontMatter } from "@/components/postlist"
+import {getAllMdx, getMdx} from "@/server/mdx";
+import {MDXFrontMatter} from "@/components/postlist"
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
-import { Page } from "@/components/page";
-import { components } from "@/components/mdx";
-import { PAGES_DIR } from "@/server/file-system";
-import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
-import { myCompileMdx } from "@/server/myCompileMdx";
+import {Page} from "@/components/page";
+import {components} from "@/components/mdx";
+import {PAGES_DIR} from "@/server/file-system";
+import {MARKDOWN_EXTENSION_REGEX} from "@/client/contants";
+import {myCompileMdx} from "@/server/myCompileMdx";
 
 
 interface ContextProps extends ParsedUrlQuery {
@@ -46,11 +46,11 @@ interface PostProps {
     next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ frontMatter, mdx, previous, next }) => {
+const Post: NextPage<PostProps> = ({frontMatter, mdx, previous, next}) => {
     return (
         <>
             <Page {...frontMatter}>
-                <MDXRemote {...mdx} components={components} />
+                <MDXRemote {...mdx} components={components}/>
                 {/*{previous || next ? (*/}
                 {/*    <nav*/}
                 {/*        className={cx(*/}
@@ -102,7 +102,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const mdxFiles = getAllMdx();
     return {
         paths: mdxFiles.map((file) => ({
-            params: { slug: file.frontMatter.slug },
+            params: {slug: file.frontMatter.slug},
         })),
         fallback: false,
     };
@@ -142,11 +142,11 @@ type CompileMdxOptions = Pick<
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const { slug } = context.params as ContextProps;
+    const {slug} = context.params as ContextProps;
     const mdxFiles = getAllMdx();
     const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === slug);
     const post = mdxFiles[postIndex];
-    const { frontMatter, content } = post;
+    const {frontMatter, content} = post;
 
     // *************** Config ***************
     // const isRemoteContent = false
@@ -169,7 +169,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const theme = "nextra-theme-docs"
     const themeConfig = './theme.config.tsx'
     const defaultShowCopyCode = true
-    const search = { codeblocks: false }
+    const search = {codeblocks: false}
     const staticImage = true
     const _readingTime = true
     const latex = true
@@ -259,7 +259,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         readingTime
     }
 
-    const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex })
+    const mdxContent = await myCompileMdx({content, frontMatter, isRemoteContent, flexsearch, readingTime, latex})
     // console.log("mdxContent", mdxContent)
     return {
         props: {

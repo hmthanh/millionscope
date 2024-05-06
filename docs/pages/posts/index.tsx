@@ -1,5 +1,5 @@
 import type {GetStaticProps, NextPage} from "next";
-import {getAllMdx, postsPath} from "@/lib/mdx";
+import {getAllMdx, postsPath} from "@/server/mdx";
 import {MDXFrontMatter} from "@/components/postlist";
 import {Page} from "@/components/page";
 import {PostList} from "@/components/postlist";

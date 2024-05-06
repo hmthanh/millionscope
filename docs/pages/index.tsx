@@ -5,7 +5,7 @@ import {NextraInternalGlobal} from "@/global/types";
 import {DEFAULT_LOCALE, NEXTRA_INTERNAL} from "@/global/constants";
 import path from "path";
 import {collectPageMap} from "@/server/page-map";
-import {getAllMdx} from "@/lib/mdx";
+import {getAllMdx} from "@/server/mdx";
 import {Page} from "@/components/page";
 import {PostList} from "@/components/postlist";
 

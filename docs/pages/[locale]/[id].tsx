@@ -25,7 +25,7 @@ import Link from "next/link";
 import {serialize} from "@mdx-remote/serialize";
 import {MDXRemote} from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import {getAllMdx, getMdx} from "@/lib/mdx";
+import {getAllMdx, getMdx} from "@/server/mdx";
 import {MDXFrontMatter} from "@/components/postlist"
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 import {Page} from "@/components/page";
@@ -168,7 +168,7 @@ export const getStaticProps = async (context: any) => {
     const useCachedCompiler = {}
 
     // const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
-    
+
     // const isFileOutsideCWD = !isPageImport && path.relative(CWD, filePath).startsWith('..')
     const isFileOutsideCWD = {}
     // *************** Config ***************

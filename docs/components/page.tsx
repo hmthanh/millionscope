@@ -1,8 +1,6 @@
 import Head from "next/head";
 import { onlyText } from "react-children-utilities";
-import { formatDate } from "@/lib/formatDate";
 import siteConfig from "@/config/siteConfig";
-import { cx } from "@/lib/utils";
 
 interface PageProps {
     date?: string;

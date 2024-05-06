@@ -1,8 +1,18 @@
 import Link from "next/link";
-import { formatDate } from "@/lib/formatDate";
-// import type {MDXFrontMatter} from "@/lib/types";
-import { cx, slugify } from "@/lib/utils";
+import cn from "clsx"
+import slugify from "@sindresorhus/slugify";
 import { Tag } from "./tag";
+
+import { parseISO, format } from "date-fns";
+
+export const formatDate = (date: string): string => {
+  if (date) {
+    return format(parseISO(date), "MMMM dd, yyyy");
+  } else {
+    return ''
+  }
+};
+
 
 export type MDXFrontMatter = {
     slug: string;
@@ -20,7 +30,7 @@ interface PostListProps {
 export const PostList: React.FC<PostListProps> = ({ posts }) => {
     return (
         <ul
-            className={cx(
+            className={cn(
                 "nx-divide-y nx--my-8",
                 "nx-divide-gray-200",
                 "dark:nx-divide-gray-700"
@@ -31,7 +41,7 @@ export const PostList: React.FC<PostListProps> = ({ posts }) => {
                     <li className="nx-py-8" key={index}>
                         <article>
                             <time
-                                className={cx(
+                                className={cn(
                                     "nx-block nx-mb-2",
                                     "nx-text-gray-500",
                                     "dark:nx-text-gray-400"

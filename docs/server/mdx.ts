@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import {promisify} from 'node:util'
 import matter from "gray-matter";
-// import type {MDXFrontMatter} from "@/lib/types";
 import {MARKDOWN_EXTENSION_REGEX} from "@/global/constants";
 import type {MDXFrontMatter} from "@/components/postlist"
 
