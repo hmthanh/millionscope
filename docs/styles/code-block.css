@@ -35,14 +35,6 @@ pre {
         .line {
             @apply nx-px-4;
         }
-
-        span.data-line {
-            @apply nx-px-4
-        }
-
-        /*span {*/
-        /*    @apply nx-px-4*/
-        /*}*/
     }
 
     &:not([data-theme]) {

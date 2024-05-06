@@ -95,12 +95,12 @@
 //         content: `MIT ${new Date().getFullYear()} © Nextra.`
 //     },
 //     gitTimestamp: function GitTimestamp({ timestamp }) {
-//         const { locale = DEFAULT_LOCALE } = useRouter()
+//         const { [locale] = DEFAULT_LOCALE } = useRouter()
 //         return (
 //             <>
 //                 Last updated on{' '}
 //                 <time dateTime={timestamp.toISOString()}>
-//                     {timestamp.toLocaleDateString(locale, {
+//                     {timestamp.toLocaleDateString([locale], {
 //                         day: 'numeric',
 //                         month: 'long',
 //                         year: 'numeric'
@@ -168,15 +168,15 @@
 //         ),
 //         error: 'Failed to load search index.',
 //         loading: function useLoading() {
-//             const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+//             const { [locale], defaultLocale = DEFAULT_LOCALE } = useRouter()
 //             const text =
-//                 (locale && LOADING_LOCALES[locale]) || LOADING_LOCALES[defaultLocale]
+//                 ([locale] && LOADING_LOCALES[[locale]]) || LOADING_LOCALES[defaultLocale]
 //             return <>{text}…</>
 //         },
 //         placeholder: function usePlaceholder() {
-//             const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+//             const { [locale], defaultLocale = DEFAULT_LOCALE } = useRouter()
 //             const text =
-//                 (locale && PLACEHOLDER_LOCALES[locale]) ||
+//                 ([locale] && PLACEHOLDER_LOCALES[[locale]]) ||
 //                 PLACEHOLDER_LOCALES[defaultLocale]
 //             return `${text}…`
 //         }
@@ -188,9 +188,9 @@
 //     themeSwitch: {
 //         component: ThemeSwitch,
 //         useOptions() {
-//             const { locale } = useRouter()
+//             const { [locale] } = useRouter()
 
-//             if (locale === 'zh-CN') {
+//             if ([locale] === 'zh-CN') {
 //                 return { dark: '深色主题', light: '浅色主题', system: '系统默认' }
 //             }
 //             return { dark: 'Dark', light: 'Light', system: 'System' }
@@ -218,10 +218,10 @@
 //     .filter(Boolean)
 
 /* eslint sort-keys: error */
-import { useRouter } from 'next/router'
-import { DiscordIcon, GitHubIcon } from '@/client/icons'
-import { isValidElement } from 'react'
-import type { z } from 'zod'
+import {useRouter} from 'next/router'
+import {DiscordIcon, GitHubIcon} from '@/client/icons'
+import {isValidElement} from 'react'
+import type {z} from 'zod'
 import {
     Anchor,
     Flexsearch,
@@ -230,9 +230,9 @@ import {
     ThemeSwitch,
     TOC
 } from '@/theme/components'
-import { useConfig, useThemeConfig } from '@/contexts'
-import type { publicThemeSchema, themeSchema } from './schemas'
-import { getGitIssueUrl, useGitEditUrl } from '@/theme/utils'
+import {useConfig, useThemeConfig} from '@/contexts'
+import type {publicThemeSchema, themeSchema} from './schemas'
+import {getGitIssueUrl, useGitEditUrl} from '@/theme/utils'
 
 export const DEFAULT_LOCALE = 'en-US'
 
@@ -267,7 +267,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     chat: {
         icon: (
             <>
-                <DiscordIcon />
+                <DiscordIcon/>
                 <span className="_sr-only">Discord</span>
             </>
         )
@@ -283,7 +283,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     direction: 'ltr',
     docsRepositoryBase: 'https://github.com/shuding/nextra',
     editLink: {
-        component: function EditLink({ className, filePath, children }) {
+        component: function EditLink({className, filePath, children}) {
             const editUrl = useGitEditUrl(filePath)
             if (!editUrl) {
                 return null
@@ -313,8 +313,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         component: Footer,
         content: `MIT ${new Date().getFullYear()} © Nextra.`
     },
-    gitTimestamp: function GitTimestamp({ timestamp }) {
-        const { locale = DEFAULT_LOCALE } = useRouter()
+    gitTimestamp: function GitTimestamp({timestamp}) {
+        const {locale = DEFAULT_LOCALE} = useRouter()
         return (
             <>
                 Last updated on{' '}
@@ -329,22 +329,22 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         )
     },
     head: function useHead() {
-        const { frontMatter, title: pageTitle } = useConfig()
+        const {frontMatter, title: pageTitle} = useConfig()
 
         const title = `${pageTitle} – Nextra`
-        const { description, canonical, image } = frontMatter
+        const {description, canonical, image} = frontMatter
         return (
             <>
                 <title>{title}</title>
-                <meta property="og:title" content={title} />
+                <meta property="og:title" content={title}/>
                 {description && (
                     <>
-                        <meta name="description" content={description} />
-                        <meta property="og:description" content={description} />
+                        <meta name="description" content={description}/>
+                        <meta property="og:description" content={description}/>
                     </>
                 )}
-                {canonical && <link rel="canonical" href={canonical} />}
-                {image && <meta name="og:image" content={image} />}
+                {canonical && <link rel="canonical" href={canonical}/>}
+                {image && <meta name="og:image" content={image}/>}
             </>
         )
     },
@@ -373,7 +373,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     project: {
         icon: (
             <>
-                <GitHubIcon />
+                <GitHubIcon/>
                 <span className="_sr-only">GitHub</span>
             </>
         )
@@ -387,13 +387,13 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         ),
         error: 'Failed to load search index.',
         loading: function useLoading() {
-            const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+            const {locale, defaultLocale = DEFAULT_LOCALE} = useRouter()
             const text =
                 (locale && LOADING_LOCALES[locale]) || LOADING_LOCALES[defaultLocale]
             return <>{text}…</>
         },
         placeholder: function usePlaceholder() {
-            const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+            const {locale, defaultLocale = DEFAULT_LOCALE} = useRouter()
             const text =
                 (locale && PLACEHOLDER_LOCALES[locale]) ||
                 PLACEHOLDER_LOCALES[defaultLocale]
@@ -407,12 +407,12 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     themeSwitch: {
         component: ThemeSwitch,
         useOptions() {
-            const { locale } = useRouter()
+            const {locale} = useRouter()
 
             if (locale === 'zh-CN') {
-                return { dark: '深色主题', light: '浅色主题', system: '系统默认' }
+                return {dark: '深色主题', light: '浅色主题', system: '系统默认'}
             }
-            return { dark: 'Dark', light: 'Light', system: 'System' }
+            return {dark: 'Dark', light: 'Light', system: 'System'}
         }
     },
     toc: {

@@ -42,9 +42,6 @@ import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code"
 // }
 
 
-
-
-
 // export type DynamicFolder = {
 //     type: "folder"
 //     items: DynamicMeta
@@ -57,10 +54,9 @@ import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code"
 
 // export type DynamicMetaJsonFile = {
 //     kind: "Meta"
-//     locale?: string
+//     [locale]?: string
 //     data: DynamicMeta
 // }
-
 
 
 // export type MetaJsonPath = `${string}/${MetaFilename}`
@@ -70,7 +66,6 @@ import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code"
 //     [jsonPath: MetaJsonPath]: MetaJsonFile
 //     [mdxPath: MdxPath]: MdxFile
 // }
-
 
 
 // // PageMapItem without MetaJsonFile and with its meta from _meta.json
@@ -120,7 +115,7 @@ import type {Options as RehypePrettyCodeOptions} from "rehype-pretty-code"
 //      * A site can have multiple indexes, by default they're separated by
 //      * locales as multiple index.ts files.
 //      */
-//     indexKey?: (filepath: string, route: string, locale?: string) => null | string
+//     indexKey?: (filepath: string, route: string, [locale]?: string) => null | string
 // }
 // type Transform = (
 //     result: string,

@@ -12,15 +12,15 @@ export {slugify, clsx as cx};
 //
 // export function parseFileName(filePath: string): {
 //     name: string
-//     locale: string
+//     [locale]: string
 //     ext: string
 // } {
 //     // Get file name and extension from file path
 //     const {name, ext} = path.parse(filePath)
-//     const locale = name.match(LOCALE_REGEX)?.[1] || ''
+//     const [locale] = name.match(LOCALE_REGEX)?.[1] || ''
 //     return {
-//         name: locale ? name.replace(LOCALE_REGEX, '') : name,
-//         locale,
+//         name: [locale] ? name.replace(LOCALE_REGEX, '') : name,
+//         [locale],
 //         ext
 //     }
 // }
@@ -40,16 +40,16 @@ export {slugify, clsx as cx};
 //
 // export function sortPages(
 //     pages: (
-//         | Pick<MdxFile, 'kind' | 'name' | 'frontMatter' | 'locale'>
+//         | Pick<MdxFile, 'kind' | 'name' | 'frontMatter' | '[locale]'>
 //         | Pick<Folder, 'kind' | 'name'>
 //         )[],
-//     locale?: string
+//     [locale]?: string
 // ): [string, string][] {
-//     if (locale === '') {
-//         locale = undefined
+//     if ([locale] === '') {
+//         [locale] = undefined
 //     }
 //     return pages
-//         .filter(item => item.kind === 'Folder' || item.locale === locale)
+//         .filter(item => item.kind === 'Folder' || item.[locale] === [locale])
 //         .map(item => ({
 //             name: item.name,
 //             date: 'frontMatter' in item && item.frontMatter?.date,
@@ -67,7 +67,7 @@ export {slugify, clsx as cx};
 //             if (b.date) {
 //                 return 1 // sort a after b
 //             }
-//             return a.title.localeCompare(b.title, locale, {numeric: true})
+//             return a.title.localeCompare(b.title, [locale], {numeric: true})
 //         })
 //         .map(item => [item.name, item.title])
 // }

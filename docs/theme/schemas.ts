@@ -1,8 +1,8 @@
-import { fc, reactNode } from '@/server/schemas'
-import type { FC, ReactNode } from 'react'
-import { z } from 'zod'
-import type { NavBarProps } from '@/theme/components/navbar'
-import type { TOCProps } from '@/theme/components/toc'
+import {fc, reactNode} from '@/server/schemas'
+import type {FC, ReactNode} from 'react'
+import {z} from 'zod'
+import type {NavBarProps} from '@/theme/components/navbar'
+import type {TOCProps} from '@/theme/components/toc'
 
 const i18nSchema = /* @__PURE__ */ (() =>
     z.array(
@@ -136,6 +136,6 @@ export const themeSchema = /* @__PURE__ */ (() =>
 
 export const publicThemeSchema = /* @__PURE__ */ (() =>
     themeSchema.deepPartial().extend({
-        // to have `locale` and `text` as required properties
+        // to have `[locale]` and `text` as required properties
         i18n: i18nSchema.optional()
     }))()

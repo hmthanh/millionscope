@@ -28,7 +28,7 @@ import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 
 // export type MetaJsonFile = {
 //     kind: 'Meta'
-//     locale?: string
+//     [locale]?: string
 //     data: {
 //         [fileName: string]: Meta
 //     }
@@ -48,7 +48,7 @@ import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 
 // export type DynamicMetaJsonFile = {
 //     kind: 'Meta'
-//     locale?: string
+//     [locale]?: string
 //     data: DynamicMeta
 // }
 
@@ -59,7 +59,7 @@ import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 //     kind: 'MdxPage'
 //     name: string
 //     route: string
-//     locale?: string
+//     [locale]?: string
 //     frontMatter?: FrontMatterType
 // }
 
@@ -123,7 +123,7 @@ import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
 //     indexKey?: (
 //         filepath: string,
 //         route: string,
-//         locale?: string
+//         [locale]?: string
 //     ) => null | string
 // }
 // type Transform = (

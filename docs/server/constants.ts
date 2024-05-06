@@ -95,12 +95,12 @@
 //     content: `MIT ${new Date().getFullYear()} © Nextra.`
 //   },
 //   gitTimestamp: function GitTimestamp({ timestamp }) {
-//     const { locale = DEFAULT_LOCALE } = useRouter()
+//     const { [locale] = DEFAULT_LOCALE } = useRouter()
 //     return (
 //       <>
 //         Last updated on{' '}
 //         <time dateTime={timestamp.toISOString()}>
-//           {timestamp.toLocaleDateString(locale, {
+//           {timestamp.toLocaleDateString([locale], {
 //             day: 'numeric',
 //             month: 'long',
 //             year: 'numeric'
@@ -168,15 +168,15 @@
 //     ),
 //     error: 'Failed to load search index.',
 //     loading: function useLoading() {
-//       const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+//       const { [locale], defaultLocale = DEFAULT_LOCALE } = useRouter()
 //       const text =
-//         (locale && LOADING_LOCALES[locale]) || LOADING_LOCALES[defaultLocale]
+//         ([locale] && LOADING_LOCALES[[locale]]) || LOADING_LOCALES[defaultLocale]
 //       return <>{text}…</>
 //     },
 //     placeholder: function usePlaceholder() {
-//       const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter()
+//       const { [locale], defaultLocale = DEFAULT_LOCALE } = useRouter()
 //       const text =
-//         (locale && PLACEHOLDER_LOCALES[locale]) ||
+//         ([locale] && PLACEHOLDER_LOCALES[[locale]]) ||
 //         PLACEHOLDER_LOCALES[defaultLocale]
 //       return `${text}…`
 //     }
@@ -188,9 +188,9 @@
 //   themeSwitch: {
 //     component: ThemeSwitch,
 //     useOptions() {
-//       const { locale } = useRouter()
+//       const { [locale] } = useRouter()
 
-//       if (locale === 'zh-CN') {
+//       if ([locale] === 'zh-CN') {
 //         return { dark: '深色主题', light: '浅色主题', system: '系统默认' }
 //       }
 //       return { dark: 'Dark', light: 'Light', system: 'System' }
@@ -222,13 +222,13 @@
  * while importing constants in client file
  */
 import path from 'path'
-import type { Property } from 'estree'
-import type { NextraConfig } from '@/global/types'
+import type {Property} from 'estree'
+import type {NextraConfig} from '@/global/types'
 
 export {
-  MARKDOWN_EXTENSION_REGEX,
-  ERROR_ROUTES,
-  DEFAULT_LOCALE
+    MARKDOWN_EXTENSION_REGEX,
+    ERROR_ROUTES,
+    DEFAULT_LOCALE
 } from '@/global/constants'
 
 export const CWD = process.cwd()
@@ -242,11 +242,11 @@ export const MARKDOWN_URL_EXTENSION_REGEX = /\.mdx?(?:(?=[#?])|$)/
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
 export const DEFAULT_CONFIG = {
-  staticImage: true,
-  search: {
-    codeblocks: true
-  },
-  codeHighlight: true
+    staticImage: true,
+    search: {
+        codeblocks: true
+    },
+    codeHighlight: true
 } satisfies Partial<NextraConfig>
 
 export const OFFICIAL_THEMES = ['nextra-theme-docs', 'nextra-theme-blog']
@@ -264,11 +264,11 @@ export const DEFAULT_LOCALES = ['']
 export const IMPORT_FRONTMATTER = false
 
 export const DEFAULT_PROPERTY_PROPS = {
-  type: 'Property',
-  kind: 'init',
-  method: false,
-  shorthand: false,
-  computed: false
+    type: 'Property',
+    kind: 'init',
+    method: false,
+    shorthand: false,
+    computed: false
 } satisfies Omit<Property, 'key' | 'value'>
 
 export const TOC_HEADING_REGEX = /^h[2-6]$/

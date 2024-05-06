@@ -221,6 +221,7 @@ export async function collectPageMap({
         route,
         isFollowingSymlink: false
     })
+    // console.log("pageMap", pageMap)
 
     const pageMapAst = convertPageMapToAst(
         transformPageMap ? transformPageMap(pageMap, locale) : pageMap

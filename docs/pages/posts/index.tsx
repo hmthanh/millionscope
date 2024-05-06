@@ -36,7 +36,7 @@ const Posts: NextPage<PostsProps> = ({posts}) => {
 // {
 //     dir: string
 //     route?: string
-//     locale?: string
+//     [locale]?: string
 //     transformPageMap?: NextraConfig['transformPageMap']
 // }
 
