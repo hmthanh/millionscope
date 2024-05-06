@@ -34,6 +34,7 @@ export const getMdx = (fileName: string) => {
 
 export const getAllMdx = () => {
     const files: string[] = fs.readdirSync(postsPath);
+    const metaFiles = files.filter(file => path.extname(file) === '.json');
     const mdxFiles = files.filter(file => path.extname(file) === '.mdx');
     const items = mdxFiles.map((item) => getMdx(item));
     return items.sort(
