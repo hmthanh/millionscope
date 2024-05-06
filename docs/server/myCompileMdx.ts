@@ -37,7 +37,7 @@ interface MyCompileMdxProps {
     isRemoteContent: boolean
     flexsearch: {}
     readingTime: boolean
-    latex: LatexOption
+    latex: boolean
 }
 
 const cachedCompilerForFormat: Record<
@@ -78,8 +78,7 @@ const CODE_BLOCK_FILENAME_REGEX = /filename="([^"]+)"/
 //  -- @ts-expect-error
 const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
     // keepBackground: false,
-    grid: false,
-
+    // grid: false,
     // theme: {
     //     light: 'github-light',
     //     dark: 'github-dark'
@@ -215,7 +214,7 @@ export async function myCompileMdx({content, frontMatter, isRemoteContent, flexs
                 //     !isRemoteContent && rehypeIcon,
                 //     rehypeAttachCodeMeta
                 // ],
-                latex && [rehypeKatex, latexOptions],
+                [rehypeKatex, latexOptions],
                 // (typeof latex === 'object'
                 //     ? latex.renderer === 'mathjax'
                 //         ? [rehypeBetterReactMathjax, latex.options, isRemoteContent]

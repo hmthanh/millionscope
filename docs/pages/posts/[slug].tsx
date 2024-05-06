@@ -30,10 +30,6 @@ import {MDXFrontMatter} from "@/components/postlist"
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 import {Page} from "@/components/page";
 import {components} from "@/components/mdx";
-
-import type {Options as RehypePrettyCodeOptions} from 'rehype-pretty-code'
-import themeConfig from './theme.json'
-
 import {PAGES_DIR} from "@/server/file-system";
 import {MARKDOWN_EXTENSION_REGEX} from "@/client/contants";
 import {myCompileMdx} from "@/server/myCompileMdx";
