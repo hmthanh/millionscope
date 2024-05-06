@@ -53,8 +53,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "global.d.ts"
-, "theme/components/footer.tsx.tvt"  ],
+    "global.d.ts",
+    "theme/components/footer.tsx.tvt"
+  ],
   "exclude": [
     "node_modules"
   ]

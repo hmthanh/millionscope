@@ -4,7 +4,7 @@ import createMDX from '@next/mdx'
 const nextConfig = {
     output: 'export',
     reactStrictMode: true,
-    images: {unoptimized: true},
+    images: {unoptimized: true}
     // images: {
     //   loader: 'akamai',
     //   path: '',

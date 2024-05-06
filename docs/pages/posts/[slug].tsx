@@ -1,7 +1,7 @@
 "use client"
 
 import path from 'node:path'
-import type {ProcessorOptions} from '@mdx-js/mdx'
+import type { ProcessorOptions } from '@mdx-js/mdx'
 import slash from 'slash'
 import type {
     FrontMatter,
@@ -14,25 +14,25 @@ import {
     ERROR_ROUTES,
     MARKDOWN_URL_EXTENSION_REGEX
 } from '@/server/constants'
-import {logger, truthy} from '@/server/utils'
+import { logger, truthy } from '@/server/utils'
 
-import {compileMdx} from "@/server/compile"
+import { compileMdx } from "@/server/compile"
 
 
-import {GetStaticPaths, GetStaticProps, NextPage} from "next";
-import {ParsedUrlQuery} from "querystring";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 import Link from "next/link";
-import {serialize} from "@mdx-remote/serialize";
-import {MDXRemote} from "@mdx-remote";
+import { serialize } from "@mdx-remote/serialize";
+import { MDXRemote } from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import {getAllMdx, getMdx} from "@/lib/mdx";
-import {MDXFrontMatter} from "@/components/postlist"
+import { getAllMdx, getMdx } from "@/lib/mdx";
+import { MDXFrontMatter } from "@/components/postlist"
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
-import {Page} from "@/components/page";
-import {components} from "@/components/mdx";
-import {PAGES_DIR} from "@/server/file-system";
-import {MARKDOWN_EXTENSION_REGEX} from "@/client/contants";
-import {myCompileMdx} from "@/server/myCompileMdx";
+import { Page } from "@/components/page";
+import { components } from "@/components/mdx";
+import { PAGES_DIR } from "@/server/file-system";
+import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
+import { myCompileMdx } from "@/server/myCompileMdx";
 
 
 interface ContextProps extends ParsedUrlQuery {
@@ -46,11 +46,11 @@ interface PostProps {
     next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({frontMatter, mdx, previous, next}) => {
+const Post: NextPage<PostProps> = ({ frontMatter, mdx, previous, next }) => {
     return (
         <>
             <Page {...frontMatter}>
-                <MDXRemote {...mdx} components={components}/>
+                <MDXRemote {...mdx} components={components} />
                 {/*{previous || next ? (*/}
                 {/*    <nav*/}
                 {/*        className={cx(*/}
@@ -102,7 +102,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const mdxFiles = getAllMdx();
     return {
         paths: mdxFiles.map((file) => ({
-            params: {slug: file.frontMatter.slug},
+            params: { slug: file.frontMatter.slug },
         })),
         fallback: false,
     };
@@ -142,11 +142,11 @@ type CompileMdxOptions = Pick<
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const {slug} = context.params as ContextProps;
+    const { slug } = context.params as ContextProps;
     const mdxFiles = getAllMdx();
     const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === slug);
     const post = mdxFiles[postIndex];
-    const {frontMatter, content} = post;
+    const { frontMatter, content } = post;
 
     // *************** Config ***************
     // const isRemoteContent = false
@@ -169,7 +169,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const theme = "nextra-theme-docs"
     const themeConfig = './theme.config.tsx'
     const defaultShowCopyCode = true
-    const search = {codeblocks: false}
+    const search = { codeblocks: false }
     const staticImage = true
     const _readingTime = true
     const latex = true
@@ -251,37 +251,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         isPageMapImport
     })
 
-    // console.log("result", result)
-
-    // Imported as a normal component, no need to add the layout.
-//     if (!isPageImport) {
-//         return `${result}
-// export default MDXLayout`
-//     }
-//     if (searchIndexKey) {
-//         // Store all the things in buildInfo.
-//         const {buildInfo} = this._module as any
-//         buildInfo.nextraSearch = {
-//             indexKey: searchIndexKey,
-//             ...(frontMatter.searchable !== false && {
-//                 title,
-//                 data: structurizedData,
-//                 route
-//             })
-//         }
-//     }
-
     let timestamp: PageOpts['timestamp']
-    // const {repository, gitRoot} = await initGitRepo
-    // if (repository && gitRoot) {
-    //     try {
-    //         timestamp = await repository.getFileLatestModifiedDateAsync(
-    //             path.relative(gitRoot, mdxPath)
-    //         )
-    //     } catch {
-    //         // Failed to get timestamp for this file. Silently ignore it
-    //     }
-    // }
     const pageOpts: Partial<PageOpts> = {
         filePath: slash(path.relative(CWD, mdxPath)),
         hasJsxInH1,
@@ -289,78 +259,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         readingTime
     }
 
-    // const finalResult = transform ? await transform(result, {route}) : result
-
-    // const rawJs = `import { HOC_MDXWrapper } from 'nextra/setup-page'
-    //     import { pageMap } from '${slash(pageMapPath)}'
-    //     ${isAppFileFromNodeModules ? cssImports : ''}
-    //     ${finalResult}
-    //
-    //     export default HOC_MDXWrapper(
-    //       MDXLayout,
-    //       '${route}',
-    //       ${stringifiedPageOpts},pageMap,frontMatter,title},
-    //       typeof RemoteContent === 'undefined' ? useTOC : RemoteContent.useTOC
-    //     )`
-
-    // console.log("structurizedData", structurizedData)
-    // console.log("_frontMatter", _frontMatter)
-
-    // const mdxContent = await serialize(content, {
-    //     mdxOptions: {
-    //         remarkPlugins: [ // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-    //             // [
-    //             //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-    //             //     {
-    //             //         packageName: 'nextra/components',
-    //             //         tabNamesProp: 'items',
-    //             //         storageKey: 'selectedPackageManager'
-    //             //     }
-    //             // ] satisfies Pluggable,
-    //             isRemoteContent && remarkRemoveImports,
-    //             remarkFrontmatter, // parse and attach yaml node
-    //             // [remarkMdxFrontMatter] satisfies Pluggable,
-    //             remarkGfm as Pluggable,
-    //             remarkMath,
-    //             [
-    //                 remarkMdxDisableExplicitJsx,
-    //                 // Replace the <summary> and <details> with customized components
-    //                 {whiteList: ['details', 'summary']}
-    //             ] satisfies Pluggable,
-    //             remarkCustomHeadingId,
-    //             [remarkHeadings, {isRemoteContent}] satisfies Pluggable,
-    //             [remarkStructurize, flexsearch] satisfies Pluggable,
-    //             // staticImage && remarkStaticImage,
-    //             [remarkEmbedImages, {dirname: "./posts"}],
-    //             _readingTime && remarkReadingTime,
-    //             latex && remarkMath,
-    //             // isFileOutsideCWD && remarkReplaceImports,
-    //         ],
-    //         rehypePlugins: [
-    //             [
-    //                 // To render <details /> and <summary /> correctly
-    //                 rehypeRaw,
-    //                 // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
-    //                 {passThrough: ['mdxjsEsm', 'mdxJsxFlowElement']}
-    //             ],
-    //             latex && rehypeKatex,
-    //             // codeHighlight !== false &&
-    //             ([
-    //                 rehypePrettyCode,
-    //                 {
-    //                     ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-    //                     // ...rehypePrettyCodeOptions
-    //                 }
-    //             ] as any),
-    //             // attachMeta,
-    //             // [rehypeExtractTocContent, {isRemoteContent}]
-    //         ],
-    //     },
-    //     scope: frontMatter,
-    // });
-    const mdxContent = await myCompileMdx({content, frontMatter, isRemoteContent, flexsearch, readingTime, latex})
+    const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex })
     // console.log("mdxContent", mdxContent)
-    // const mdxContent = "Than"
     return {
         props: {
             frontMatter,

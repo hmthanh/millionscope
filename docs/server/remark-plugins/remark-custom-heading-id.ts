@@ -16,6 +16,7 @@ export const remarkCustomHeadingId: Plugin<[], Root> = () => ast => {
 
         if (!matched) return
         node.data ||= {}
+        // @ts-ignore
         const headingProps: HProperties = (node.data.hProperties ||= {})
         headingProps.id = matched[1]
 

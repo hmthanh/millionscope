@@ -53,6 +53,7 @@ export const remarkHeadings: Plugin<
                     }
 
                     node.data ||= {}
+                    // @ts-ignore
                     const headingProps: HProperties = (node.data.hProperties ||= {})
                     if (SKIP_FOR_PARENT_NAMES.has((parent as any).name)) {
                         delete headingProps.id

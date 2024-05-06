@@ -20,6 +20,7 @@
     "@shikijs/rehype": "^1.4.0",
     "@shikijs/twoslash": "^1.4.0",
     "@sindresorhus/slugify": "^2.2.1",
+    "@testing-library/react": "^15.0.6",
     "@theguild/remark-mermaid": "^0.0.6",
     "@theguild/remark-npm2yarn": "^0.3.0",
     "@types/babel__code-frame": "^7.0.6",
@@ -28,6 +29,7 @@
     "@types/mdx": "^2.0.13",
     "@types/title": "^3.4.3",
     "@vercel/og": "^0.6.2",
+    "@vitejs/plugin-react": "^4.2.1",
     "better-react-mathjax": "^2.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -38,6 +40,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-to-estree": "^3.1.0",
     "intersection-observer": "^0.12.2",
+    "jsdom": "^24.0.0",
     "katex": "^0.16.10",
     "match-sorter": "^6.3.4",
     "mime": "^4.0.3",
@@ -68,7 +71,6 @@
     "swr": "^2.2.5",
     "title": "^3.5.3",
     "unist-util-remove": "^4.0.0",
-    "vitest": "^1.6.0",
     "zod": "^3.23.6"
   },
   "devDependencies": {
@@ -80,7 +82,8 @@
     "postcss": "^8",
     "request": "^2.88.2",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^1.6.0"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

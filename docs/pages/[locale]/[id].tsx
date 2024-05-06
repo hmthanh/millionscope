@@ -1,7 +1,7 @@
 "use client"
 
 import path from 'node:path'
-import type { ProcessorOptions } from '@mdx-js/mdx'
+import type {ProcessorOptions} from '@mdx-js/mdx'
 import slash from 'slash'
 import type {
     FrontMatter,
@@ -14,43 +14,45 @@ import {
     ERROR_ROUTES,
     MARKDOWN_URL_EXTENSION_REGEX
 } from '@/server/constants'
-import { logger, truthy } from '@/server/utils'
+import {logger, truthy} from '@/server/utils'
 
-import { compileMdx } from "@/server/compile"
+import {compileMdx} from "@/server/compile"
 
 
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { ParsedUrlQuery } from "querystring";
+import {GetStaticPaths, GetStaticProps, NextPage} from "next";
+import {ParsedUrlQuery} from "querystring";
 import Link from "next/link";
-import { serialize } from "@mdx-remote/serialize";
-import { MDXRemote } from "@mdx-remote";
+import {serialize} from "@mdx-remote/serialize";
+import {MDXRemote} from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import { getAllMdx, getMdx } from "@/lib/mdx";
-import { MDXFrontMatter } from "@/components/postlist"
+import {getAllMdx, getMdx} from "@/lib/mdx";
+import {MDXFrontMatter} from "@/components/postlist"
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
-import { Page } from "@/components/page";
-import { components } from "@/components/mdx";
-import { PAGES_DIR } from "@/server/file-system";
-import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
-import { myCompileMdx } from "@/server/myCompileMdx";
-
+import {Page} from "@/components/page";
+import {components} from "@/components/mdx";
+import {PAGES_DIR} from "@/server/file-system";
+import {MARKDOWN_EXTENSION_REGEX} from "@/client/contants";
+import {myCompileMdx} from "@/server/myCompileMdx";
 
 interface ContextProps extends ParsedUrlQuery {
-    slug: string;
+    id: string;
 }
 
 interface PostProps {
+    id: string;
+    locale: string;
+    meta: string;
     frontMatter: MDXFrontMatter;
     mdx: any;
     previous: MDXFrontMatter | null;
     next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ frontMatter, mdx, previous, next }) => {
+const Post: NextPage<PostProps> = ({id, locale, meta, frontMatter, mdx, previous, next}) => {
     return (
         <>
             <Page {...frontMatter}>
-                <MDXRemote {...mdx} components={components} />
+                <MDXRemote {...mdx} components={components}/>
                 {/*{previous || next ? (*/}
                 {/*    <nav*/}
                 {/*        className={cx(*/}
@@ -145,12 +147,18 @@ type CompileMdxOptions = Pick<
     isPageMapImport?: boolean
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    const { id } = context.params as ContextProps;
+interface IBlogPostProps {
+    id: string; // Blog post name id
+    locale: string;// "en" | "vn" | "fr"
+    meta?: FrontMatter
+}
+
+export const getStaticProps = async (context: any) => {
+    const {id} = context.params as ContextProps;
     const mdxFiles = getAllMdx();
     const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === id);
     const post = mdxFiles[postIndex];
-    const { frontMatter, content } = post;
+    const {frontMatter, content} = post;
 
     // *************** Config ***************
     // const isRemoteContent = false
@@ -160,8 +168,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const useCachedCompiler = {}
 
     // const clonedRemarkLinkRewrite = remarkLinkRewrite.bind(null)
-
-
+    
     // const isFileOutsideCWD = !isPageImport && path.relative(CWD, filePath).startsWith('..')
     const isFileOutsideCWD = {}
     // *************** Config ***************
@@ -172,7 +179,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const theme = "nextra-theme-docs"
     const themeConfig = './theme.config.tsx'
     const defaultShowCopyCode = true
-    const search = { codeblocks: false }
+    const search = {codeblocks: false}
     const staticImage = true
     const _readingTime = true
     const latex = true
@@ -361,11 +368,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //     },
     //     scope: frontMatter,
     // });
-    const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex })
+    const mdxContent = await myCompileMdx({content, frontMatter, isRemoteContent, flexsearch, readingTime, latex})
     // console.log("mdxContent", mdxContent)
     // const mdxContent = "Than"
     return {
         props: {
+            id: id,
+            locale: locale,
+            meta: "",
             frontMatter,
             mdx: mdxContent,
             previous: mdxFiles[postIndex + 1]?.frontMatter || null,
