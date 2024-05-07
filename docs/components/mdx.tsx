@@ -315,7 +315,6 @@ export const components = {
         />
     ),
     // a: A,
-
     // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
     p: ({...props}: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
     tr: Tr,
