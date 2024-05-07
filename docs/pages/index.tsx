@@ -8,6 +8,8 @@ import {collectFiles, collectPageMap} from "@/server/page-map";
 import {getAllMdx} from "@/server/mdx";
 import {Page} from "@/components/page";
 import {PostList} from "@/components/postlist";
+import {Details} from '../theme/components/detail';
+import {Summary} from "@/theme/components/summary";
 
 
 export default function Home({tag, posts}: any) {
@@ -23,6 +25,15 @@ export default function Home({tag, posts}: any) {
             description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
         >
             <PostList posts={posts}/>
+            <Details>
+                <Summary>
+                    Hello
+                </Summary>
+            </Details>
+
+            {/*<Details children={<div>Hello111122</div>}>*/}
+            {/*</Details>*/}
+
         </Page>
     );
 }

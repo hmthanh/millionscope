@@ -52,7 +52,6 @@ export default function App({Component, pageProps}: AppProps) {
         <GlobalProvider>
             <Layout>
                 <Component {...pageProps} />
-                hello
             </Layout>
         </GlobalProvider>
     )

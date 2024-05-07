@@ -1,12 +1,87 @@
-import { useMDXComponents as originalUseMDXComponents } from '@mdx-js/react'
-import type { MDXComponents } from 'mdx/types'
-import Image, { type ImageProps } from 'next/image'
-import { ComponentProps, createContext, createElement, createRef, ReactElement, ReactNode, RefObject, useContext, useEffect, useRef, useState } from 'react'
-import { createPortal } from "react-dom";
-import Link from "next/link";
-import { Code, Pre, Table, Td, Th, Tr } from "@/client/components";
+import {useMDXComponents as originalUseMDXComponents} from '@mdx-js/react'
+import type {MDXComponents} from 'mdx/types'
+import Image, {type ImageProps} from 'next/image'
+import {ComponentProps, createContext, createElement, createRef, ReactElement, ReactNode, RefObject, useContext, useEffect, useRef, useState} from 'react'
+import {createPortal} from "react-dom";
+// import Link from "next/link";
+import {Code, Pre, Table, Td, Th, Tr} from "@/client/components";
 import cn from "clsx";
-// import {Anchor, AnchorProps} from "@/theme/components/anchor";
+
+import type {DocsThemeConfig} from "@/theme/constants"
+import {useConfig, useSetActiveAnchor, useThemeConfig} from '@/contexts'
+import {useIntersectionObserver, useSlugs} from '@/contexts/active-anchor'
+import {renderComponent} from '@/theme/utils'
+import {Anchor, NavLinks} from "@/theme/components";
+import {AnchorProps} from "@/theme/components/anchor";
+import {useMounted} from "@/client/hooks";
+
+
+// Anchor links
+const createHeading = (
+    Tag: `h${2 | 3 | 4 | 5 | 6}`,
+    context: { index: number }
+) =>
+    function Heading({
+                         children,
+                         id,
+                         className,
+                         ...props
+                     }: ComponentProps<'h2'>): ReactElement {
+        const setActiveAnchor = useSetActiveAnchor()
+        const slugs = useSlugs()
+        const observer = useIntersectionObserver()
+        const obRef = useRef<HTMLAnchorElement>(null)
+
+        useEffect(() => {
+            if (!id) return
+            const heading = obRef.current
+            if (!heading) return
+            slugs.set(heading, [id, (context.index += 1)])
+            observer?.observe(heading)
+
+            return () => {
+                observer?.disconnect()
+                slugs.delete(heading)
+                setActiveAnchor(f => {
+                    const ret = {...f}
+                    delete ret[id]
+                    return ret
+                })
+            }
+        }, [id, slugs, observer, setActiveAnchor])
+
+        return (
+            <Tag
+                className={
+                    // can be added by footnotes
+                    className === 'sr-only'
+                        ? '_sr-only'
+                        : cn(
+                            '_font-semibold _tracking-tight _text-slate-900 dark:_text-slate-100',
+                            {
+                                h2: '_mt-10 _border-b _pb-1 _text-3xl _border-neutral-200/70 contrast-more:_border-neutral-400 dark:_border-primary-100/10 contrast-more:dark:_border-neutral-400',
+                                h3: '_mt-8 _text-2xl',
+                                h4: '_mt-8 _text-xl',
+                                h5: '_mt-8 _text-lg',
+                                h6: '_mt-8 _text-base'
+                            }[Tag]
+                        )
+                }
+                {...props}
+            >
+                {children}
+                {id && (
+                    <a
+                        href={`#${id}`}
+                        id={id}
+                        className="subheading-anchor"
+                        aria-label="Permalink for this section"
+                        ref={obRef}
+                    />
+                )}
+            </Tag>
+        )
+    }
 
 export const HeadingContext = createContext<
     RefObject<HTMLHeadingElement | null>
@@ -134,24 +209,41 @@ function HeadingLink(
 //     )
 // }
 
-
 const EXTERNAL_HREF_REGEX = /https?:\/\//
 
-const A = ({ children, href = '', ...props }: ComponentProps<'a'>) => {
-    if (EXTERNAL_HREF_REGEX.test(href)) {
-        return (
-            <a href={href} target="_blank" rel="noreferrer" {...props}>
-                {children}
-                <span className="nx-sr-only nx-select-none"> (opens in a new tab)</span>
-            </a>
-        )
-    }
-    return (
-        <Link href={href} passHref legacyBehavior>
-            <a {...props}>{children}</a>
-        </Link>
-    )
-}
+export const Link = ({href = '', className, ...props}: AnchorProps) => (
+    <Anchor
+        href={href}
+        newWindow={EXTERNAL_HREF_REGEX.test(href)}
+        className={cn(
+            'nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]',
+            className
+        )}
+        {...props}
+    />
+)
+
+
+// const A = ({children, href = '', ...props}: ComponentProps<'a'>) => {
+//     if (EXTERNAL_HREF_REGEX.test(href)) {
+//         return (
+//             <a href={href} target="_blank" rel="noreferrer" {...props}>
+//                 {children}
+//                 <span className="nx-sr-only nx-select-none"> (opens in a new tab)</span>
+//             </a>
+//         )
+//     }
+//     return (
+//         <Link href={href}>
+//             <a {...props}>{children}</a>
+//         </Link>
+//     )
+// }
+// <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
+const A = ({href = '', ...props}) => (
+    <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
+)
+
 
 const DEFAULT_COMPONENTS = {
     img: (props: any) =>
@@ -162,7 +254,7 @@ const DEFAULT_COMPONENTS = {
 } satisfies MDXComponents
 // satisfies Components
 
-export const CustomLink = ({ href = '', className, ...props }: any) => (
+export const CustomLink = ({href = '', className, ...props}: any) => (
     <a
         href={href}
         // newWindow={EXTERNAL_HREF_REGEX.test(href)}
@@ -178,35 +270,36 @@ export const CustomLink = ({ href = '', className, ...props }: any) => (
 //     <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
 // )
 
+
 export const components = {
     Image,
     ...DEFAULT_COMPONENTS,
-    h1: ({ ...props }: ComponentProps<'h1'>) => (
+    h1: ({...props}: ComponentProps<'h1'>) => (
         <h1
             className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100"
             {...props}
         />
     ),
-    h2: ({ ...props }: ComponentProps<'h2'>) => <HeadingLink tag="h2" {...props} />,
-    h3: ({ ...props }: ComponentProps<'h3'>) => <HeadingLink tag="h3" {...props} />,
-    h4: ({ ...props }: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
-    h5: ({ ...props }: ComponentProps<'h5'>) => <HeadingLink tag="h5" {...props} />,
-    h6: ({ ...props }: ComponentProps<'h6'>) => <HeadingLink tag="h6" {...props} />,
-    ul: ({ ...props }: ComponentProps<'ul'>) => (
+    h2: ({...props}: ComponentProps<'h2'>) => <HeadingLink tag="h2" {...props} />,
+    h3: ({...props}: ComponentProps<'h3'>) => <HeadingLink tag="h3" {...props} />,
+    h4: ({...props}: ComponentProps<'h4'>) => <HeadingLink tag="h4" {...props} />,
+    h5: ({...props}: ComponentProps<'h5'>) => <HeadingLink tag="h5" {...props} />,
+    h6: ({...props}: ComponentProps<'h6'>) => <HeadingLink tag="h6" {...props} />,
+    ul: ({...props}: ComponentProps<'ul'>) => (
         <ul
             className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
             {...props}
         />
     ),
-    a: CustomLink,
-    ol: ({ ...props }: ComponentProps<'ol'>) => (
+    a: Link,
+    ol: ({...props}: ComponentProps<'ol'>) => (
         <ol
             className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
             {...props}
         />
     ),
-    li: ({ ...props }: ComponentProps<'li'>) => <li className="nx-my-2" {...props} />,
-    blockquote: ({ ...props }: ComponentProps<'blockquote'>) => (
+    li: ({...props}: ComponentProps<'li'>) => <li className="nx-my-2" {...props} />,
+    blockquote: ({...props}: ComponentProps<'blockquote'>) => (
         <blockquote
             className={cn(
                 'nx-mt-6 nx-border-gray-300 nx-italic nx-text-gray-700 dark:nx-border-gray-700 dark:nx-text-gray-400',
@@ -215,7 +308,7 @@ export const components = {
             {...props}
         />
     ),
-    hr: ({ ...props }: ComponentProps<'hr'>) => (
+    hr: ({...props}: ComponentProps<'hr'>) => (
         <hr
             className="nx-my-8 nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400"
             {...props}
@@ -224,11 +317,11 @@ export const components = {
     // a: A,
 
     // h1: ({children, ...props}: any) => (<h1 className={"nx-text-red-500"} {...props}>h1h1{children}</h1>),
-    p: ({ ...props }: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
+    p: ({...props}: ComponentProps<'p'>) => <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />,
     tr: Tr,
     th: Th,
     td: Td,
-    table: ({ ...props }) => <Table className="nx-not-prose nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0" {...props} />,
+    table: ({...props}) => <Table className="nx-not-prose nextra-scrollbar nx-mt-6 nx-p-0 first:nx-mt-0" {...props} />,
     // detail:
     // summary:
     pre: Pre,
