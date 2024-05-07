@@ -52,13 +52,13 @@ function cleanFileName(name: string): string {
     )
 }
 
-async function collectFiles({
-                                dir,
-                                route,
-                                imports = [],
-                                dynamicMetaImports = [],
-                                isFollowingSymlink
-                            }: CollectFilesOptions): Promise<{
+export async function collectFiles({
+                                       dir,
+                                       route,
+                                       imports = [],
+                                       dynamicMetaImports = [],
+                                       isFollowingSymlink
+                                   }: CollectFilesOptions): Promise<{
     pageMap: PageMapItem[]
     imports: Import[]
     dynamicMetaImports: DynamicImport[]

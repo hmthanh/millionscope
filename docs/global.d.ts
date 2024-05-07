@@ -18,6 +18,7 @@ declare global {
     var globalData: IPageMeta = {}
 }
 
+
 declare module '*.svg' {
     import type {ComponentPropsWithRef, ReactElement} from 'react'
     export const ReactComponent: (
