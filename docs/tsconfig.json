@@ -29,18 +29,6 @@
       "@theme-constants": [
         "./config/theme/constants.ts"
       ],
-      "@scopeui/components": [
-        "./scope-core/components"
-      ],
-      "@scopeui/mdx-plugins": [
-        "./scope-core/mdx-plugins"
-      ],
-      "@scopeui/config": [
-        "./scope-core/config"
-      ],
-      "@scopeui/*": [
-        "./scope-core/*"
-      ],
       "@mdx-remote": [
         "./mdx-remote"
       ],
