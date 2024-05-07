@@ -1,16 +1,16 @@
 import Link from "next/link";
 import cn from "clsx"
 import slugify from "@sindresorhus/slugify";
-import { Tag } from "./tag";
+import {Tag} from "./tag";
 
-import { parseISO, format } from "date-fns";
+import {parseISO, format} from "date-fns";
 
 export const formatDate = (date: string): string => {
-  if (date) {
-    return format(parseISO(date), "MMMM dd, yyyy");
-  } else {
-    return ''
-  }
+    if (date) {
+        return format(parseISO(date), "MMMM dd, yyyy");
+    } else {
+        return ''
+    }
 };
 
 
@@ -27,7 +27,7 @@ interface PostListProps {
     posts: Array<MDXFrontMatter>;
 }
 
-export const PostList: React.FC<PostListProps> = ({ posts }) => {
+export const PostList: React.FC<PostListProps> = ({posts}) => {
     return (
         <ul
             className={cn(

@@ -1,129 +1,129 @@
 import cn from 'clsx'
-import type { Heading } from '@/global/types'
-import { removeLinks } from '@/client/remove-links'
-import type { ReactElement } from 'react'
-import { useEffect, useRef } from 'react'
+import type {Heading} from '@/global/types'
+import {removeLinks} from '@/client/remove-links'
+import type {ReactElement} from 'react'
+import {useEffect, useRef} from 'react'
 import scrollIntoView from 'scroll-into-view-if-needed'
-import { useActiveAnchor, useThemeConfig } from '@/contexts'
-import { renderComponent } from '../utils'
-import { Anchor } from './anchor'
-import { BackToTop } from './back-to-top'
+import {useActiveAnchor, useThemeConfig} from '@/contexts'
+import {renderComponent} from '../utils'
+import {Anchor} from './anchor'
+import {BackToTop} from './back-to-top'
 
 export type TOCProps = {
-  toc: Heading[]
-  filePath: string
+    toc: Heading[]
+    filePath: string
 }
 
 const linkClassName = cn(
-  '_text-xs _font-medium _text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-100',
-  'contrast-more:_text-gray-800 contrast-more:dark:_text-gray-50'
+    'nx-text-xs nx-font-medium nx-text-gray-500 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100',
+    'contrast-more:nx-text-gray-800 contrast-more:dark:nx-text-gray-50'
 )
 
-export function TOC({ toc, filePath }: TOCProps): ReactElement {
-  const activeAnchor = useActiveAnchor()
-  const tocRef = useRef<HTMLUListElement>(null)
-  const themeConfig = useThemeConfig()
+export function TOC({toc, filePath}: TOCProps): ReactElement {
+    const activeAnchor = useActiveAnchor()
+    const tocRef = useRef<HTMLUListElement>(null)
+    const themeConfig = useThemeConfig()
 
-  const hasHeadings = toc.length > 0
-  const hasMetaInfo = Boolean(
-    themeConfig.feedback.content ||
-    themeConfig.editLink.component ||
-    themeConfig.toc.extraContent ||
-    themeConfig.toc.backToTop
-  )
+    const hasHeadings = toc.length > 0
+    const hasMetaInfo = Boolean(
+        themeConfig.feedback.content ||
+        themeConfig.editLink.component ||
+        themeConfig.toc.extraContent ||
+        themeConfig.toc.backToTop
+    )
 
-  const activeSlug = Object.entries(activeAnchor).find(
-    ([, { isActive }]) => isActive
-  )?.[0]
-  const activeIndex = toc.findIndex(({ id }) => id === activeSlug)
+    const activeSlug = Object.entries(activeAnchor).find(
+        ([, {isActive}]) => isActive
+    )?.[0]
+    const activeIndex = toc.findIndex(({id}) => id === activeSlug)
 
-  useEffect(() => {
-    if (!activeSlug) return
-    const anchor = tocRef.current?.querySelector(`a[href="#${activeSlug}"]`)
+    useEffect(() => {
+        if (!activeSlug) return
+        const anchor = tocRef.current?.querySelector(`a[href="#${activeSlug}"]`)
 
-    if (anchor) {
-      scrollIntoView(anchor, {
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-        scrollMode: 'always',
-        boundary: tocRef.current
-      })
-    }
-  }, [activeSlug])
+        if (anchor) {
+            scrollIntoView(anchor, {
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center',
+                scrollMode: 'always',
+                boundary: tocRef.current
+            })
+        }
+    }, [activeSlug])
 
-  return (
-    <div
-      className={cn(
-        'nextra-scrollbar _sticky _top-16 _overflow-y-auto _pr-4 _pt-6 _text-sm [hyphens:auto]',
-        '_max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] ltr:_-mr-4 rtl:_-ml-4',
-        '_z-[-1]' // for firefox https://github.com/shuding/nextra/issues/2824
-      )}
-    >
-      {hasHeadings && (
-        <>
-          <p className="_mb-4 _font-semibold _tracking-tight">
-            {renderComponent(themeConfig.toc.title)}
-          </p>
-          <ul ref={tocRef}>
-            {toc.map(({ id, value, depth }) => (
-              <li className="_my-2 _scroll-my-6 _scroll-py-6" key={id}>
-                <a
-                  href={`#${id}`}
-                  className={cn(
-                    {
-                      2: '_font-semibold',
-                      3: 'ltr:_pl-4 rtl:_pr-4',
-                      4: 'ltr:_pl-8 rtl:_pr-8',
-                      5: 'ltr:_pl-12 rtl:_pr-12',
-                      6: 'ltr:_pl-16 rtl:_pr-16'
-                    }[depth],
-                    '_inline-block _transition-colors _subpixel-antialiased',
-                    activeAnchor[id]?.isActive
-                      ? '_text-primary-600 contrast-more:!_text-primary-600'
-                      : '_text-gray-500 hover:_text-gray-900 dark:_text-gray-400 dark:hover:_text-gray-300',
-                    'contrast-more:_text-gray-900 contrast-more:_underline contrast-more:dark:_text-gray-50 _w-full _break-words'
-                  )}
-                >
-                  {removeLinks(value)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {hasMetaInfo && (
+    return (
         <div
-          className={cn(
-            hasHeadings && 'nextra-toc-footer _mt-8 _pt-8',
-            '_sticky _bottom-0 _flex _flex-col _items-start _gap-2 _pb-8'
-          )}
+            className={cn(
+                'nextra-scrollbar nx-sticky nx-top-16 nx-overflow-y-auto nx-pr-4 nx-pt-6 nx-text-sm [hyphens:auto]',
+                'nx-max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] ltr:nx--mr-4 rtl:nx--ml-4',
+                'nx-z-[-1]' // for firefox https://github.com/shuding/nextra/issues/2824
+            )}
         >
-          {themeConfig.feedback.content ? (
-            <Anchor
-              className={linkClassName}
-              href={themeConfig.feedback.useLink()}
-              newWindow
-            >
-              {renderComponent(themeConfig.feedback.content)}
-            </Anchor>
-          ) : null}
+            {hasHeadings && (
+                <>
+                    <p className="nx-mb-4 nx-font-semibold nx-tracking-tight">
+                        {renderComponent(themeConfig.toc.title)}
+                    </p>
+                    <ul ref={tocRef}>
+                        {toc.map(({id, value, depth}) => (
+                            <li className="nx-my-2 nx-scroll-my-6 nx-scroll-py-6" key={id}>
+                                <a
+                                    href={`#${id}`}
+                                    className={cn(
+                                        {
+                                            2: 'nx-font-semibold',
+                                            3: 'ltr:nx-pl-4 rtl:nx-pr-4',
+                                            4: 'ltr:nx-pl-8 rtl:nx-pr-8',
+                                            5: 'ltr:nx-pl-12 rtl:nx-pr-12',
+                                            6: 'ltr:nx-pl-16 rtl:nx-pr-16'
+                                        }[depth],
+                                        'nx-inline-block nx-transition-colors nx-subpixel-antialiased',
+                                        activeAnchor[id]?.isActive
+                                            ? 'nx-text-primary-600 contrast-more:!nx-text-primary-600'
+                                            : 'nx-text-gray-500 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-300',
+                                        'contrast-more:nx-text-gray-900 contrast-more:nx-underline contrast-more:dark:nx-text-gray-50 nx-w-full nx-break-words'
+                                    )}
+                                >
+                                    {removeLinks(value)}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
 
-          {renderComponent(themeConfig.editLink.component, {
-            filePath,
-            className: linkClassName,
-            children: renderComponent(themeConfig.editLink.content)
-          })}
+            {hasMetaInfo && (
+                <div
+                    className={cn(
+                        hasHeadings && 'nextra-toc-footer nx-mt-8 nx-pt-8',
+                        'nx-sticky nx-bottom-0 nx-flex nx-flex-col nx-items-start nx-gap-2 nx-pb-8'
+                    )}
+                >
+                    {themeConfig.feedback.content ? (
+                        <Anchor
+                            className={linkClassName}
+                            href={themeConfig.feedback.useLink()}
+                            newWindow
+                        >
+                            {renderComponent(themeConfig.feedback.content)}
+                        </Anchor>
+                    ) : null}
 
-          {renderComponent(themeConfig.toc.extraContent)}
+                    {renderComponent(themeConfig.editLink.component, {
+                        filePath,
+                        className: linkClassName,
+                        children: renderComponent(themeConfig.editLink.content)
+                    })}
 
-          {themeConfig.toc.backToTop && (
-            // <BackToTop className={linkClassName} hidden={activeIndex < 2} />
-            <BackToTop className={linkClassName} />
-          )}
+                    {renderComponent(themeConfig.toc.extraContent)}
+
+                    {themeConfig.toc.backToTop && (
+                        // <BackToTop className={linkClassName} hidden={activeIndex < 2} />
+                        <BackToTop className={linkClassName}/>
+                    )}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  )
+    )
 }
