@@ -1,17 +1,15 @@
-import cn from "clsx"
-import { XIcon } from "@/client/icons"
-import type { ReactElement } from "react"
-import { useConfig } from "@/contexts"
-import { renderComponent } from "@/utils"
+import cn from "clsx";
+import { XIcon } from "@/client/icons";
+import type { ReactElement } from "react";
+import { useThemeConfig } from "@/contexts";
+import { renderComponent } from "@/theme/utils";
 
 export function Banner(): ReactElement | null {
-  const { banner } = useConfig()
-  if (!banner.text) {
-    return null
+  const { banner } = useThemeConfig();
+  if (!banner.content) {
+    return null;
   }
-  const hideBannerScript = `try{if(localStorage.getItem(${JSON.stringify(
-    banner.key
-  )})==='0'){document.body.classList.add('nextra-banner-hidden')}}catch(e){}`
+  const hideBannerScript = `try{if(localStorage.getItem(${JSON.stringify(banner.key)})==='0'){document.body.classList.add('nextra-banner-hidden')}}catch(e){}`;
 
   return (
     <>
@@ -21,12 +19,10 @@ export function Banner(): ReactElement | null {
           "nextra-banner-container nx-sticky nx-top-0 nx-z-20 nx-flex nx-items-center md:nx-relative",
           "nx-h-[var(--nextra-banner-height)] [body.nextra-banner-hidden_&]:nx-hidden",
           "nx-text-slate-50 dark:nx-text-white nx-bg-neutral-900 dark:nx-bg-[linear-gradient(1deg,#383838,#212121)]",
-          "nx-px-2 ltr:nx-pl-10 rtl:nx-pr-10 print:nx-hidden"
+          "nx-px-2 ltr:nx-pl-10 rtl:nx-pr-10 print:nx-hidden",
         )}
       >
-        <div className="nx-w-full nx-truncate nx-px-4 nx-text-center nx-font-medium nx-text-sm">
-          {renderComponent(banner.text)}
-        </div>
+        <div className="nx-w-full nx-truncate nx-px-4 nx-text-center nx-font-medium nx-text-sm">{renderComponent(banner.content)}</div>
         {banner.dismissible && (
           <button
             type="button"
@@ -34,11 +30,11 @@ export function Banner(): ReactElement | null {
             className="nx-w-8 nx-h-8 nx-opacity-80 hover:nx-opacity-100"
             onClick={() => {
               try {
-                localStorage.setItem(banner.key, "0")
+                localStorage.setItem(banner.key, "0");
               } catch {
                 /* ignore */
               }
-              document.body.classList.add("nextra-banner-hidden")
+              document.body.classList.add("nextra-banner-hidden");
             }}
           >
             <XIcon className="nx-mx-auto nx-h-4 nx-w-4" />
@@ -46,5 +42,5 @@ export function Banner(): ReactElement | null {
         )}
       </div>
     </>
-  )
+  );
 }

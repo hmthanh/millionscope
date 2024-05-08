@@ -1,8 +1,8 @@
 import type { Config } from "tailwindcss";
-const colors = require("tailwindcss/colors")
+
+const colors = require("tailwindcss/colors");
 
 const makePrimaryColor = (l: number, opacityValue: number): string => {
-
   // const rs = ({ opacityValue }: number): string => {
   //   const cl:string = (
   //     `hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) ${l}%` +
@@ -10,45 +10,41 @@ const makePrimaryColor = (l: number, opacityValue: number): string => {
   //   )
   //   return cl
   // }
-  let opacity = opacityValue ? ` / ${opacityValue}` : ""
-  return `hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) ${l}% ${opacity})`
-}
+  let opacity = opacityValue ? ` / ${opacityValue}` : "";
+  return `hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) ${l}% ${opacity})`;
+};
 
 const config: Config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./styles/**/*.{js,ts,jsx,tsx,mdx}",
-    "./scope-global/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  prefix: 'nx-',
+  content: ["./pages/**/*.{js,ts,jsx,tsx,mdx}", "./banner.tsx/**/*.{js,ts,jsx,tsx,mdx}", "./styles/**/*.{js,ts,jsx,tsx,mdx}", "./scope-global/**/*.{js,ts,jsx,tsx,mdx}"],
+  prefix: "nx-",
   theme: {
     screens: {
-      sm: '640px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1280px',
-      '2xl': '1536px'
-    }, fontSize: {
-      xs: '.75rem',
-      sm: '.875rem',
-      base: '1rem',
-      lg: '1.125rem',
-      xl: '1.25rem',
-      '2xl': '1.5rem',
-      '3xl': '1.875rem',
-      '4xl': '2.25rem',
-      '5xl': '3rem',
-      '6xl': '4rem'
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
+    fontSize: {
+      xs: ".75rem",
+      sm: ".875rem",
+      base: "1rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem",
+      "6xl": "4rem",
     },
     letterSpacing: {
-      tight: '-0.015em'
+      tight: "-0.015em",
     },
     colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: '#000',
-      white: '#fff',
+      transparent: "transparent",
+      current: "currentColor",
+      black: "#000",
+      white: "#fff",
       gray: colors.gray,
       slate: colors.slate,
       neutral: colors.neutral,
@@ -75,11 +71,11 @@ const config: Config = {
     },
     extend: {
       colors: {
-        dark: '#111'
-      }
+        dark: "#111",
+      },
     },
   },
   plugins: [],
-  darkMode: ['class', 'html[class~="dark"]']
+  darkMode: ["class", 'html[class~="dark"]'],
 };
 export default config;

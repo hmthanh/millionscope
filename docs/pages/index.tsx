@@ -1,13 +1,14 @@
 import Image from "next/image";
 import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import { useEffect } from "react";
-import { NextraInternalGlobal, PageMapItem } from "@/global/types";
+import { NextraGlobalData, NextraInternalGlobal, PageMapItem } from "@/global/types";
 import { DEFAULT_LOCALE, NEXTRA_INTERNAL } from "@/global/constants";
 import path from "path";
 import { collectFiles } from "@/server/page-map";
 import { getAllMdx } from "@/server/mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
+import { undefined } from "zod";
 
 export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
   useEffect(() => {
@@ -23,6 +24,8 @@ export default function Home({ tag, posts, locale }: { tag: string; posts: Array
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  // Layout: undefined, context: undefined,
+  const globalData: NextraGlobalData = { context: {}, pageMap: [], route: "", themeConfig: {} };
   // const cwd = process.cwd();
   // const filePath = path.join(cwd, "posts/hello-world.mdx")
   // console.log("filePath", filePath)
@@ -50,6 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const mdxFiles = getAllMdx({ locale: "vn" }).map((post) => post["frontMatter"]);
   return {
     props: {
+      globalData: {},
       posts: mdxFiles,
       locale: "vn",
     },

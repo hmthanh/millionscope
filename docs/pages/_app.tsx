@@ -8,11 +8,12 @@ import Layout from "@/components/layout/layout";
 import "@/styles/new.css";
 import { useEffect } from "react";
 import { GlobalProvider } from "@/global/context";
-import { NextraInternalGlobal } from "@/global/types";
+import { Heading, NextraInternalGlobal, UseTOC } from "@/global/types";
 import { NEXTRA_INTERNAL } from "@/global/constants";
 import { createLogger } from "vite";
 import { useThemeConfig } from "@/contexts";
 import theme from "tailwindcss/defaultTheme";
+import { MDXWrapper } from "@/components/layout/MDXWrapper";
 // import {useRouter} from "next/router";
 
 type IPageMeta = {
@@ -37,13 +38,17 @@ export default function App({ Component, pageProps }: AppProps) {
   // const langSlug = languages.includes(slug) && slug
   // const language = query.lang || langSlug || defaultLanguage
   const pageOpts = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
+  // (props: Record<string, any>) => Heading[];
+  const useToc: UseTOC = (props) => [];
   // const pageProps = {};
 
   return (
-    <GlobalProvider>
-      <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+    // <GlobalProvider>
+    <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+      <MDXWrapper useTOC={useToc}>
         <Component {...pageProps} />
-      </Layout>
-    </GlobalProvider>
+      </MDXWrapper>
+    </Layout>
+    // </GlobalProvider>
   );
 }

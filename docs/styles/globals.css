@@ -11,7 +11,7 @@
 @import '../styles/cards.css';
 
 /* @tailwind base;
-@tailwind components;
+@tailwind banner.tsx;
 @tailwind utilities; */
 
 
@@ -60,5 +60,5 @@ h1 {
 
 html {
   font-family: Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif, Apple Color Emoji,
-    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }

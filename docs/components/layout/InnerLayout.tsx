@@ -5,6 +5,7 @@ import { MDXProvider } from "@/client/mdx";
 import { renderComponent } from "@/theme/utils";
 import { ThemeProvider } from "next-themes";
 import { components } from "@/components/mdx";
+import { Banner, Head } from "@/theme/components";
 
 export function InnerLayout({ children }: { children: ReactNode }): ReactElement {
   const themeConfig = useThemeConfig();
@@ -16,9 +17,9 @@ export function InnerLayout({ children }: { children: ReactNode }): ReactElement
 
   const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
-  // const components = getComponents({
+  // const banner.tsx = getComponents({
   //   isRawLayout: themeContext.layout === "raw",
-  //   components: themeConfig.components,
+  //   banner.tsx: themeConfig.banner.tsx,
   // });
 
   return (

@@ -1,5 +1,5 @@
-import cn from "clsx"
-import type { ReactElement, ReactNode } from "react"
+import cn from "clsx";
+import type { ReactElement, ReactNode } from "react";
 
 export function Bleed({ full, children }: { full: boolean; children: ReactNode }): ReactElement {
   return (
@@ -10,10 +10,10 @@ export function Bleed({ full, children }: { full: boolean; children: ReactNode }
           // 'md:mx:[calc(-50vw+50%+8rem)',
           "ltr:xl:nx-ml-[calc(50%-50vw+16rem)] ltr:xl:nx-mr-[calc(50%-50vw)]",
           "rtl:xl:nx-ml-[calc(50%-50vw)] rtl:xl:nx-mr-[calc(50%-50vw+16rem)]",
-        ]
+        ],
       )}
     >
       {children}
     </div>
-  )
+  );
 }
