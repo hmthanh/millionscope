@@ -5,6 +5,7 @@ import slugify from "@sindresorhus/slugify";
 import { MDXFrontMatter } from "@/components/postlist";
 import { Page } from "@/components/page";
 import { PostList } from "@/components/postlist";
+import { locale } from "dayjs";
 
 interface ContextProps extends ParsedUrlQuery {
   tag: string;
@@ -13,20 +14,21 @@ interface ContextProps extends ParsedUrlQuery {
 interface PostsProps {
   tag: string;
   posts: Array<MDXFrontMatter>;
+  locale: string;
 }
 
-const Posts: NextPage<PostsProps> = ({ tag, posts }) => {
+const Posts: NextPage<PostsProps> = ({ tag, posts, locale }) => {
   return (
     <>
       <Page title={`Posts tagged: "${tag}"`}>
-        <PostList posts={posts} />
+        <PostList posts={posts} locale={locale} />
       </Page>
     </>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  console.log("getStaticPaths", getStaticPaths)
+  console.log("getStaticPaths", getStaticPaths);
   // const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
   // const tags = Array.from(new Set(mdxFiles.map((file) => file.tags)))
   // console.log("\n tags", tags,"tags \n")
@@ -44,21 +46,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // };
   return {
     paths: [],
-    fallback: false
-  }
+    fallback: false,
+  };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  console.log("getStaticProps", getStaticProps)
+  console.log("getStaticProps", getStaticProps);
+  const locale = "vn";
 
   const { tag } = context.params as ContextProps;
-  const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
+  const mdxFiles = getAllMdx({ locale }).map((post) => post["frontMatter"]);
   return {
     props: {
       tag,
       posts: mdxFiles.filter((file) => {
         return file.tags?.includes(tag);
       }),
+      locale,
     },
   };
 };

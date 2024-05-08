@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { NextraInternalGlobal, PageMapItem } from "@/global/types";
 import { DEFAULT_LOCALE, NEXTRA_INTERNAL } from "@/global/constants";
 import path from "path";
-import { collectFiles, collectPageMap } from "@/server/page-map";
+import { collectFiles } from "@/server/page-map";
 import { getAllMdx } from "@/server/mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
@@ -20,13 +20,6 @@ export default function Home({ tag, posts, locale }: { tag: string; posts: Array
   return (
     <Page title="Posts" description="Lorem ipsum dolor sit amet consectetur adipisicing elit.">
       <PostList posts={posts} locale={locale} />
-      {/*<Details>*/}
-      {/*  <Summary>Hello</Summary>*/}
-      {/*</Details>*/}
-      {/*<HOC_MDXWrapper>Hello</HOC_MDXWrapper>*/}
-
-      {/*<Details children={<div>Hello111122</div>}>*/}
-      {/*</Details>*/}
     </Page>
   );
 }
@@ -50,13 +43,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // const transformPageMap = NextraConfig['transformPageMap'];
   const locale = DEFAULT_LOCALE;
   // const res = await collectPageMap({dir: blogDir, route: '/', locale: locale})
-  const files = await collectFiles({
-    dir: blogDir,
-    route: "/",
-    isFollowingSymlink: false,
-  });
+  // const files = await collectFiles({
+  //   dir: blogDir,
+  //   route: "/",
+  //   isFollowingSymlink: false,
+  // });
   // console.log("files", files)
-  const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
+  const mdxFiles = getAllMdx({ locale: "vn" }).map((post) => post["frontMatter"]);
   return {
     props: {
       posts: mdxFiles,

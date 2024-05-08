@@ -47,16 +47,16 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   return (
     <>
       <Page {...frontMatter}>
-        {/*<NextraLayout locale={locale} route={route} pageOpts={pageOpts} useToc={useToc}>*/}
-        <MDXRemote {...mdx} components={components} />
-        {/*</NextraLayout>*/}
+        <NextraLayout locale={locale} route={route} pageOpts={pageOpts} useToc={useToc}>
+          <MDXRemote {...mdx} components={components} />
+        </NextraLayout>
       </Page>
     </>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const mdxFiles = getAllMdx();
+  const mdxFiles = getAllMdx({ locale: "vn" });
   return {
     paths: mdxFiles.map((file) => ({
       params: {
@@ -88,11 +88,12 @@ interface IBlogPostProps {
 
 export const getStaticProps = async (context: any) => {
   const { id } = context.params as ContextProps;
-  const mdxFiles = getAllMdx();
+
   const postDir = path.resolve(CWD, DEFAULT_DIR);
-  const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: postDir, route: "/", locale: "en" });
-  console.log("pageMap", pageMap);
-  // pageMap.map((children))
+  const { pageMap, imports } = await getAllMdxCustom({ dir: postDir, route: id, locale: "en" });
+  // console.log("pageMap", pageMap);
+  const mdxFiles = getAllMdx({ locale: "vn" });
+  // console.log("imports", imports);
 
   const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === id);
   const post = mdxFiles[postIndex];
