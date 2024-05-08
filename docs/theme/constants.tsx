@@ -49,7 +49,7 @@
 //         icon: (
 //             <>
 //                 <DiscordIcon />
-//                 <span className="_sr-only">Discord</span>
+//                 <span className="nx-sr-only">Discord</span>
 //             </>
 //         )
 //     },
@@ -132,8 +132,8 @@
 //     i18n: [],
 //     logo: (
 //         <>
-//             <span className="_font-extrabold">Nextra</span>
-//             <span className="_ml-2 max-md:_hidden _font-normal _text-gray-600">
+//             <span className="nx-font-extrabold">Nextra</span>
+//             <span className="nx-ml-2 max-md:nx-hidden nx-font-normal nx-text-gray-600">
 //                 The Next Docs Builder
 //             </span>
 //         </>
@@ -155,14 +155,14 @@
 //         icon: (
 //             <>
 //                 <GitHubIcon />
-//                 <span className="_sr-only">GitHub</span>
+//                 <span className="nx-sr-only">GitHub</span>
 //             </>
 //         )
 //     },
 //     search: {
 //         component: Flexsearch,
 //         emptyResult: (
-//             <span className="_block _select-none _p-8 _text-center _text-sm _text-gray-400">
+//             <span className="nx-block nx-select-none nx-p-8 nx-text-center nx-text-sm nx-text-gray-400">
 //                 No results found.
 //             </span>
 //         ),
@@ -204,7 +204,7 @@
 //     }
 // }
 
-// export const DEEP_OBJECT_KEYS = Object.entries(DEFAULT_THEME)
+// export const DEEPnx-OBJECTnx-KEYS = Object.entries(DEFAULT_THEME)
 //     .map(([key, value]) => {
 //         const isObject =
 //             value &&
@@ -261,7 +261,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     icon: (
       <>
         <DiscordIcon />
-        <span className="_sr-only">Discord</span>
+        <span className="nx-sr-only">Discord</span>
       </>
     ),
   },
@@ -344,8 +344,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   i18n: [],
   logo: (
     <>
-      <span className="_font-extrabold">Nextra</span>
-      <span className="_ml-2 max-md:_hidden _font-normal _text-gray-600">The Next Docs Builder</span>
+      <span className="nx-font-extrabold">Nextra</span>
+      <span className="nx-ml-2 max-md:nx-hidden nx-font-normal nx-text-gray-600">The Next Docs Builder</span>
     </>
   ),
   logoLink: true,
@@ -365,13 +365,13 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     icon: (
       <>
         <GitHubIcon />
-        <span className="_sr-only">GitHub</span>
+        <span className="nx-sr-only">GitHub</span>
       </>
     ),
   },
   search: {
     component: Flexsearch,
-    emptyResult: <span className="_block _select-none _p-8 _text-center _text-sm _text-gray-400">No results found.</span>,
+    emptyResult: <span className="nx-block nx-select-none nx-p-8 nx-text-center nx-text-sm nx-text-gray-400">No results found.</span>,
     error: "Failed to load search index.",
     loading: function useLoading() {
       const { locale, defaultLocale = DEFAULT_LOCALE } = useRouter();

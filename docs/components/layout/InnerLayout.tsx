@@ -35,12 +35,12 @@ export function InnerLayout({ children }: { children: ReactNode }): ReactElement
             __html: `document.documentElement.setAttribute('dir','${dir}')`,
           }}
         />
-        {/*<Head />*/}
-        {/*<Banner />*/}
-        {themeContext.navbar &&
-          renderComponent(themeConfig.navbar.component, {
-            items: topLevelNavbarItems,
-          })}
+        <Head />
+        <Banner />
+        {/*{themeContext.navbar &&*/}
+        {/*  renderComponent(themeConfig.navbar.component, {*/}
+        {/*    items: topLevelNavbarItems,*/}
+        {/*  })}*/}
         <ActiveAnchorProvider>
           <MDXProvider disableParentContext components={components}>
             {children}

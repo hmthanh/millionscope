@@ -15,7 +15,15 @@ const makePrimaryColor = (l: number, opacityValue: number): string => {
 };
 
 const config: Config = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx,mdx}", "./banner.tsx/**/*.{js,ts,jsx,tsx,mdx}", "./styles/**/*.{js,ts,jsx,tsx,mdx}", "./scope-global/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./client/**/*.{js,ts,jsx,tsx,mdx}",
+    "./server/**/*.{js,ts,jsx,tsx,mdx}",
+    "./global/**/*.{js,ts,jsx,tsx,mdx}",
+    "./theme/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./styles/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   prefix: "nx-",
   theme: {
     screens: {
