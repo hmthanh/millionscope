@@ -7,21 +7,19 @@ import path from "path";
 import { collectFiles, collectPageMap } from "@/server/page-map";
 import { getAllMdx } from "@/server/mdx";
 import { Page } from "@/components/page";
-import { PostList } from "@/components/postlist";
-import { Details } from "../theme/components/detail";
-import { Summary } from "@/theme/components/summary";
-import { HOC_MDXWrapper } from "@/components/layout/HOC_MDXWrapper";
+import { MDXFrontMatter, PostList } from "@/components/postlist";
+// import { HOC_MDXWrapper } from "@/comsponents/layout/HOC_MDXWrapper";
 
-export default function Home({ tag, posts }: any) {
+export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
   // console.log("tag", tag)${inter.className}
   useEffect(() => {
     const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
-    console.log("__nextra_internal__xxx", __nextra_internal__);
+    console.log("__nextra_internal_", __nextra_internal__);
   }, []);
 
   return (
     <Page title="Posts" description="Lorem ipsum dolor sit amet consectetur adipisicing elit.">
-      <PostList posts={posts} />
+      <PostList posts={posts} locale={locale} />
       {/*<Details>*/}
       {/*  <Summary>Hello</Summary>*/}
       {/*</Details>*/}
@@ -62,6 +60,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       posts: mdxFiles,
+      locale: "vn",
     },
   };
 
