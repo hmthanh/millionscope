@@ -8,10 +8,8 @@ import { collectFiles } from "@/server/page-map";
 import { getAllMdx } from "@/server/mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
-// import { HOC_MDXWrapper } from "@/comsponents/layout/HOC_MDXWrapper";
 
 export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
-  // console.log("tag", tag)${inter.className}
   useEffect(() => {
     const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
     console.log("__nextra_internal_", __nextra_internal__);
