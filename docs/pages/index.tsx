@@ -11,10 +11,10 @@ import { MDXFrontMatter, PostList } from "@/components/postlist";
 import { undefined } from "zod";
 
 export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
-  useEffect(() => {
-    const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
-    console.log("__nextra_internal_", __nextra_internal__);
-  }, []);
+  // useEffect(() => {
+  //   const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
+  //   console.log("__nextra_internal_", __nextra_internal__);
+  // }, []);
 
   return (
     <Page title="Posts" description="Lorem ipsum dolor sit amet consectetur adipisicing elit.">

@@ -3,7 +3,7 @@
 import path from "node:path";
 import type { ProcessorOptions } from "@mdx-js/mdx";
 import slash from "slash";
-import type { FrontMatter, LoaderOptions, NextraInternalGlobal, PageOpts } from "@/global/types";
+import { FrontMatter, LoaderOptions, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
 import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
 import { logger, truthy } from "@/server/utils";
 
@@ -24,7 +24,7 @@ import { PAGES_DIR } from "@/server/file-system";
 import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
 import { myCompileMdx } from "@/server/myCompileMdx";
 import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
-import NextraLayout from "@/components/layout/NextraLayout";
+import { useThemeConfig } from "@/contexts";
 
 interface ContextProps extends ParsedUrlQuery {
   id: string;
@@ -34,7 +34,8 @@ interface PostProps {
   id: string;
   locale: string;
   route: "";
-  pageOpts: {};
+  pageOpts: PageOpts<any>;
+  pageProps: any;
   useToc: {};
   meta: string;
   frontMatter: MDXFrontMatter;
@@ -43,15 +44,29 @@ interface PostProps {
   next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, frontMatter, mdx, previous, next }) => {
+const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, frontMatter, mdx, previous, next, pageProps }) => {
+  // const themeConfig = useThemeConfig();s
+  // console.log("pageProps", pageProps)
+
+  // const router = useRouter()
+  // const {asPath, query} = router
+
+  // const slug = asPath.split('/')[1]
+  // const langSlug = languages.includes(slug) && slug
+  // const language = query.lang || langSlug || defaultLanguage
+  // const pageOpts = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
+  // (props: Record<string, any>) => Heading[];
+  // const useToc: UseTOC = (props) => [];
+  // const pageProps = {};
+
   return (
-    <>
-      <Page {...frontMatter}>
-        <NextraLayout locale={locale} route={route} pageOpts={pageOpts} useToc={useToc}>
-          <MDXRemote {...mdx} components={components} />
-        </NextraLayout>
-      </Page>
-    </>
+    // <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+    <Page {...frontMatter}>
+      {/*<NextraLayout locale={locale} route={route} pageOpts={pageOpts} useToc={useToc}>*/}
+      <MDXRemote {...mdx} components={components} />
+      {/*</NextraLayout>*/}
+    </Page>
+    // </Layout>
   );
 };
 
@@ -188,10 +203,10 @@ export const getStaticProps = async (context: any) => {
       mdx: mdxContent,
       previous: mdxFiles[postIndex + 1]?.frontMatter || null,
       next: mdxFiles[postIndex - 1]?.frontMatter || null,
-      // id: id,
-      // locale: locale,
-      // // route: route,
-      // // pageOpts,
+      id: id,
+      locale: locale,
+      route: route,
+      pageOpts,
       // // useToc,
       // meta: "",
       // frontMatter,

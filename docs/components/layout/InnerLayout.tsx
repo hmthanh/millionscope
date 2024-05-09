@@ -37,10 +37,10 @@ export function InnerLayout({ children }: { children: ReactNode }): ReactElement
         />
         <Head />
         <Banner />
-        {/*{themeContext.navbar &&*/}
-        {/*  renderComponent(themeConfig.navbar.component, {*/}
-        {/*    items: topLevelNavbarItems,*/}
-        {/*  })}*/}
+        {themeContext.navbar &&
+          renderComponent(themeConfig.navbar.component, {
+            items: topLevelNavbarItems,
+          })}
         <ActiveAnchorProvider>
           <MDXProvider disableParentContext components={components}>
             {children}

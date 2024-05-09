@@ -29,7 +29,7 @@ type IPageMeta = {
 
 export default function App({ Component, pageProps }: AppProps) {
   const themeConfig = useThemeConfig();
-  // console.log("pageProps", pageProps)
+  console.log("pageProps", pageProps);
 
   // const router = useRouter()
   // const {asPath, query} = router
