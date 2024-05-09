@@ -24,11 +24,11 @@ export function TOC({ toc, filePath }: TOCProps): ReactElement {
   const tocRef = useRef<HTMLUListElement>(null);
   const themeConfig = useThemeConfig();
 
-  const hasHeadings = toc.length > 0;
+  const hasHeadings = (toc ? toc.length : 0) > 0;
   const hasMetaInfo = Boolean(themeConfig.feedback.content || themeConfig.editLink.component || themeConfig.toc.extraContent || themeConfig.toc.backToTop);
 
   const activeSlug = Object.entries(activeAnchor).find(([, { isActive }]) => isActive)?.[0];
-  const activeIndex = toc.findIndex(({ id }) => id === activeSlug);
+  const activeIndex = (toc ? toc.findIndex(({ id }) => id === activeSlug) : -1);
 
   useEffect(() => {
     if (!activeSlug) return;

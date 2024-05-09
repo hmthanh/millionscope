@@ -1,8 +1,8 @@
-import cn from "clsx"
-import type { ComponentProps, ReactNode } from "react"
-import { forwardRef } from "react"
+import cn from "clsx";
+import type { ComponentProps, ReactNode } from "react";
+import { forwardRef } from "react";
 
-type InputProps = ComponentProps<"input"> & { suffix?: ReactNode }
+type InputProps = ComponentProps<"input"> & { suffix?: ReactNode };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ className, suffix, ...props }, forwardedRef) => (
   <div className="nx-relative nx-flex nx-items-center nx-text-gray-900 contrast-more:nx-text-gray-800 dark:nx-text-gray-300 contrast-more:dark:nx-text-gray-300">
@@ -16,12 +16,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ className, suff
         "nx-bg-black/[.05] dark:nx-bg-gray-50/10",
         "focus:nx-bg-white dark:focus:nx-bg-dark",
         "placeholder:nx-text-gray-500 dark:placeholder:nx-text-gray-400",
-        "contrast-more:nx-border contrast-more:nx-border-current"
+        "contrast-more:nx-border contrast-more:nx-border-current",
       )}
       {...props}
     />
     {suffix}
   </div>
-))
+));
 
-Input.displayName = "Input"
+Input.displayName = "Input";

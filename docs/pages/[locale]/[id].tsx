@@ -60,13 +60,9 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   // const pageProps = {};
 
   return (
-    // <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
     <Page {...frontMatter}>
-      {/*<NextraLayout locale={locale} route={route} pageOpts={pageOpts} useToc={useToc}>*/}
       <MDXRemote {...mdx} components={components} />
-      {/*</NextraLayout>*/}
     </Page>
-    // </Layout>
   );
 };
 

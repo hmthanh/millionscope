@@ -341,11 +341,22 @@ export const DEFAULT_THEME: DocsThemeConfig = {
       </>
     );
   },
-  i18n: [],
+  i18n: [
+    {
+      direction: "ltr",
+      locale: "vn",
+      name: "vn-VN",
+    },
+    {
+      direction: "ltr",
+      locale: "en",
+      name: "en-EN",
+    },
+  ],
   logo: (
     <>
       <span className="nx-font-extrabold">Nextra</span>
-      <span className="nx-ml-2 max-md:nx-hidden nx-font-normal nx-text-gray-600">The Next Docs Builder</span>
+      <span className="nx-ml-2 max-md:nx-hidden nx-font-normal nx-text-gray-600">Docs Builder</span>
     </>
   ),
   logoLink: true,

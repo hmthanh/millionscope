@@ -11,9 +11,10 @@ import { GlobalProvider } from "@/global/context";
 import { Heading, NextraInternalGlobal, UseTOC } from "@/global/types";
 import { NEXTRA_INTERNAL } from "@/global/constants";
 import { createLogger } from "vite";
-import { useThemeConfig } from "@/contexts";
+import { ConfigProvider, ThemeConfigProvider, useThemeConfig } from "@/contexts";
 import theme from "tailwindcss/defaultTheme";
 import { MDXWrapper } from "@/components/layout/MDXWrapper";
+import { DataProvider } from "@/client/hooks/use-data";
 // import {useRouter} from "next/router";
 
 type IPageMeta = {
@@ -42,13 +43,26 @@ export default function App({ Component, pageProps }: AppProps) {
   const useToc: UseTOC = (props) => [];
   // const pageProps = {};
 
+  if (!useToc) {
+    console.log("go here", useToc);
+    return (
+      <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+        <DataProvider value={pageProps}>
+          {/*<MDXWrapper useTOC={useToc}>*/}
+          <Component {...pageProps} />
+          {/*</MDXWrapper>*/}
+        </DataProvider>
+      </Layout>
+    );
+  }
+
   return (
-    // <GlobalProvider>
     <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
-      <MDXWrapper useTOC={useToc}>
+      <DataProvider value={pageProps}>
+        {/*<MDXWrapper useTOC={useToc}>*/}
         <Component {...pageProps} />
-      </MDXWrapper>
+        {/*</MDXWrapper>*/}
+      </DataProvider>
     </Layout>
-    // </GlobalProvider>
   );
 }

@@ -8,14 +8,8 @@ import { collectFiles } from "@/server/page-map";
 import { getAllMdx } from "@/server/mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
-import { undefined } from "zod";
 
 export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
-  // useEffect(() => {
-  //   const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
-  //   console.log("__nextra_internal_", __nextra_internal__);
-  // }, []);
-
   return (
     <Page title="Posts" description="Lorem ipsum dolor sit amet consectetur adipisicing elit.">
       <PostList posts={posts} locale={locale} />
@@ -58,14 +52,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
       locale: "vn",
     },
   };
-
-  // const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
-  // return {
-  //   props: {
-  //     tag,
-  //     posts: mdxFiles.filter((file) => {
-  //       return file.tags?.includes(tag);
-  //     }),
-  //   },
-  // };
 };
