@@ -19,12 +19,13 @@ import { getAllMdx, getAllMdxCustom, getMdx } from "@/server/mdx";
 import { MDXFrontMatter } from "@/components/postlist";
 // // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 import { Page } from "@/components/page";
-import { components } from "@/components/mdx";
+import { getComponents } from "@/components/mdx";
 import { PAGES_DIR } from "@/server/file-system";
 import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
 import { myCompileMdx } from "@/server/myCompileMdx";
 import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
-import { useThemeConfig } from "@/contexts";
+import { useConfig, useThemeConfig } from "@/contexts";
+import { useRouter } from "@/client/hooks";
 
 interface ContextProps extends ParsedUrlQuery {
   id: string;
@@ -58,7 +59,17 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   // (props: Record<string, any>) => Heading[];
   // const useToc: UseTOC = (props) => [];
   // const pageProps = {};
+  const themeConfig = useThemeConfig();
+  const config = useConfig();
+  // const { locale } = useRouter();
+  const { direction } = themeConfig.i18n.find((l) => l.locale === locale) || themeConfig;
+  const dir = direction === "rtl" ? "rtl" : "ltr";
+  const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
+  const components = getComponents({
+    isRawLayout: themeContext.layout === "raw",
+    components: themeConfig.components,
+  });
   return (
     <Page {...frontMatter}>
       <MDXRemote {...mdx} components={components} />

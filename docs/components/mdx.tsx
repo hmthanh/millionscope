@@ -290,12 +290,12 @@ export const components = {
   Image,
   ...DEFAULT_COMPONENTS,
   h1: ({ ...props }: ComponentProps<"h1">) => <h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100" {...props} />,
-  h2: ({ ...props }: ComponentProps<"h2">) => <HeadingLink tag="h2" {...props} />,
-  h3: ({ ...props }: ComponentProps<"h3">) => <HeadingLink tag="h3" {...props} />,
-  h4: ({ ...props }: ComponentProps<"h4">) => <HeadingLink tag="h4" {...props} />,
-  h5: ({ ...props }: ComponentProps<"h5">) => <HeadingLink tag="h5" {...props} />,
-  h6: ({ ...props }: ComponentProps<"h6">) => <HeadingLink tag="h6" {...props} />,
-  ul: ({ ...props }: ComponentProps<"ul">) => <ul className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6" {...props} />,
+  // h2: ({ ...props }: ComponentProps<"h2">) => <HeadingLink tag="h2" {...props} />,
+  // h3: ({ ...props }: ComponentProps<"h3">) => <HeadingLink tag="h3" {...props} />,
+  // h4: ({ ...props }: ComponentProps<"h4">) => <HeadingLink tag="h4" {...props} />,
+  // h5: ({ ...props }: ComponentProps<"h5">) => <HeadingLink tag="h5" {...props} />,
+  // h6: ({ ...props }: ComponentProps<"h6">) => <HeadingLink tag="h6" {...props} />,
+  // ul: ({ ...props }: ComponentProps<"ul">) => <ul className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6" {...props} />,
   a: Link,
   ol: ({ ...props }: ComponentProps<"ol">) => <ol className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6" {...props} />,
   li: ({ ...props }: ComponentProps<"li">) => <li className="nx-my-2" {...props} />,
@@ -346,20 +346,20 @@ export const components = {
   } satisfies NextraMDXContent,
 };
 
-// export function getComponents({ isRawLayout, components }: { isRawLayout?: boolean; components?: DocsThemeConfig["components"] }): MDXComponents {
-//   if (isRawLayout) {
-//     // @ts-expect-error
-//     return { a: A, wrapper: DEFAULT_COMPONENTS.wrapper };
-//   }
-//
-//   const context = { index: 0 };
-//   return {
-//     ...DEFAULT_COMPONENTS,
-//     h2: createHeading("h2", context),
-//     h3: createHeading("h3", context),
-//     h4: createHeading("h4", context),
-//     h5: createHeading("h5", context),
-//     h6: createHeading("h6", context),
-//     ...components,
-//   };
-// }
+export function getComponents({ isRawLayout, components }: { isRawLayout?: boolean; components?: DocsThemeConfig["components"] }): MDXComponents {
+  if (isRawLayout) {
+    // @ts-expect-error
+    return { a: A, wrapper: DEFAULT_COMPONENTS.wrapper };
+  }
+
+  const context = { index: 0 };
+  return {
+    ...DEFAULT_COMPONENTS,
+    h2: createHeading("h2", context),
+    h3: createHeading("h3", context),
+    h4: createHeading("h4", context),
+    h5: createHeading("h5", context),
+    h6: createHeading("h6", context),
+    ...components,
+  };
+}
