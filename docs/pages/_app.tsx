@@ -60,9 +60,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
       <DataProvider value={pageProps}>
-        {/*<MDXWrapper useTOC={useToc}>*/}
-        <Component {...pageProps} />
-        {/*</MDXWrapper>*/}
+        <MDXWrapper useTOC={useToc}>
+          <Component {...pageProps} />
+        </MDXWrapper>
       </DataProvider>
     </Layout>
   );

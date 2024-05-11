@@ -123,6 +123,8 @@ export async function compileMdx(
 
   try {
     const vFile = await processor.process(fileCompatible);
+    // console.log("vFile", vFile);
+    // console.log("vFile", JSON.stringify(vFile.data.toc));
 
     const data = vFile.data as {
       readingTime?: ReadingTime;
@@ -145,7 +147,7 @@ export async function compileMdx(
     if (frontMatter.mdxOptions) {
       throw new Error("`frontMatter.mdxOptions` is no longer supported");
     }
-    // console.log("sourc55x", result)
+    // console.log("sourc55x", result);
 
     return {
       result,

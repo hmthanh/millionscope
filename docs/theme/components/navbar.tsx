@@ -50,8 +50,9 @@ function NavbarMenu({ className, menu, children }: { className?: string; menu: M
   );
 }
 
-export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
+export function Navbar({ items }: NavBarProps): ReactElement {
   const config = useThemeConfig();
+
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
 

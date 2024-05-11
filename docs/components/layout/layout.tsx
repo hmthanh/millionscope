@@ -7,18 +7,10 @@ import { ConfigProvider, ThemeConfigProvider } from "@/contexts";
 import { InnerLayout } from "@/components/layout/InnerLayout";
 
 export default function Layout({ children, themeConfig, pageOpts }: NextraThemeLayoutProps): ReactElement {
-  // console.log("themeConfig", themeConfig)
   return (
     <ThemeConfigProvider value={themeConfig}>
       <ConfigProvider value={pageOpts}>
-        <InnerLayout>
-          {/*<MyHeader></MyHeader>*/}
-          {/* <BodyBlog>{children}</BodyBlog> */}
-          {/*<MyBlog>*/}
-          {children}
-          {/*</MyBlog>*/}
-          {/*<MyFooter></MyFooter>*/}
-        </InnerLayout>
+        <InnerLayout>{children}</InnerLayout>
       </ConfigProvider>
     </ThemeConfigProvider>
   );

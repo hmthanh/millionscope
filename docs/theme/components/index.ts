@@ -3,6 +3,7 @@ export { Anchor } from "./anchor";
 export { BackToTop } from "./back-to-top";
 export { Banner } from "./banner";
 export { Bleed } from "./bleed";
+export { Body } from "./body";
 export { Breadcrumb } from "./breadcrumb";
 export { Collapse } from "./collapse";
 export { Flexsearch } from "./flexsearch";

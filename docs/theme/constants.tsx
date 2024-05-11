@@ -90,6 +90,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         <span className="nx-sr-only">Discord</span>
       </>
     ),
+    link: "https://twitter.com/millionscope",
   },
   color: {
     hue: {

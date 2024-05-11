@@ -11,21 +11,20 @@ import { compileMdx } from "@/server/compile";
 
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
-import Link from "next/link";
 import { serialize } from "@mdx-remote/serialize";
 import { MDXRemote } from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
 import { getAllMdx, getAllMdxCustom, getMdx } from "@/server/mdx";
 import { MDXFrontMatter } from "@/components/postlist";
-// // import {rendererRich, transformerTwoslash} from '@shikijs/twoslash'
 import { Page } from "@/components/page";
-import { getComponents } from "@/components/mdx";
 import { PAGES_DIR } from "@/server/file-system";
 import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
 import { myCompileMdx } from "@/server/myCompileMdx";
 import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
 import { useConfig, useThemeConfig } from "@/contexts";
-import { useRouter } from "@/client/hooks";
+import { useMDXComponents } from "@/client/mdx";
+
+// import { useMDXComponents as _provideComponents } from "@/client/mdx";
 
 interface ContextProps extends ParsedUrlQuery {
   id: string;
@@ -61,15 +60,14 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   // const pageProps = {};
   const themeConfig = useThemeConfig();
   const config = useConfig();
+  // console.log("config", config)
   // const { locale } = useRouter();
   const { direction } = themeConfig.i18n.find((l) => l.locale === locale) || themeConfig;
   const dir = direction === "rtl" ? "rtl" : "ltr";
   const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
-  const components = getComponents({
-    isRawLayout: themeContext.layout === "raw",
-    components: themeConfig.components,
-  });
+  const components = useMDXComponents();
+
   return (
     <Page {...frontMatter}>
       <MDXRemote {...mdx} components={components} />
@@ -109,8 +107,14 @@ interface IBlogPostProps {
 }
 
 export const getStaticProps = async (context: any) => {
-  const { id } = context.params as ContextProps;
+  //   const _components = {
+  //     a: "a",
+  //     code: "code",
+  //     sup: "sup",
+  //     ..._provideComponents(),
+  //   };
 
+  const { id } = context.params as ContextProps;
   const postDir = path.resolve(CWD, DEFAULT_DIR);
   const { pageMap, imports } = await getAllMdxCustom({ dir: postDir, route: id, locale: "en" });
   // console.log("pageMap", pageMap);
@@ -170,7 +174,6 @@ export const getStaticProps = async (context: any) => {
 
   const route = "/" + relativePath.replace(MARKDOWN_EXTENSION_REGEX, "").replace(/(^|\/)index$/, "");
 
-  // const rrr = await compileMdx("", {});
   const { result, title, _frontMatter, structurizedData, searchIndexKey, hasJsxInH1, readingTime } = await compileMdx(content, {
     mdxOptions: {
       ...mdxOptions,
@@ -191,6 +194,7 @@ export const getStaticProps = async (context: any) => {
     isPageImport,
     isPageMapImport,
   });
+  // console.log("\n\n\n result", result);
 
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {
