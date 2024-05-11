@@ -3,7 +3,7 @@
 import path from "node:path";
 import type { ProcessorOptions } from "@mdx-js/mdx";
 import slash from "slash";
-import { FrontMatter, LoaderOptions, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
+import { FrontMatter, Heading, LoaderOptions, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
 import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
 import { logger, truthy } from "@/server/utils";
 
@@ -14,7 +14,7 @@ import { ParsedUrlQuery } from "querystring";
 import { serialize } from "@mdx-remote/serialize";
 import { MDXRemote } from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import { getAllMdx, getAllMdxCustom, getMdx } from "@/server/mdx";
+import { getAllMdx, getAllMdxCustom } from "@/server/processing-mdx";
 import { MDXFrontMatter } from "@/components/postlist";
 import { Page } from "@/components/page";
 import { PAGES_DIR } from "@/server/file-system";
@@ -22,7 +22,11 @@ import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
 import { myCompileMdx } from "@/server/myCompileMdx";
 import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
 import { useConfig, useThemeConfig } from "@/contexts";
-import { useMDXComponents } from "@/client/mdx";
+import { MDXProvider, useMDXComponents } from "@/client/mdx";
+import * as mdx from "@mdx-js/react";
+import React, { useMemo } from "react";
+import { jsxRuntime } from "@mdx-remote/jsx-runtime";
+import { getComponents } from "@/theme/mdx";
 
 // import { useMDXComponents as _provideComponents } from "@/client/mdx";
 
@@ -35,18 +39,24 @@ interface PostProps {
   locale: string;
   route: "";
   pageOpts: PageOpts<any>;
-  pageProps: any;
-  useToc: {};
+  pageProps: Heading[];
+  useTOC: UseTOC;
   meta: string;
-  frontMatter: MDXFrontMatter;
-  mdx: any;
+  // frontMatter: MDXFrontMatter;
+  frontmatter: MDXFrontMatter; // Record<string, unknown>;
+  compiledSource: any;
+  scope: Record<string, unknown>;
+  mdx: {
+    frontmatter: Record<string, unknown>;
+    compiledSource: any;
+    scope: Record<string, unknown>;
+  };
   previous: MDXFrontMatter | null;
   next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, frontMatter, mdx, previous, next, pageProps }) => {
-  // const themeConfig = useThemeConfig();s
-  // console.log("pageProps", pageProps)
+const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useTOC, meta, frontmatter, compiledSource, scope, mdx, previous, next, pageProps }) => {
+  // const themeConfig = useThemeConfig();
 
   // const router = useRouter()
   // const {asPath, query} = router
@@ -58,6 +68,7 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   // (props: Record<string, any>) => Heading[];
   // const useToc: UseTOC = (props) => [];
   // const pageProps = {};
+
   const themeConfig = useThemeConfig();
   const config = useConfig();
   // console.log("config", config)
@@ -66,11 +77,16 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useToc, meta, 
   const dir = direction === "rtl" ? "rtl" : "ltr";
   const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
-  const components = useMDXComponents();
+  // const components = useMDXComponents();
+
+  const components = getComponents({
+    isRawLayout: themeContext.layout === "raw",
+    components: themeConfig.components,
+  });
 
   return (
-    <Page {...frontMatter}>
-      <MDXRemote {...mdx} components={components} />
+    <Page {...frontmatter}>
+      <MDXRemote compiledSource={compiledSource} scope={scope} frontmatter={frontmatter} components={components} />
     </Page>
   );
 };
@@ -124,6 +140,7 @@ export const getStaticProps = async (context: any) => {
   const postIndex = mdxFiles.findIndex((p) => p.frontMatter.slug === id);
   const post = mdxFiles[postIndex];
   const { frontMatter, content } = post;
+  // console.log("content", content)
 
   // *************** Config ***************
   // const isRemoteContent = false
@@ -195,6 +212,7 @@ export const getStaticProps = async (context: any) => {
     isPageMapImport,
   });
   // console.log("\n\n\n result", result);
+  // console.log("structurizedData", structurizedData);
 
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {
@@ -203,24 +221,52 @@ export const getStaticProps = async (context: any) => {
     timestamp: 100,
     readingTime,
   };
-  const useToc = {};
+  // const useToc: Heading[] = [
+  //   {
+  //     value: "Hello1",
+  //     id: "hello1",
+  //     depth: 2,
+  //   },
+  //   {
+  //     value: "Hello2",
+  //     id: "hello2",
+  //     depth: 3,
+  //   },
+  //   {
+  //     value: "Hello3",
+  //     id: "hello3",
+  //     depth: 4,
+  //   },
+  //   {
+  //     value: "Hello4",
+  //     id: "hello4",
+  //     depth: 5,
+  //   },
+  // ];
 
+  // const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex });
   const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex });
+  // mdxContent.compiledSource;
+  // mdxContent.scope;
+  // mdxContent.frontmatter;
+  // console.log("mdxContent", mdxContent);
 
   // console.log("mdxContent", mdxContent.compiledSource);
   return {
     props: {
       frontMatter,
       mdx: mdxContent,
+      compiledSource: mdxContent.compiledSource,
+      scope: mdxContent.scope,
+      frontmatter: mdxContent.frontmatter,
       previous: mdxFiles[postIndex + 1]?.frontMatter || null,
       next: mdxFiles[postIndex - 1]?.frontMatter || null,
       id: id,
       locale: locale,
       route: route,
       pageOpts,
-      // // useToc,
+      useTOC: [],
       // meta: "",
-      // frontMatter,
       // mdx: mdxContent,
       // previous: mdxFiles[postIndex + 1]?.frontMatter || null,
       // next: mdxFiles[postIndex - 1]?.frontMatter || null,

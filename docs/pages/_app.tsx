@@ -6,13 +6,8 @@ import type { AppContext, AppProps } from "next/app";
 import Layout from "@/components/layout/layout";
 
 import "@/styles/new.css";
-import { useEffect } from "react";
-import { GlobalProvider } from "@/global/context";
 import { Heading, NextraInternalGlobal, UseTOC } from "@/global/types";
-import { NEXTRA_INTERNAL } from "@/global/constants";
-import { createLogger } from "vite";
 import { ConfigProvider, ThemeConfigProvider, useThemeConfig } from "@/contexts";
-import theme from "tailwindcss/defaultTheme";
 import { MDXWrapper } from "@/components/layout/MDXWrapper";
 import { DataProvider } from "@/client/hooks/use-data";
 import { useRouter } from "next/router";
@@ -29,11 +24,16 @@ type IPageMeta = {
 //     };
 // }
 
-export default function App({ Component, pageProps }: AppProps) {
+interface IMainLayoutProps extends AppProps {
+  toc: Heading[];
+}
+
+export default function App({ Component, pageProps }: IMainLayoutProps) {
   const themeConfig = useThemeConfig();
   // console.log("pageProps", pageProps);
 
   const router = useRouter();
+  // console.log("useTO AppC", useTOC);
   // const {asPath, query} = router
 
   // const slug = asPath.split('/')[1]
@@ -41,7 +41,29 @@ export default function App({ Component, pageProps }: AppProps) {
   // const language = query.lang || langSlug || defaultLanguage
   const pageOpts = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
   // (props: Record<string, any>) => Heading[];
-  const useToc: UseTOC = (props) => [];
+  const useToc: Heading[] = [
+    {
+      value: "Hello1",
+      id: "hello1",
+      depth: 2,
+    },
+    {
+      value: "Hello2",
+      id: "hello2",
+      depth: 3,
+    },
+    {
+      value: "Hello3",
+      id: "hello3",
+      depth: 4,
+    },
+    {
+      value: "Hello4",
+      id: "hello4",
+      depth: 5,
+    },
+  ];
+  // : UseTOC = (props) =>
   // const pageProps = {};
 
   // if (!useToc) {
@@ -56,11 +78,12 @@ export default function App({ Component, pageProps }: AppProps) {
   //     </Layout>
   //   );
   // }
+  // console.log("useTOC._app", toc);
 
   return (
     <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
       <DataProvider value={pageProps}>
-        <MDXWrapper useTOC={useToc}>
+        <MDXWrapper toc={useToc}>
           <Component {...pageProps} />
         </MDXWrapper>
       </DataProvider>

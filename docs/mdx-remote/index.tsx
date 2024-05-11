@@ -29,7 +29,7 @@ declare global {
 export type MDXRemoteProps<TScope = Record<string, unknown>, TFrontmatter = Record<string, unknown>> = MDXRemoteSerializeResult<TScope, TFrontmatter> & {
   /**
    * A object mapping names to React banner.tsx.
-   * The key used will be the name accessible to MDX.
+   * The key used will be the name accessible to MDX.s
    *
    * For example: `{ ComponentName: Component }` will be accessible in the MDX as `<ComponentName/>`.
    */
@@ -75,7 +75,11 @@ export function MDXRemote<TScope, TFrontmatter>({ compiledSource, frontmatter, s
     // function with the actual values.
     const hydrateFn = Reflect.construct(Function, keys.concat(`${compiledSource}`));
 
-    return hydrateFn.apply(hydrateFn, values).default;
+    const rs = hydrateFn.apply(hydrateFn, values);
+    if (rs) {
+      return rs.default;
+    }
+    // return hydrateFn.apply(hydrateFn, values).default;
     // return function ContentComponent() {
     //     const content = hydrateFn.apply(hydrateFn, values).default;
     //     // Render the content

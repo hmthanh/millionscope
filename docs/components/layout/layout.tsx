@@ -1,6 +1,3 @@
-import MyBlog from "../blog";
-import MyFooter from "../myfooter";
-import MyHeader from "../myheader";
 import { NextraThemeLayoutProps } from "@/global/types";
 import { ReactElement } from "react";
 import { ConfigProvider, ThemeConfigProvider } from "@/contexts";

@@ -19,6 +19,7 @@ export const getMdx = (fileName: string, locale: string) => {
   if (isMarkDown) {
     // return null
   }
+
   const docSource = fs.readFileSync(fullPath, "utf-8");
 
   const { data, content } = matter(docSource);

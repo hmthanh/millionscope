@@ -1,6 +1,6 @@
 import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { getAllMdx } from "@/server/mdx";
+import { getAllMdx } from "@/server/processing-mdx";
 import slugify from "@sindresorhus/slugify";
 import { MDXFrontMatter } from "@/components/postlist";
 import { Page } from "@/components/page";

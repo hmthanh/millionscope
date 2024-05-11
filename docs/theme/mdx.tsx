@@ -76,6 +76,33 @@ const classes = {
   main: cn("nx-w-full nx-break-words"),
 };
 
+const WRAPPER = function NextraWrapper({ toc, children }: { toc: Heading[]; children: ReactNode }) {
+  const config = useConfig();
+  const themeConfig = useThemeConfig();
+  // toc = [];
+  const { activeType, activeThemeContext: themeContext, docsDirectories, directories } = config.normalizePagesResult;
+
+  const tocEl =
+    activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? (
+      themeContext.layout !== "full" && themeContext.layout !== "raw" && <nav className={classes.toc} aria-label="table of contents" />
+    ) : (
+      <nav className={cn(classes.toc, "nx-px-4")} aria-label="table of contents">
+        {renderComponent(themeConfig.toc.component, {
+          toc: themeConfig.toc.float ? toc : [],
+          filePath: config.filePath,
+        })}
+      </nav>
+    );
+  return (
+    <div className={cn("nx-mx-auto nx-flex", themeContext.layout !== "raw" && "nx-max-w-[90rem]")}>
+      <Sidebar docsDirectories={docsDirectories} fullDirectories={directories} toc={toc} asPopover={config.hideSidebar} includePlaceholder={themeContext.layout === "default"} />
+      {tocEl}
+      <SkipNavContent />
+      <Body>{children}</Body>
+    </div>
+  );
+};
+
 const DEFAULT_COMPONENTS = {
   img: (props: any) => createElement(typeof props.src === "object" ? Image : "img", props as ImageProps),
   h1: ({ ...props }: ComponentProps<"h1">) => <h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100" {...props} />,
@@ -106,38 +133,19 @@ const DEFAULT_COMPONENTS = {
   summary: Summary,
   pre: Pre,
   code: Code,
-  wrapper: function NextraWrapper({ toc, children }: { toc: Heading[]; children: ReactNode }) {
-    const config = useConfig();
-    const themeConfig = useThemeConfig();
-    // toc = [];
-    const { activeType, activeThemeContext: themeContext, docsDirectories, directories } = config.normalizePagesResult;
-
-    const tocEl =
-      activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? (
-        themeContext.layout !== "full" && themeContext.layout !== "raw" && <nav className={classes.toc} aria-label="table of contents" />
-      ) : (
-        <nav className={cn(classes.toc, "nx-px-4")} aria-label="table of contents">
-          {renderComponent(themeConfig.toc.component, {
-            toc: themeConfig.toc.float ? toc : [],
-            filePath: config.filePath,
-          })}
-        </nav>
-      );
-    return (
-      <div className={cn("nx-mx-auto nx-flex", themeContext.layout !== "raw" && "nx-max-w-[90rem]")}>
-        <Sidebar docsDirectories={docsDirectories} fullDirectories={directories} toc={toc} asPopover={config.hideSidebar} includePlaceholder={themeContext.layout === "default"} />
-        {tocEl}
-        <SkipNavContent />
-        <Body>{children}</Body>
-      </div>
-    );
-  } satisfies NextraMDXContent,
+  wrapper: WRAPPER satisfies NextraMDXContent,
 } satisfies MDXComponents;
+{
+  /*WRAPPER satisfies NextraMDXContent,
+   * ({ children }) => <div>{children}</div>,*/
+}
 
 export function getComponents({ isRawLayout, components }: { isRawLayout?: boolean; components?: DocsThemeConfig["components"] }): MDXComponents {
   if (isRawLayout) {
+    // console.log("isRawLayout", isRawLayout);
     return { a: A, wrapper: DEFAULT_COMPONENTS.wrapper };
   }
+  // console.log("Not isRawLayout", isRawLayout);
 
   const context = { index: 0 };
   return {

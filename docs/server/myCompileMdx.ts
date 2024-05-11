@@ -41,6 +41,7 @@ import { rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent
 import { MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
 import { bundledLanguages, getHighlighter } from "shiki";
 import rehypeShiki from "@shikijs/rehype";
+import { MDXRemoteSerializeResult } from "@mdx-remote";
 
 interface MyCompileMdxProps {
   content: string;
@@ -147,7 +148,9 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
   const codeHighlight = true;
   const latexOptions: RehypeKatexOptions = {};
 
-  const mdxContent = await serialize(content, {
+  // TScope = Record<string, unknown>,
+  // TFrontmatter = Record<string, unknown>
+  const mdxContent: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>> = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
         // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
@@ -160,7 +163,6 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
         //         storageKey: 'selectedPackageManager'
         //     }
         // ] satisfies Pluggable,
-
         // isRemoteContent && remarkRemoveImports,
         remarkFrontmatter, // parse and attach yaml node
         [remarkMdxFrontMatter] satisfies Pluggable,

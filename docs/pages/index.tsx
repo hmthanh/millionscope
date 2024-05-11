@@ -5,7 +5,7 @@ import { NextraGlobalData, NextraInternalGlobal, PageMapItem } from "@/global/ty
 import { DEFAULT_LOCALE, NEXTRA_INTERNAL } from "@/global/constants";
 import path from "path";
 import { collectFiles } from "@/server/page-map";
-import { getAllMdx } from "@/server/mdx";
+import { getAllMdx } from "@/server/processing-mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
 
