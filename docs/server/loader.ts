@@ -18,7 +18,9 @@ const initGitRepo = (async () => {
         if (process.env.VERCEL) {
           logger.warn("The repository is shallow cloned, so the latest modified time will not be presented. Set the VERCEL_DEEP_CLONE=true environment variable to enable deep cloning.");
         } else if (process.env.GITHUB_ACTION) {
-          logger.warn("The repository is shallow cloned, so the latest modified time will not be presented. See https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches to fetch all the history.");
+          logger.warn(
+            "The repository is shallow cloned, so the latest modified time will not be presented. See https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches to fetch all the history.",
+          );
         } else {
           logger.warn("The repository is shallow cloned, so the latest modified time will not be presented.");
         }
@@ -36,7 +38,22 @@ const initGitRepo = (async () => {
 let isAppFileFromNodeModules = false;
 
 export async function loader(this: LoaderContext<LoaderOptions>, source: string): Promise<string> {
-  const { isPageImport = false, isPageMapImport, isMetaFile, theme, themeConfig, defaultShowCopyCode, search, staticImage, readingTime: _readingTime, latex, codeHighlight, transform, mdxOptions, locales } = this.getOptions();
+  const {
+    isPageImport = false,
+    isPageMapImport,
+    isMetaFile,
+    theme,
+    themeConfig,
+    defaultShowCopyCode,
+    search,
+    staticImage,
+    readingTime: _readingTime,
+    latex,
+    codeHighlight,
+    transform,
+    mdxOptions,
+    locales,
+  } = this.getOptions();
 
   const mdxPath = this._module?.resourceResolveData
     ? // to make it work with symlinks, resolve the mdx path based on the relative path

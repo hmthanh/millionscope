@@ -4,7 +4,7 @@ import { useRouter } from "@/client/hooks";
 import { renderComponent } from "@/theme/utils";
 import { Banner, Head } from "@/theme/components";
 import { PageMapItem } from "@/global/types";
-import { MDXProvider } from "@/client/mdx";
+import { MDXProvider, useMDXComponents } from "@/client/mdx";
 import { ThemeProvider } from "next-themes";
 import { getComponents } from "@/theme/mdx";
 import { NavBarProps } from "@/theme/components/navbar";
@@ -19,10 +19,7 @@ export function InnerLayout({ children }: { children: ReactNode }): ReactElement
 
   const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
-  const components = getComponents({
-    isRawLayout: themeContext.layout === "raw",
-    components: themeConfig.components,
-  });
+  const components = useMDXComponents();
 
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange {...themeConfig.nextThemes}>
@@ -45,9 +42,9 @@ export function InnerLayout({ children }: { children: ReactNode }): ReactElement
           } as NavBarProps)}
 
         <ActiveAnchorProvider>
-          {/*<MDXProvider disableParentContext components={components}>*/}
-          {children}
-          {/*</MDXProvider>*/}
+          <MDXProvider disableParentContext components={components}>
+            {children}
+          </MDXProvider>
         </ActiveAnchorProvider>
 
         {themeContext.footer &&

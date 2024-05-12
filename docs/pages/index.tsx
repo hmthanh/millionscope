@@ -8,6 +8,7 @@ import { collectFiles } from "@/server/page-map";
 import { getAllMdx } from "@/server/processing-mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
+import { loader } from "@/server/loader";
 
 export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
   return (
@@ -37,6 +38,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const blogDir = path.join(root, "posts");
   // const transformPageMap = NextraConfig['transformPageMap'];
   const locale = DEFAULT_LOCALE;
+
   // const res = await collectPageMap({dir: blogDir, route: '/', locale: locale})
   // const files = await collectFiles({
   //   dir: blogDir,

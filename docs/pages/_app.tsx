@@ -3,10 +3,10 @@ import "@/styles/styles.css";
 import "@/styles/custom.css";
 import "katex/dist/katex.min.css";
 import type { AppContext, AppProps } from "next/app";
-import Layout from "@/components/layout/layout";
+import ThemeLayout from "@/components/layout/themeLayout";
 
 import "@/styles/new.css";
-import { Heading, NextraInternalGlobal, UseTOC } from "@/global/types";
+import { Heading, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
 import { ConfigProvider, ThemeConfigProvider, useThemeConfig } from "@/contexts";
 import { MDXWrapper } from "@/components/layout/MDXWrapper";
 import { DataProvider } from "@/client/hooks/use-data";
@@ -28,18 +28,21 @@ interface IMainLayoutProps extends AppProps {
   toc: Heading[];
 }
 
-export default function App({ Component, pageProps }: IMainLayoutProps) {
+export default function App({ Component, pageProps, toc }: IMainLayoutProps) {
   const themeConfig = useThemeConfig();
   // console.log("pageProps", pageProps);
 
   const router = useRouter();
+
+  // console.log("pageProps", pageProps);
+  // console.log("toc", toc);
   // console.log("useTO AppC", useTOC);
   // const {asPath, query} = router
 
   // const slug = asPath.split('/')[1]
   // const langSlug = languages.includes(slug) && slug
   // const language = query.lang || langSlug || defaultLanguage
-  const pageOpts = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
+  const pageOpts: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
   // (props: Record<string, any>) => Heading[];
   const useToc: Heading[] = [
     {
@@ -78,15 +81,14 @@ export default function App({ Component, pageProps }: IMainLayoutProps) {
   //     </Layout>
   //   );
   // }
-  // console.log("useTOC._app", toc);
 
   return (
-    <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+    <ThemeLayout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
       <DataProvider value={pageProps}>
         <MDXWrapper toc={useToc}>
           <Component {...pageProps} />
         </MDXWrapper>
       </DataProvider>
-    </Layout>
+    </ThemeLayout>
   );
 }

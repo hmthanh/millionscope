@@ -119,6 +119,7 @@ export async function compileMdx(
   const isRemoteContent = outputFormat === "function-body";
 
   const compiler = !useCachedCompiler || isRemoteContent ? createCompiler() : (cachedCompilerForFormat[format] ??= createCompiler());
+  // console.log("compiler", compiler)
   const processor = compiler();
 
   try {
@@ -167,7 +168,7 @@ export async function compileMdx(
       jsx,
       format,
       outputFormat,
-      providerImportSource: "nextra/mdx",
+      providerImportSource: "thanhminh/mdx",
       // Fix TypeError: _jsx is not a function for remote content
       development: process.env.NODE_ENV === "development",
       remarkPlugins: [

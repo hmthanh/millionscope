@@ -77,8 +77,6 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useTOC, meta, 
   const dir = direction === "rtl" ? "rtl" : "ltr";
   const { activeThemeContext: themeContext, topLevelNavbarItems } = config.normalizePagesResult;
 
-  // const components = useMDXComponents();
-
   const components = getComponents({
     isRawLayout: themeContext.layout === "raw",
     components: themeConfig.components,
@@ -211,8 +209,8 @@ export const getStaticProps = async (context: any) => {
     isPageImport,
     isPageMapImport,
   });
+  // console.log("searchIndexKey", searchIndexKey)
   // console.log("\n\n\n result", result);
-  // console.log("structurizedData", structurizedData);
 
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {

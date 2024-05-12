@@ -76,7 +76,7 @@ const classes = {
   main: cn("nx-w-full nx-break-words"),
 };
 
-const WRAPPER = function NextraWrapper({ toc, children }: { toc: Heading[]; children: ReactNode }) {
+export function Wrapper({ toc, children }: { toc: Heading[]; children: ReactNode }) {
   const config = useConfig();
   const themeConfig = useThemeConfig();
   // toc = [];
@@ -101,9 +101,9 @@ const WRAPPER = function NextraWrapper({ toc, children }: { toc: Heading[]; chil
       <Body>{children}</Body>
     </div>
   );
-};
+}
 
-const DEFAULT_COMPONENTS = {
+export const DEFAULT_COMPONENTS = {
   img: (props: any) => createElement(typeof props.src === "object" ? Image : "img", props as ImageProps),
   h1: ({ ...props }: ComponentProps<"h1">) => <h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100" {...props} />,
   // h2: ({ ...props }: ComponentProps<"h2">) => <HeadingLink tag="h2" {...props} />,
@@ -133,7 +133,7 @@ const DEFAULT_COMPONENTS = {
   summary: Summary,
   pre: Pre,
   code: Code,
-  wrapper: WRAPPER satisfies NextraMDXContent,
+  // wrapper: WRAPPER satisfies NextraMDXContent,
 } satisfies MDXComponents;
 {
   /*WRAPPER satisfies NextraMDXContent,
@@ -142,10 +142,9 @@ const DEFAULT_COMPONENTS = {
 
 export function getComponents({ isRawLayout, components }: { isRawLayout?: boolean; components?: DocsThemeConfig["components"] }): MDXComponents {
   if (isRawLayout) {
-    // console.log("isRawLayout", isRawLayout);
-    return { a: A, wrapper: DEFAULT_COMPONENTS.wrapper };
+    // return { a: A, wrapper: WRAPPER };
+    return { a: A };
   }
-  // console.log("Not isRawLayout", isRawLayout);
 
   const context = { index: 0 };
   return {

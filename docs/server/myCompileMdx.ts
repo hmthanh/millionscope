@@ -255,5 +255,6 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
     scope: frontMatter,
   });
 
+  // console.log("mdxContent", mdxContent)
   return mdxContent;
 }
