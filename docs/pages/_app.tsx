@@ -44,28 +44,28 @@ export default function App({ Component, pageProps, toc }: IMainLayoutProps) {
   // const language = query.lang || langSlug || defaultLanguage
   const pageOpts: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
   // (props: Record<string, any>) => Heading[];
-  const useToc: Heading[] = [
-    {
-      value: "Hello1",
-      id: "hello1",
-      depth: 2,
-    },
-    {
-      value: "Hello2",
-      id: "hello2",
-      depth: 3,
-    },
-    {
-      value: "Hello3",
-      id: "hello3",
-      depth: 4,
-    },
-    {
-      value: "Hello4",
-      id: "hello4",
-      depth: 5,
-    },
-  ];
+  // const useToc: Heading[] = [
+  //   {
+  //     value: "Hello1",
+  //     id: "hello1",
+  //     depth: 2,
+  //   },
+  //   {
+  //     value: "Hello2",
+  //     id: "hello2",
+  //     depth: 3,
+  //   },
+  //   {
+  //     value: "Hello3",
+  //     id: "hello3",
+  //     depth: 4,
+  //   },
+  //   {
+  //     value: "Hello4",
+  //     id: "hello4",
+  //     depth: 5,
+  //   },
+  // ];
   // : UseTOC = (props) =>
   // const pageProps = {};
 
@@ -85,9 +85,7 @@ export default function App({ Component, pageProps, toc }: IMainLayoutProps) {
   return (
     <ThemeLayout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
       <DataProvider value={pageProps}>
-        <MDXWrapper toc={useToc}>
-          <Component {...pageProps} />
-        </MDXWrapper>
+        <Component {...pageProps} />
       </DataProvider>
     </ThemeLayout>
   );

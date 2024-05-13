@@ -6,6 +6,7 @@ import { compileMdx } from "./compile.js";
 import { CHUNKS_DIR, CWD, MARKDOWN_EXTENSION_REGEX, OFFICIAL_THEMES } from "./constants";
 import { PAGES_DIR } from "./file-system.js";
 import { logger } from "./utils.js";
+import { newCompileMdx } from "@/server/compile-source";
 
 const initGitRepo = (async () => {
   const IS_WEB_CONTAINER = !!process.versions.webcontainer;
@@ -115,7 +116,7 @@ ${themeConfigImport && "__nextra_internal__.themeConfig = __themeConfig"}`;
 
   const route = "/" + relativePath.replace(MARKDOWN_EXTENSION_REGEX, "").replace(/(^|\/)index$/, "");
 
-  const { result, title, frontMatter, structurizedData, searchIndexKey, hasJsxInH1, readingTime } = await compileMdx(source, {
+  const { result, title, frontMatter, structurizedData, searchIndexKey, hasJsxInH1, readingTime } = await newCompileMdx(source, {
     mdxOptions: {
       ...mdxOptions,
       jsx: true,

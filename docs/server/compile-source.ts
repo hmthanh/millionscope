@@ -1,15 +1,10 @@
 import path from "node:path";
-import { compile, ProcessorOptions } from "@mdx-js/mdx";
+import type { ProcessorOptions } from "@mdx-js/mdx";
 import { createProcessor } from "@mdx-js/mdx";
-// import type {Processor} from '@mdx-js/mdx/lib/core'
-// @ts-ignore
-import type { Processor } from "@mdx-js/mdx/lib/core";
 import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
-// @ts-ignore
-import { remarkMermaid } from "@theguild/remark-mermaid";
-// import {remarkNpm2Yarn} from '@theguild/remark-npm2yarn'
+import { remarkNpm2Yarn } from "@theguild/remark-npm2yarn";
 import type { Program } from "estree";
-import rehypeKatex, { type Options as RehypeKatexOptions } from "rehype-katex";
+import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
 import remarkFrontmatter from "remark-frontmatter";
@@ -19,12 +14,11 @@ import remarkReadingTime from "remark-reading-time";
 import remarkSmartypants from "remark-smartypants";
 import type { Pluggable, Plugin } from "unified";
 import type { FrontMatter, LoaderOptions, PageOpts, ReadingTime, StructurizedData } from "@/global/types";
-import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
-import { recmaRewriteFunctionBody, recmaRewriteJsx } from "@/server/recma-plugins";
-import { DEFAULT_REHYPE_PRETTY_CODE_OPTIONS, rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "@/server/rehype-plugins";
+import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "./constants";
+import { recmaRewriteFunctionBody, recmaRewriteJsx } from "./recma-plugins/index";
+import { DEFAULT_REHYPE_PRETTY_CODE_OPTIONS, rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "./rehype-plugins/index.js";
 import {
   remarkCustomHeadingId,
-  remarkEmbedImages,
   remarkHeadings,
   remarkLinkRewrite,
   remarkMdxDisableExplicitJsx,
@@ -33,14 +27,12 @@ import {
   remarkRemoveImports,
   remarkStaticImage,
   remarkStructurize,
-} from "@/server/remark-plugins";
-import { logger, truthy } from "@/server/utils";
-import { compile as myCustomCompile, CompileOptions } from "@mdx-js/mdx";
-import { createFormattedMDXError } from "@mdx-remote/format-mdx-error";
-import { VFile, VFileCompatible } from "vfile";
-import rehypeShiki from "@shikijs/rehype";
-import { matter } from "vfile-matter";
-import { removeImportsExportsPlugin } from "@mdx-remote/mdx-plugin/remove-imports-exports";
+} from "./remark-plugins/index";
+import { logger, truthy } from "./utils";
+// @ts-ignore
+import { Processor } from "@mdx-js/mdx/lib/core";
+// @ts-ignore
+import { remarkMermaid } from "@theguild/remark-mermaid";
 
 const cachedCompilerForFormat: Record<Exclude<ProcessorOptions["format"], undefined | null>, Processor> = Object.create(null);
 
@@ -60,120 +52,7 @@ type CompileMdxOptions = Pick<LoaderOptions, "staticImage" | "search" | "default
   isPageMapImport?: boolean;
 };
 
-function getMdxOption(frontMatter: any): CompileOptions {
-  const isRemoteContent = true;
-  const defaultShowCopyCode = true;
-  const flexsearch = {};
-  const latexOptions: RehypeKatexOptions = {};
-
-  const mdxOptions: Omit<CompileOptions, "outputFormat" | "providerImportSource"> = {
-    remarkPlugins: [
-      // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-      // ...(remarkPlugins || []),
-      // [
-      //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-      //     {
-      //         packageName: 'nextra/banner.tsx',
-      //         tabNamesProp: 'items',
-      //         storageKey: 'selectedPackageManager'
-      //     }
-      // ] satisfies Pluggable,
-      // isRemoteContent && remarkRemoveImports,
-      remarkRemoveImports,
-      remarkFrontmatter, // parse and attach yaml node
-      [remarkMdxFrontMatter] satisfies Pluggable,
-      remarkGfm as Pluggable,
-      remarkMath,
-      [
-        remarkMdxDisableExplicitJsx,
-        // Replace the <summary> and <details> with customized banner.tsx
-        { whiteList: ["details", "summary"] },
-      ] satisfies Pluggable,
-      remarkCustomHeadingId,
-      // remarkMdxTitle,
-      [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
-      // search && ([remarkStructurize, search] satisfies Pluggable),
-      [remarkStructurize, flexsearch] satisfies Pluggable,
-      // staticImage && remarkStaticImage,
-      [remarkEmbedImages, { dirname: "./posts" }],
-      // readingTime &&
-      remarkReadingTime,
-      // latex &&
-      remarkMath,
-      [
-        clonedRemarkLinkRewrite,
-        {
-          pattern: MARKDOWN_URL_EXTENSION_REGEX,
-          replace: "",
-          excludeExternalLinks: true,
-        },
-      ] satisfies Pluggable,
-      remarkRemoveImports,
-      // isFileOutsideCWD && remarkReplaceImports,
-    ],
-
-    rehypePlugins: [
-      // ...(rehypePlugins || []),
-      // [
-      //     rehypePrettyCode,
-      //     {
-      //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-      //         // ...rehypePrettyCodeOptions
-      //     }
-      // ] satisfies Pluggable,
-      [
-        // To render <details /> and <summary /> correctly
-        rehypeRaw,
-        // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
-        { passThrough: ["mdxjsEsm", "mdxJsxFlowElement"] },
-      ],
-      [rehypeIcon, rehypeAttachCodeMeta],
-      [rehypeParseCodeMeta, { defaultShowCopyCode }],
-      // [
-      //
-      //     !isRemoteContent && rehypeIcon,
-      //     rehypeAttachCodeMeta
-      // ],
-
-      // [
-      //
-      //     !isRemoteContent && rehypeIcon,
-      //     rehypeAttachCodeMeta
-      // ],
-      [rehypeKatex, latexOptions],
-      // (typeof latex === 'object'
-      //     ? latex.renderer === 'mathjax'
-      //         ? [rehypeBetterReactMathjax, latex.options, isRemoteContent]
-      //         : [rehypeKatex, latex.options]
-      //     : rehypeKatex),
-      // ...(codeHighlight === false
-      //     ? []
-      //     :),
-      // latex && rehypeKatex,
-      // codeHighlight !== false &&
-      // ([
-      //     rehypePrettyCode,
-      //     {
-      //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-      //         // ...rehypePrettyCodeOptions
-      //     }
-      // ] as any),
-      // attachMeta,
-      [
-        rehypeShiki,
-        {
-          theme: "github-dark",
-          // themes: { dark: 'github-dark', light: "github-light" }
-        },
-      ] satisfies Pluggable,
-      [rehypeExtractTocContent, { isRemoteContent }],
-    ],
-  };
-
-  return mdxOptions;
-}
-
-export async function compileMdx(
+export async function newCompileMdx(
   source: string,
   {
     staticImage,
@@ -189,14 +68,13 @@ export async function compileMdx(
     useCachedCompiler,
     isPageImport = true,
     isPageMapImport,
-  }: CompileMdxOptions = {},
-  frontMatter: any,
+  }: CompileMdxOptions,
 ) {
   const { jsx = false, format: _format = "mdx", outputFormat = "function-body", remarkPlugins, rehypePlugins, rehypePrettyCodeOptions }: MdxOptions = mdxOptions;
 
   const format = _format === "detect" ? (filePath.endsWith(".mdx") ? "mdx" : "md") : _format;
 
-  const fileCompatible: VFileCompatible = filePath ? { value: source, path: filePath } : source;
+  const fileCompatible = filePath ? { value: source, path: filePath } : source;
   if (isPageMapImport) {
     const compiler = createProcessor({
       format,
@@ -211,7 +89,6 @@ export async function compileMdx(
     const index = content.lastIndexOf("function _createMdxContent(props) {");
     const result = content.slice(0, index);
 
-    // console.log("isPageMapImport.result", result);
     return { result } as any;
   }
 
@@ -241,26 +118,10 @@ export async function compileMdx(
   const isRemoteContent = outputFormat === "function-body";
 
   const compiler = !useCachedCompiler || isRemoteContent ? createCompiler() : (cachedCompilerForFormat[format] ??= createCompiler());
-  // console.log("compiler", compiler)
   const processor = compiler();
-
-  // *****************************
-  try {
-    const vfile = new VFile(fileCompatible);
-    matter(vfile, { strip: true });
-    const compiledMdx = await myCustomCompile(vfile, getMdxOption(frontMatter));
-    let compiledSource = String(compiledMdx);
-    // console.log("compiledMdx", compiledSource);
-    return { result: compiledSource };
-  } catch (error: any) {
-    // throw createFormattedMDXError(error, String(vfile));
-  }
-  // *****************************
 
   try {
     const vFile = await processor.process(fileCompatible);
-    // console.log("vFile", vFile);
-    // console.log("vFile", JSON.stringify(vFile.data.toc));
 
     const data = vFile.data as {
       readingTime?: ReadingTime;
@@ -292,7 +153,6 @@ export async function compileMdx(
       ...(searchIndexKey !== null && { searchIndexKey, structurizedData }),
       frontMatter,
     };
-    return {};
   } catch (err) {
     console.error(`[nextra] Error compiling ${filePath}.`);
     throw err;
@@ -303,20 +163,20 @@ export async function compileMdx(
       jsx,
       format,
       outputFormat,
-      // providerImportSource: "thanhminh/mdx",
+      providerImportSource: "nextra/mdx",
       // Fix TypeError: _jsx is not a function for remote content
       development: process.env.NODE_ENV === "development",
       remarkPlugins: [
         ...(remarkPlugins || []),
         remarkMermaid, // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-        // [
-        //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-        //     {
-        //         packageName: 'nextra/banner.tsx',
-        //         tabNamesProp: 'items',
-        //         storageKey: 'selectedPackageManager'
-        //     }
-        // ] satisfies Pluggable,
+        [
+          remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
+          {
+            packageName: "nextra/components",
+            tabNamesProp: "items",
+            storageKey: "selectedPackageManager",
+          },
+        ] satisfies Pluggable,
         isRemoteContent && remarkRemoveImports,
         remarkFrontmatter, // parse and attach yaml node
         [remarkMdxFrontMatter] satisfies Pluggable,
@@ -324,7 +184,7 @@ export async function compileMdx(
         format !== "md" &&
           ([
             remarkMdxDisableExplicitJsx,
-            // Replace the <summary> and <details> with customized banner.tsx
+            // Replace the <summary> and <details> with customized components
             { whiteList: ["details", "summary"] },
           ] satisfies Pluggable),
         remarkCustomHeadingId,

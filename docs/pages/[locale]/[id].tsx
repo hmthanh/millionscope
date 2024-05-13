@@ -4,7 +4,7 @@ import path from "node:path";
 import type { ProcessorOptions } from "@mdx-js/mdx";
 import slash from "slash";
 import { FrontMatter, Heading, LoaderOptions, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
-import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
+import { CHUNKS_DIR, CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
 import { logger, truthy } from "@/server/utils";
 
 import { compileMdx } from "@/server/compile";
@@ -24,9 +24,12 @@ import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
 import { useConfig, useThemeConfig } from "@/contexts";
 import { MDXProvider, useMDXComponents } from "@/client/mdx";
 import * as mdx from "@mdx-js/react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { jsxRuntime } from "@mdx-remote/jsx-runtime";
 import { getComponents } from "@/theme/mdx";
+
+import { RemoteContent } from "@/client/components";
+import { MDXWrapper } from "@/components/layout/MDXWrapper";
 
 // import { useMDXComponents as _provideComponents } from "@/client/mdx";
 
@@ -40,7 +43,7 @@ interface PostProps {
   route: "";
   pageOpts: PageOpts<any>;
   pageProps: Heading[];
-  useTOC: UseTOC;
+  // useTOC: UseTOC;
   meta: string;
   // frontMatter: MDXFrontMatter;
   frontmatter: MDXFrontMatter; // Record<string, unknown>;
@@ -55,7 +58,15 @@ interface PostProps {
   next: MDXFrontMatter | null;
 }
 
-const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useTOC, meta, frontmatter, compiledSource, scope, mdx, previous, next, pageProps }) => {
+export function evaluate(compiledSource: string, scope: Record<string, unknown> = {}) {
+  const keys = Object.keys(scope);
+  const values = Object.values(scope);
+  const hydrateFn = Reflect.construct(Function, ["$", ...keys, compiledSource]);
+
+  return hydrateFn({ useMDXComponents, ...jsxRuntime }, ...values);
+}
+
+const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, meta, frontmatter, compiledSource, scope, mdx, previous, next, pageProps }) => {
   // const themeConfig = useThemeConfig();
 
   // const router = useRouter()
@@ -81,10 +92,14 @@ const Post: NextPage<PostProps> = ({ id, locale, route, pageOpts, useTOC, meta, 
     isRawLayout: themeContext.layout === "raw",
     components: themeConfig.components,
   });
+  const { default: MDXContent, useTOC } = evaluate(compiledSource, scope);
+  const headings: Heading[] = useTOC();
 
   return (
     <Page {...frontmatter}>
-      <MDXRemote compiledSource={compiledSource} scope={scope} frontmatter={frontmatter} components={components} />
+      <MDXWrapper toc={headings}>
+        <MDXContent components={components} />
+      </MDXWrapper>
     </Page>
   );
 };
@@ -121,13 +136,6 @@ interface IBlogPostProps {
 }
 
 export const getStaticProps = async (context: any) => {
-  //   const _components = {
-  //     a: "a",
-  //     code: "code",
-  //     sup: "sup",
-  //     ..._provideComponents(),
-  //   };
-
   const { id } = context.params as ContextProps;
   const postDir = path.resolve(CWD, DEFAULT_DIR);
   const { pageMap, imports } = await getAllMdxCustom({ dir: postDir, route: id, locale: "en" });
@@ -189,36 +197,42 @@ export const getStaticProps = async (context: any) => {
 
   const route = "/" + relativePath.replace(MARKDOWN_EXTENSION_REGEX, "").replace(/(^|\/)index$/, "");
 
-  const { result, title, _frontMatter, structurizedData, searchIndexKey, hasJsxInH1, readingTime } = await compileMdx(content, {
-    mdxOptions: {
-      ...mdxOptions,
-      jsx: true,
-      outputFormat: "program",
-      format: "detect",
+  const { result, title, _frontMatter, structurizedData, searchIndexKey, hasJsxInH1, readingTime } = await compileMdx(
+    content,
+    {
+      mdxOptions: {
+        ...mdxOptions,
+        jsx: true,
+        outputFormat: "program",
+        format: "detect",
+      },
+      readingTime: _readingTime,
+      defaultShowCopyCode,
+      staticImage,
+      search,
+      latex,
+      codeHighlight,
+      route,
+      locale,
+      filePath: mdxPath,
+      useCachedCompiler: true,
+      isPageImport,
+      isPageMapImport,
     },
-    readingTime: _readingTime,
-    defaultShowCopyCode,
-    staticImage,
-    search,
-    latex,
-    codeHighlight,
-    route,
-    locale,
-    filePath: mdxPath,
-    useCachedCompiler: true,
-    isPageImport,
-    isPageMapImport,
-  });
-  // console.log("searchIndexKey", searchIndexKey)
+    frontMatter,
+  );
   // console.log("\n\n\n result", result);
 
+  const readingTimeResult = readingTime != undefined ? readingTime : 0;
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {
     filePath: slash(path.relative(CWD, mdxPath)),
     hasJsxInH1: false,
     timestamp: 100,
-    readingTime,
+    readingTime: readingTimeResult,
   };
+  const stringifiedPageOpts = JSON.stringify(pageOpts).slice(0, -1);
+
   // const useToc: Heading[] = [
   //   {
   //     value: "Hello1",
@@ -248,22 +262,101 @@ export const getStaticProps = async (context: any) => {
   // mdxContent.scope;
   // mdxContent.frontmatter;
   // console.log("mdxContent", mdxContent);
-
   // console.log("mdxContent", mdxContent.compiledSource);
+  // console.log("result", result);
+  // console.log("mdxContent.compiledSource", mdxContent.compiledSource)]
+  const string2 = result.replace('import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";', "");
+  // console.log("finalResult", finalResult);
+  const rs = `
+"use strict";
+const { Fragment: _Fragment, jsx: _jsx, jsxs: _jsxs } = arguments[0];
+const { useMDXComponents: _provideComponents } = arguments[0];
+
+export const frontMatter = {};
+export function useTOC(props) {
+  return [{
+    value: "Hello",
+    id: "hello",
+    depth: 2
+  }, {
+    value: "Hello1",
+    id: "hello1",
+    depth: 2
+  }, {
+    value: "Hello2",
+    id: "hello2",
+    depth: 3
+  }, {
+    value: "Hello3",
+    id: "hello3",
+    depth: 4
+  }, {
+    value: "Hello4",
+    id: "hello4",
+    depth: 5
+  }];
+}
+function _createMdxContent(props) {
+  const _components = {
+    a: "a",
+    blockquote: "blockquote",
+    h2: "h2",
+    h3: "h3",
+    h4: "h4",
+    h5: "h5",
+    p: "p",
+    ...props.components
+  };
+  return _jsxs(_Fragment, {
+    children: [_jsx(_components.h2, {
+      id: "hello", children: "Hello"
+    }), _jsxs(_components.p, {
+      children: ["Lorem ipsum dolor sit amet ", _jsx(_components.a, {
+        href: "/",
+        children: "consectetur adipisicing"
+      }), " elit. Porro nobis consectetur debitis? In animi nobis soluta at esse et nihil, non aut dolorem, deserunt odio quasi sunt veritatis, nisi quam?"]
+    }), _jsx(_components.h2, {
+      id: "hello1", children: "Hello1"
+    }), _jsxs(_components.blockquote, {
+      children: [_jsx(_components.p, {
+        children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro nobis consectetur debitis? In animi nobis soluta at esse et nihil."
+      })]
+    }), _jsx(_components.h3, {
+      id: "hello2", children: "Hello2"
+    }), _jsx(_components.p, { children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro nobis consectetur debitis? In animi nobis soluta at esse et nihil, non aut dolorem, deserunt odio quasi sunt veritatis, nisi quam?" }), _jsx(_components.h4, {
+      id: "hello3", children: "Hello3"
+    }), _jsx(_components.p, { children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro nobis consectetur debitis? In animi nobis soluta at esse et nihil, non aut dolorem, deserunt odio quasi sunt veritatis, nisi quam?" }), _jsx(_components.h5, {
+      id: "hello4", children: "Hello4"
+    }), _jsx(_components.p, { children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro nobis consectetur debitis? In animi nobis soluta at esse et nihil, non aut dolorem, deserunt odio quasi sunt veritatis, nisi quam?" })]
+  });
+}
+export default function MDXContent(props = {}) {
+  const { wrapper: MDXLayout } = props.components || ({});
+  return MDXLayout ? _jsx(MDXLayout, {
+    ...props,
+    children: _jsx(_createMdxContent, { ...props })
+  }) : _createMdxContent(props);
+}
+return {
+    frontMatter,
+    useTOC,
+    default: MDXContent
+};
+`;
   return {
     props: {
       frontMatter,
       mdx: mdxContent,
-      compiledSource: mdxContent.compiledSource,
-      scope: mdxContent.scope,
-      frontmatter: mdxContent.frontmatter,
+      compiledSource: mdxContent.compiledSource, // mdxContent.compiledSource,
+      scope: {}, // mdxContent.scope,
+      frontmatter: {}, // mdxContent.frontmatter,
       previous: mdxFiles[postIndex + 1]?.frontMatter || null,
       next: mdxFiles[postIndex - 1]?.frontMatter || null,
       id: id,
       locale: locale,
       route: route,
       pageOpts,
-      useTOC: [],
+      // useTOC: [],
       // meta: "",
       // mdx: mdxContent,
       // previous: mdxFiles[postIndex + 1]?.frontMatter || null,

@@ -133,7 +133,7 @@ const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
 //     filterMetaString: meta => meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
 // }
 
-export async function myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex }: MyCompileMdxProps) {
+export async function newCompile({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex }: MyCompileMdxProps) {
   const {
     jsx = false,
     format: _format = "mdx",
@@ -148,6 +148,8 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
   const codeHighlight = true;
   const latexOptions: RehypeKatexOptions = {};
 
+  // TScope = Record<string, unknown>,
+  // TFrontmatter = Record<string, unknown>
   const mdxContent: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>> = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
@@ -161,7 +163,7 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
         //         storageKey: 'selectedPackageManager'
         //     }
         // ] satisfies Pluggable,
-        remarkRemoveImports,
+        // isRemoteContent && remarkRemoveImports,
         remarkFrontmatter, // parse and attach yaml node
         [remarkMdxFrontMatter] satisfies Pluggable,
         remarkGfm as Pluggable,

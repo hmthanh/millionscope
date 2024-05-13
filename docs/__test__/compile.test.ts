@@ -1,6 +1,6 @@
 import { VFile } from "vfile";
 import { describe, expect, it } from "vitest";
-import { compileMdx } from "@/server/compile";
+import { newCompileMdx as compileMdx } from "@/server/compile-source";
 
 const mdxOptions = {
   jsx: true,
@@ -53,12 +53,12 @@ export const TagName = () => {
       { mdxOptions },
     );
     expect(result).toMatch(`<_components.h1 id="test-id">{"My Header"}`);
-    // expect(result).toMatch(`<_components.h2 id="extra-space">{"Some extra space"}</_components.h2>`);
-    // expect(result).toMatch(`<_components.h3 id="extra-space-in-heading">{"Some extra space in heading"}`);
-    // expect(result).toMatch(`<_components.h3 id="without-space">{"nospace"}</_components.h3>`);
-    // expect(result).toMatch(`<_components.h4 id="другой-язык">{"foo"}`);
-    // expect(result).toMatch(`<_components.h5 id="bar-baz-">{"bar Baz []"}`);
-    // expect(result).toMatch(`<_components.h6 id="bar-qux-">{"bar Qux [#]"}`);
+    expect(result).toMatch(`<_components.h2 id="extra-space">{"Some extra space"}</_components.h2>`);
+    expect(result).toMatch(`<_components.h3 id="extra-space-in-heading">{"Some extra space in heading"}`);
+    expect(result).toMatch(`<_components.h3 id="without-space">{"nospace"}</_components.h3>`);
+    expect(result).toMatch(`<_components.h4 id="другой-язык">{"foo"}`);
+    expect(result).toMatch(`<_components.h5 id="bar-baz-">{"bar Baz []"}`);
+    expect(result).toMatch(`<_components.h6 id="bar-qux-">{"bar Qux [#]"}`);
   });
   // it("use github-slugger", async () => {
   //   const { result } = await compileMdx(`### My Header`, { mdxOptions });
