@@ -45,13 +45,13 @@ export const getAllMdx = ({ locale }: { locale: string }) => {
 };
 
 export const getAllMdxCustom = async ({ dir, route = "/", locale = "en", transformPageMap }: { dir: string; route?: string; locale?: string; transformPageMap?: NextraConfig["transformPageMap"] }) => {
-  const { pageMap, imports } = await collectFiles({
+  const { pageMap, imports, dynamicMetaImports } = await collectFiles({
     dir,
     route,
     isFollowingSymlink: false,
   });
 
-  return { pageMap, imports };
+  return { pageMap, imports, dynamicMetaImports };
 };
 
 // export const getAllMdxLocale = async () => {

@@ -1,26 +1,26 @@
-import {describe, expect, it} from "vitest";
-import {createCatchAllMeta} from "../../client/catch-all";
-import {collectCatchAllRoutes} from "../page-map-dynamic";
+import { describe, expect, it } from "vitest";
+import { createCatchAllMeta } from "@/client/catch-all";
+import { collectCatchAllRoutes } from "../page-map-dynamic";
 
-describe('collectCatchAllRoutes', () => {
-    it('should collect', () => {
-        const meta = {
-            data: createCatchAllMeta([
-                'configs.md',
-                'custom-rules.md',
-                'getting-started.md',
-                'getting-started/parser-options.md',
-                'getting-started/parser.md',
-                'getting-started/third-level/foo.md',
-                'index.md'
-            ])
-        }
-        const parent = {
-            name: 'nested',
-            route: '/remote/nested',
-            children: []
-        }
-        expect(collectCatchAllRoutes(parent, meta)).toMatchInlineSnapshot(`
+describe("collectCatchAllRoutes", () => {
+  it("should collect", () => {
+    const meta = {
+      data: createCatchAllMeta([
+        "configs.md",
+        "custom-rules.md",
+        "getting-started.md",
+        "getting-started/parser-options.md",
+        "getting-started/parser.md",
+        "getting-started/third-level/foo.md",
+        "index.md",
+      ]),
+    };
+    const parent = {
+      name: "nested",
+      route: "/remote/nested",
+      children: [],
+    };
+    expect(collectCatchAllRoutes(parent, meta)).toMatchInlineSnapshot(`
       {
         "children": [
           {
@@ -87,29 +87,29 @@ describe('collectCatchAllRoutes', () => {
         "name": "nested",
         "route": "/remote/nested",
       }
-    `)
-    })
+    `);
+  });
 
-    it('should not create MdxPage for "*" key', () => {
-        const meta = {
-            data: createCatchAllMeta([], {
-                '*': {
-                    type: 'page',
-                    display: 'hidden',
-                    theme: {
-                        layout: 'full',
-                        timestamp: false
-                    }
-                }
-            })
-        }
-        const parent = {
-            name: 'nested',
-            route: '/remote/nested',
-            children: [meta]
-        }
-        collectCatchAllRoutes(parent, meta)
-        expect(parent).toMatchInlineSnapshot(`
+  it('should not create MdxPage for "*" key', () => {
+    const meta = {
+      data: createCatchAllMeta([], {
+        "*": {
+          type: "page",
+          display: "hidden",
+          theme: {
+            layout: "full",
+            timestamp: false,
+          },
+        },
+      }),
+    };
+    const parent = {
+      name: "nested",
+      route: "/remote/nested",
+      children: [meta],
+    };
+    collectCatchAllRoutes(parent, meta);
+    expect(parent).toMatchInlineSnapshot(`
       {
         "children": [
           {
@@ -128,6 +128,6 @@ describe('collectCatchAllRoutes', () => {
         "name": "nested",
         "route": "/remote/nested",
       }
-    `)
-    })
-})
+    `);
+  });
+});

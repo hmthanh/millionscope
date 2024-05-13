@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
+import type { GetStaticProps, GetStaticPaths, NextPage, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
 import { NextraGlobalData, NextraInternalGlobal, PageMapItem } from "@/global/types";
 import { DEFAULT_LOCALE, NEXTRA_INTERNAL } from "@/global/constants";
@@ -9,8 +9,11 @@ import { getAllMdx } from "@/server/processing-mdx";
 import { Page } from "@/components/page";
 import { MDXFrontMatter, PostList } from "@/components/postlist";
 import { loader } from "@/server/loader";
+import { ICommonPageProps } from "@/global/customtypes";
 
-export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }) {
+interface IHome extends ICommonPageProps {}
+
+export default function Home({ tag, posts, locale }: { tag: string; posts: Array<MDXFrontMatter>; locale: string }): InferGetStaticPropsType<typeof getStaticProps> {
   return (
     <Page title="Posts" description="Lorem ipsum dolor sit amet consectetur adipisicing elit.">
       <PostList posts={posts} locale={locale} />
@@ -19,8 +22,6 @@ export default function Home({ tag, posts, locale }: { tag: string; posts: Array
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // Layout: undefined, context: undefined,
-  const globalData: NextraGlobalData = { context: {}, pageMap: [], route: "", themeConfig: {} };
   // const cwd = process.cwd();
   // const filePath = path.join(cwd, "posts/hello-world.mdx")
   // console.log("filePath", filePath)
@@ -47,9 +48,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const mdxFiles = getAllMdx({ locale: "vn" }).map((post) => post["frontMatter"]);
   return {
     props: {
-      globalData: {},
-      posts: mdxFiles,
       locale: "vn",
+      route: "/",
+      posts: mdxFiles,
     },
   };
 };

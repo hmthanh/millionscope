@@ -158,7 +158,7 @@ function getImportPath(filePath: string) {
   return slash(path.relative(CHUNKS_DIR, filePath));
 }
 
-function convertPageMapToAst(pageMap: PageMapItem[]): ArrayExpression {
+export function convertPageMapToAst(pageMap: PageMapItem[]): ArrayExpression {
   const elements = pageMap.map((item) => {
     if ("children" in item) {
       return createAstObject({

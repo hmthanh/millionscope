@@ -24,63 +24,12 @@ type IPageMeta = {
 //     };
 // }
 
-interface IMainLayoutProps extends AppProps {
-  toc: Heading[];
-}
-
-export default function App({ Component, pageProps, toc }: IMainLayoutProps) {
+export default function App({ Component, pageProps }: AppProps) {
   const themeConfig = useThemeConfig();
+  const pageOpts: PageOpts = pageProps.pageOpts ? pageProps.pageOpts : {};
+  console.log("pageProps", pageProps);
+  // const pageOpts: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
   // console.log("pageProps", pageProps);
-
-  const router = useRouter();
-
-  // console.log("pageProps", pageProps);
-  // console.log("toc", toc);
-  // console.log("useTO AppC", useTOC);
-  // const {asPath, query} = router
-
-  // const slug = asPath.split('/')[1]
-  // const langSlug = languages.includes(slug) && slug
-  // const language = query.lang || langSlug || defaultLanguage
-  const pageOpts: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
-  // (props: Record<string, any>) => Heading[];
-  // const useToc: Heading[] = [
-  //   {
-  //     value: "Hello1",
-  //     id: "hello1",
-  //     depth: 2,
-  //   },
-  //   {
-  //     value: "Hello2",
-  //     id: "hello2",
-  //     depth: 3,
-  //   },
-  //   {
-  //     value: "Hello3",
-  //     id: "hello3",
-  //     depth: 4,
-  //   },
-  //   {
-  //     value: "Hello4",
-  //     id: "hello4",
-  //     depth: 5,
-  //   },
-  // ];
-  // : UseTOC = (props) =>
-  // const pageProps = {};
-
-  // if (!useToc) {
-  //   console.log("go here", useToc);
-  //   return (
-  //     <Layout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
-  //       <DataProvider value={pageProps}>
-  //         {/*<MDXWrapper useTOC={useToc}>*/}
-  //         <Component {...pageProps} />
-  //         {/*</MDXWrapper>*/}
-  //       </DataProvider>
-  //     </Layout>
-  //   );
-  // }
 
   return (
     <ThemeLayout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>

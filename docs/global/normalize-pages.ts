@@ -68,7 +68,7 @@ export type MenuItem = (MdxFile | FolderWithoutChildren) &
     children?: PageItem[];
   };
 
-type DocsItem = (MdxFile | FolderWithoutChildren) & {
+export type DocsItem = (MdxFile | FolderWithoutChildren) & {
   title: string;
   type: string;
   children?: DocsItem[];
@@ -87,7 +87,7 @@ function findFirstRoute(items: DocsItem[]): string | undefined {
   }
 }
 
-type NormalizedResult = {
+export type NormalizedResult = {
   activeType?: string;
   activeIndex: number;
   activeThemeContext: PageTheme;
