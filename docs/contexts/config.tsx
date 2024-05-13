@@ -12,8 +12,10 @@ type Config<FrontMatterType = FrontMatter> = Pick<PageOpts<FrontMatterType>, "ti
 };
 
 const ConfigContext = createContext<Config>({
-  title: "",
-  frontMatter: {},
+  title: "Sample context",
+  frontMatter: {
+    title: "Sample title name",
+  },
   filePath: "",
   hideSidebar: false,
   normalizePagesResult: {} as ReturnType<typeof normalizePages>,

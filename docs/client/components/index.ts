@@ -1,3 +1,5 @@
+import { Wrapper } from "@/client/components/wrapper";
+
 export { Button } from "./button";
 export { Callout } from "./callout";
 export { CopyToClipboard } from "./copy-to-clipboard";
@@ -12,5 +14,7 @@ export { Tr } from "./tr";
 export { Cards, Card } from "./cards";
 export { FileTree } from "./file-tree";
 // export { Mermaid } from "@theguild/remark-mermaid/mermaid"
+
+export { Wrapper } from "./wrapper";
 
 export { RemoteContent } from "./remote-content";

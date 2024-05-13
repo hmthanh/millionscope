@@ -71,38 +71,6 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => (
 
 const A = ({ href = "", ...props }) => <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />;
 
-const classes = {
-  toc: cn("nextra-toc nx-order-last max-xl:nx-hidden nx-w-64 nx-shrink-0 print:nx-hidden"),
-  main: cn("nx-w-full nx-break-words"),
-};
-
-export function Wrapper({ toc, children }: { toc: Heading[]; children: ReactNode }) {
-  const config = useConfig();
-  const themeConfig = useThemeConfig();
-  // toc = [];
-  const { activeType, activeThemeContext: themeContext, docsDirectories, directories } = config.normalizePagesResult;
-
-  const tocEl =
-    activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? (
-      themeContext.layout !== "full" && themeContext.layout !== "raw" && <nav className={classes.toc} aria-label="table of contents" />
-    ) : (
-      <nav className={cn(classes.toc, "nx-px-4")} aria-label="table of contents">
-        {renderComponent(themeConfig.toc.component, {
-          toc: themeConfig.toc.float ? toc : [],
-          filePath: config.filePath,
-        })}
-      </nav>
-    );
-  return (
-    <div className={cn("nx-mx-auto nx-flex", themeContext.layout !== "raw" && "nx-max-w-[90rem]")}>
-      <Sidebar docsDirectories={docsDirectories} fullDirectories={directories} toc={toc} asPopover={config.hideSidebar} includePlaceholder={themeContext.layout === "default"} />
-      {tocEl}
-      <SkipNavContent />
-      <Body>{children}</Body>
-    </div>
-  );
-}
-
 export const DEFAULT_COMPONENTS = {
   img: (props: any) => createElement(typeof props.src === "object" ? Image : "img", props as ImageProps),
   h1: ({ ...props }: ComponentProps<"h1">) => <h1 className="nx-mt-2 nx-text-4xl nx-font-bold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100" {...props} />,

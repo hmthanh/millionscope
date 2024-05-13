@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from "react";
 import { Heading, UseTOC } from "@/global/types";
 import { useMDXComponents } from "@/client/mdx";
-import { Wrapper } from "@/theme/mdx";
+import { Wrapper } from "@/client/components";
 
 export function MDXWrapper({ children, toc }: { children: ReactNode; toc: Heading[] }): ReactElement {
   const { wrapper } = useMDXComponents();

@@ -183,84 +183,84 @@ function convertPageMapToAst(pageMap: PageMapItem[]): ArrayExpression {
   return { type: "ArrayExpression", elements };
 }
 
-// export async function collectPageMap({
-//   dir,
-//   route = "/",
-//   locale = "",
-//   transformPageMap,
-// }: {
-//   dir: string;
-//   route?: string;
-//   locale?: string;
-//   transformPageMap?: NextraConfig["transformPageMap"];
-// }): Promise<string> {
-//   const { pageMap, imports, dynamicMetaImports } = await collectFiles({
-//     dir,
-//     route,
-//     isFollowingSymlink: false,
-//   });
-//
-//   const pageMapAst = convertPageMapToAst(transformPageMap ? transformPageMap(pageMap, locale) : pageMap);
-//
-//   const metaImportsAST: ImportDeclaration[] = imports
-//     // localeCompare to avoid race condition
-//     .sort((a, b) => a.filePath.localeCompare(b.filePath))
-//     .map(({ filePath, importName }) => ({
-//       type: "ImportDeclaration",
-//       source: { type: "Literal", value: getImportPath(filePath) },
-//       specifiers: [
-//         {
-//           local: { type: "Identifier", name: importName },
-//           ...(IMPORT_FRONTMATTER && MARKDOWN_EXTENSION_REGEX.test(filePath)
-//             ? {
-//                 type: "ImportSpecifier",
-//                 imported: { type: "Identifier", name: "frontMatter" },
-//               }
-//             : { type: "ImportDefaultSpecifier" }),
-//         },
-//       ],
-//     }));
-//
-//   const body: Parameters<typeof toJs>[0]["body"] = [...metaImportsAST, createAstExportConst("pageMap", pageMapAst)];
-//   let footer = "";
-//
-//   if (dynamicMetaImports.length) {
-//     body.push({
-//       type: "VariableDeclaration",
-//       kind: "const",
-//       declarations: [
-//         {
-//           type: "VariableDeclarator",
-//           id: { type: "Identifier", name: "dynamicMetaModules" },
-//           init: {
-//             type: "ObjectExpression",
-//             properties: dynamicMetaImports
-//               // localeCompare to avoid race condition
-//               .sort((a, b) => a.route.localeCompare(b.route))
-//               .map(({ importName, route }) => ({
-//                 ...DEFAULT_PROPERTY_PROPS,
-//                 key: { type: "Literal", value: route },
-//                 value: { type: "Identifier", name: importName },
-//               })),
-//           },
-//         },
-//       ],
-//     });
-//
-//     footer = `
-// import { resolvePageMap } from 'nextra/page-map-dynamic'
-//
-// if (typeof window === 'undefined') {
-//   globalThis.__nextra_resolvePageMap ||= Object.create(null)
-//   globalThis.__nextra_resolvePageMap['${locale}'] = resolvePageMap('${locale}', dynamicMetaModules)
-// }`;
-//   }
-//
-//   const result = toJs({
-//     type: "Program",
-//     sourceType: "module",
-//     body,
-//   });
-//
-//   return `${result.value}${footer}`.trim();
-// }
+export async function collectPageMap({
+  dir,
+  route = "/",
+  locale = "",
+  transformPageMap,
+}: {
+  dir: string;
+  route?: string;
+  locale?: string;
+  transformPageMap?: NextraConfig["transformPageMap"];
+}): Promise<string> {
+  const { pageMap, imports, dynamicMetaImports } = await collectFiles({
+    dir,
+    route,
+    isFollowingSymlink: false,
+  });
+
+  const pageMapAst = convertPageMapToAst(transformPageMap ? transformPageMap(pageMap, locale) : pageMap);
+
+  const metaImportsAST: ImportDeclaration[] = imports
+    // localeCompare to avoid race condition
+    .sort((a, b) => a.filePath.localeCompare(b.filePath))
+    .map(({ filePath, importName }) => ({
+      type: "ImportDeclaration",
+      source: { type: "Literal", value: getImportPath(filePath) },
+      specifiers: [
+        {
+          local: { type: "Identifier", name: importName },
+          ...(IMPORT_FRONTMATTER && MARKDOWN_EXTENSION_REGEX.test(filePath)
+            ? {
+                type: "ImportSpecifier",
+                imported: { type: "Identifier", name: "frontMatter" },
+              }
+            : { type: "ImportDefaultSpecifier" }),
+        },
+      ],
+    }));
+
+  const body: Parameters<typeof toJs>[0]["body"] = [...metaImportsAST, createAstExportConst("pageMap", pageMapAst)];
+  let footer = "";
+
+  if (dynamicMetaImports.length) {
+    body.push({
+      type: "VariableDeclaration",
+      kind: "const",
+      declarations: [
+        {
+          type: "VariableDeclarator",
+          id: { type: "Identifier", name: "dynamicMetaModules" },
+          init: {
+            type: "ObjectExpression",
+            properties: dynamicMetaImports
+              // localeCompare to avoid race condition
+              .sort((a, b) => a.route.localeCompare(b.route))
+              .map(({ importName, route }) => ({
+                ...DEFAULT_PROPERTY_PROPS,
+                key: { type: "Literal", value: route },
+                value: { type: "Identifier", name: importName },
+              })),
+          },
+        },
+      ],
+    });
+
+    footer = `
+import { resolvePageMap } from 'nextra/page-map-dynamic'
+
+if (typeof window === 'undefined') {
+  globalThis.__nextra_resolvePageMap ||= Object.create(null)
+  globalThis.__nextra_resolvePageMap['${locale}'] = resolvePageMap('${locale}', dynamicMetaModules)
+}`;
+  }
+
+  const result = toJs({
+    type: "Program",
+    sourceType: "module",
+    body,
+  });
+
+  return `${result.value}${footer}`.trim();
+}

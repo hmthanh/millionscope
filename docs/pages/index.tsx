@@ -29,8 +29,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // const dir = "posts"
   // const mdxFile = await collectFiles({ dir: dir })
   // console.log("mdxFile", mdxFile)
-  // const __nextra_resolvePageMap = ((globalThis as Record<string, any>)["__nextra_resolvePageMap"] ||= Object.create({ hello: "Thanh" }));
-  // const __nextra_internal__ = ((globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL] ||= Object.create({ hello: "Thanh" }));
 
   // console.log("__nextra_resolvePageMap", __nextra_resolvePageMap)
   // console.log("__nextra_internal__.getStaticProps", __nextra_internal__)

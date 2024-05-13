@@ -34,7 +34,6 @@ export function RemoteContent({
   scope?: Record<string, unknown>;
 }) {
   const { default: MDXContent } = evaluate(compiledSource, scope);
-  console.log("go2 ");
 
   return <MDXContent components={components} />;
 }
