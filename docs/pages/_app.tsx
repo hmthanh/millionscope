@@ -2,40 +2,53 @@ import "@/styles/globals.css";
 import "@/styles/styles.css";
 import "@/styles/custom.css";
 import "katex/dist/katex.min.css";
-import type { AppContext, AppProps } from "next/app";
-import ThemeLayout from "@/components/layout/themeLayout";
+import type { AppProps } from "next/app";
 
 import "@/styles/new.css";
-import { Heading, NextraInternalGlobal, PageOpts, UseTOC } from "@/global/types";
 import { ConfigProvider, ThemeConfigProvider, useThemeConfig } from "@/contexts";
-import { MDXWrapper } from "@/components/layout/MDXWrapper";
-import { DataProvider } from "@/client/hooks/use-data";
-import { useRouter } from "next/router";
+import { useRouter } from "@/client/hooks";
+
 // import {useRouter} from "next/router";
 
-type IPageMeta = {
+interface IPageMeta extends AppProps {
   title: string;
   // age: number
-};
+}
 
-// interface Window {
-//     globalData: {
-//         title: IPageMeta;
-//     };
-// }
-
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: IPageMeta) {
   const themeConfig = useThemeConfig();
-  const pageOpts: PageOpts = pageProps.pageOpts ? pageProps.pageOpts : {};
-  console.log("pageProps", pageProps);
-  // const pageOpts: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
+  const router = useRouter();
+
+  // const pageOptsDefault: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
+  // const pageOpts: PageOpts = pageProps.pageOpts ? pageProps.pageOpts : pageOptsDefault;
+  // const pageOpts: PageOpts = useMemo(() => pageProps.pageOpts, [pageProps.pageOpts]);
   // console.log("pageProps", pageProps);
+  // console.log("router", router)
+  if ("pageOpts" in pageProps) {
+    return (
+      <ThemeConfigProvider value={themeConfig}>
+        <ConfigProvider value={pageProps.pageOpts}>
+          <Component {...pageProps} />
+        </ConfigProvider>
+      </ThemeConfigProvider>
+    );
+  }
 
   return (
-    <ThemeLayout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
-      <DataProvider value={pageProps}>
-        <Component {...pageProps} />
-      </DataProvider>
-    </ThemeLayout>
+    <ThemeConfigProvider value={themeConfig}>
+      {/*<ConfigProvider value={pageProps.pageOpts}>*/}
+      <Component {...pageProps} />
+      {/*</ConfigProvider>*/}
+    </ThemeConfigProvider>
   );
 }
+
+// App.getInitialProps = async (ctx: NextPageContext) => {
+//   // const res = await fetch("https://api.github.com/repos/vercel/next.js");
+//   // const json = await res.json();
+//   // return { stars: json.stargazers_count };
+//   console.log("App");
+//   return {
+//     sample: "hello",
+//   };
+// };

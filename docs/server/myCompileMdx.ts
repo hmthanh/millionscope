@@ -38,7 +38,7 @@ import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
 // @ts-ignore
 import type { Processor } from "@mdx-js/mdx/lib/core";
 import { rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "@/server/rehype-plugins";
-import { MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
+import { MARKDOWN_URL_EXTENSION_REGEX, PUBLIC_DIR } from "@/server/constants";
 import { bundledLanguages, getHighlighter } from "shiki";
 import rehypeShiki from "@shikijs/rehype";
 import { MDXRemoteSerializeResult } from "@mdx-remote";
@@ -177,7 +177,7 @@ export async function myCompileMdx({ content, frontMatter, isRemoteContent, flex
         // search && ([remarkStructurize, search] satisfies Pluggable),
         [remarkStructurize, flexsearch] satisfies Pluggable,
         // staticImage && remarkStaticImage,
-        [remarkEmbedImages, { dirname: "./posts" }],
+        [remarkEmbedImages, { dirname: PUBLIC_DIR }],
         // readingTime &&
         remarkReadingTime,
         // latex &&

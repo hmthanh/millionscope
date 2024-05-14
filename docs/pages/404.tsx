@@ -1,8 +1,6 @@
-import {Page} from "@/components/page";
-import {NotFoundPage} from "@/theme/components/404";
+import { NextSEOHead } from "@/components/nextSEOHead";
+import { NotFoundPage } from "@/theme/components/404";
 
 export default function NotFound404Page() {
-    return (
-        <NotFoundPage/>
-    );
+  return <NotFoundPage />;
 }

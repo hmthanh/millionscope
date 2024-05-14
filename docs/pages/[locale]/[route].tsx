@@ -1,38 +1,27 @@
 "use client";
 
-import type { ProcessorOptions } from "@mdx-js/mdx";
 import slash from "slash";
-import { DynamicFolder, DynamicMetaItem, Folder, FrontMatter, Heading, LoaderOptions, MdxFile, Meta, NextraInternalGlobal, PageMapItem, PageOpts, UseTOC } from "@/global/types";
-import { CHUNKS_DIR, CWD, DEFAULT_LOCALE, DEFAULT_PROPERTY_PROPS, ERROR_ROUTES, IMPORT_FRONTMATTER, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
-import { createAstExportConst, logger, truthy } from "@/server/utils";
+import { Folder, Heading, PageMapItem, PageOpts } from "@/global/types";
+import { CHUNKS_DIR, CWD, DEFAULT_POST_DIR } from "@/server/constants";
+import { logger } from "@/server/utils";
 
 import { compileMdx } from "@/server/compile";
 
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { serialize } from "@mdx-remote/serialize";
-import { MDXRemote } from "@mdx-remote";
 // import rehypePrism from "rehype-prism-plus";
-import { getAllMdx, getAllMdxCustom } from "@/server/processing-mdx";
-import { MDXFrontMatter } from "@/components/postlist";
-import { Page } from "@/components/page";
+import { collectAllPageRoute, getAllMdx, getAllMdxCustom } from "@/server/processing-mdx";
+import { NextSEOHead } from "@/components/nextSEOHead";
 import { PAGES_DIR } from "@/server/file-system";
-import { MARKDOWN_EXTENSION_REGEX } from "@/client/contants";
 import { myCompileMdx } from "@/server/myCompileMdx";
-import { DEFAULT_DIR, NEXTRA_INTERNAL } from "@/global/constants";
 import { useConfig, useThemeConfig } from "@/contexts";
 import { useMDXComponents } from "@/client/mdx";
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { jsxRuntime } from "@mdx-remote/jsx-runtime";
 import { getComponents } from "@/theme/mdx";
 
 import { MDXWrapper } from "@/components/layout/MDXWrapper";
-import { ImportDeclaration } from "estree";
-import { useRouter } from "@/client/hooks";
-import { collectCatchAllRoutes, processingPagemap } from "@/server/processing-pagemap";
-import { convertPageMapToAst } from "@/server/page-map";
 import path from "path";
-import { toJs } from "estree-util-to-js";
 import { ICommonPageProps } from "@/global/customtypes";
 
 interface ContextProps extends ParsedUrlQuery {
@@ -51,8 +40,6 @@ interface PostProps extends ICommonPageProps {
   scope: Record<string, unknown>;
 }
 
-const postDir = path.resolve(CWD, DEFAULT_DIR);
-
 export function evaluate(compiledSource: string, scope: Record<string, unknown> = {}) {
   const keys = Object.keys(scope);
   const values = Object.values(scope);
@@ -61,7 +48,7 @@ export function evaluate(compiledSource: string, scope: Record<string, unknown> 
   return hydrateFn({ useMDXComponents, ...jsxRuntime }, ...values);
 }
 
-const Post: NextPage<PostProps> = ({ route: string, locale, pageOpts, meta, compiledSource, scope }) => {
+const Post: NextPage<PostProps> = ({ route: string, locale, pageOpts, meta, compiledSource, scope, ...pageProps }) => {
   const themeConfig = useThemeConfig();
   const config = useConfig();
   const { direction } = themeConfig.i18n.find((l) => l.locale === locale) || themeConfig;
@@ -76,11 +63,11 @@ const Post: NextPage<PostProps> = ({ route: string, locale, pageOpts, meta, comp
   const headings: Heading[] = useTOC();
 
   return (
-    <Page {...pageOpts.frontMatter}>
+    <NextSEOHead {...pageOpts.frontMatter}>
       <MDXWrapper toc={headings}>
         <MDXContent components={components} />
       </MDXWrapper>
-    </Page>
+    </NextSEOHead>
   );
 };
 
@@ -88,138 +75,69 @@ const Post: NextPage<PostProps> = ({ route: string, locale, pageOpts, meta, comp
 //   return !!value && typeof value === "object" && value.type === "folder";
 // }
 
+/*
+ * Use relative path instead of absolute, because it's fails on Windows
+ * https://github.com/nodejs/node/issues/31710
+ */
+function getImportPath(filePath: string) {
+  return slash(path.relative(CHUNKS_DIR, filePath));
+}
+
 interface PageRouteItem {
-  params: { locale: string; id: string };
+  params: { locale: string; route: string };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: postDir, route: "/", locale: "" });
+  const { pageMap, imports, dynamicMetaImports } = await collectAllPageRoute();
+  // const metaImportsAST: ImportDeclaration[] = imports
+  //   // localeCompare to avoid race condition
+  //   .sort((a, b) => a.filePath.localeCompare(b.filePath))
+  //   .map(({ filePath, importName }) => ({
+  //     type: "ImportDeclaration",
+  //     source: { type: "Literal", value: getImportPath(filePath) },
+  //     specifiers: [
+  //       {
+  //         local: { type: "Identifier", name: importName },
+  //         ...(IMPORT_FRONTMATTER && MARKDOWN_EXTENSION_REGEX.test(filePath)
+  //           ? {
+  //               type: "ImportSpecifier",
+  //               imported: { type: "Identifier", name: "frontMatter" },
+  //             }
+  //           : { type: "ImportDefaultSpecifier" }),
+  //       },
+  //     ],
+  //   }));
 
-  const pageMap: PageMapItem[] = [
-    {
-      name: "en",
-      route: "/en",
-      children: [
-        {
-          name: "diffusion-models",
-          route: "/en/diffusion-models",
-          frontMatter: {
-            title: "What are Diffusion Models?",
-            description: "What are Diffusion Models?",
-            date: "2022-01-15 11:00:00",
-            comments: true,
-            mathjax: true,
-            tags: ["diffusion"],
-          },
-        },
-        {
-          name: "hello-world",
-          route: "/en/hello-world",
-          frontMatter: {
-            title: "Hello World",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, ex!",
-            date: "2022-01-15",
-            tags: ["css"],
-          },
-        },
-      ],
-    },
-    {
-      name: "vn",
-      route: "/vn",
-      children: [
-        {
-          name: "diffusion-models",
-          route: "/vn/diffusion-models",
-          frontMatter: {
-            title: "What are Diffusion Models?",
-            description: "What are Diffusion Models?",
-            date: "2022-01-15 11:00:00",
-            comments: true,
-            mathjax: true,
-            tags: ["diffusion"],
-          },
-        },
-        {
-          name: "get-started",
-          route: "/vn/get-started",
-          frontMatter: {
-            title: "Get Started",
-            description: "You can start by creating your own Nextra site and deploying to Vercel",
-            date: "2022-01-15",
-            tags: ["css"],
-          },
-        },
-        {
-          name: "hello-world",
-          route: "/vn/hello-world",
-          frontMatter: {
-            title: "Hello world",
-            description: "Sample of hello world version using nextras",
-            date: "2024-06-15",
-            tags: ["hello", "world"],
-          },
-        },
-      ],
-    },
-  ];
-  // const mdxFiles = getAllMdx({ locale: "vn" });
+  const locale = "en";
+  // const rs = await fetchAllPageRoute(locale);
+  // const abc = await rs();
+  // const globalInternal = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
+
   const pageParams: PageRouteItem[] = [];
+  // console.log("pageMap", pageMap);
 
   pageMap.map((page: PageMapItem) => {
     const pageItem = page as Folder;
     pageItem.children.map((item: PageMapItem) => {
-      const fileItem = item as MdxFile;
-
-      pageParams.push({ params: { locale: pageItem.name, id: fileItem.name } });
+      if ("frontMatter" in item) {
+        pageParams.push({ params: { locale: pageItem.name, route: item.route } });
+      }
     });
   });
+
   // console.log("pageParams", pageParams);
-  // pageMap.map((page: PageMapItem) => {
-  //   const folder = page as Folder<PageMapItem>;
-  //   // const locale = folder.route.replace("/", "");
-  //   // const id = "";
-  //   //
-  //   // folder.children.map((item: PageMapItem) => {
-  //   //   const fileItem = item as MdxFile;
-  //   //
-  //   //   // return {
-  //   //   //   locale: locale,
-  //   //   //   id: fileItem.name,
-  //   //   // };
-  //   // })
-  // });
 
   return {
-    // paths: [
-    //   {
-    //     params: {
-    //       locale: "vn",
-    //       id: "hello-world",
-    //     },
-    //   },
-    //   {
-    //     params: {
-    //       locale: "vn",
-    //       id: "diffusion-models",
-    //     },
-    //   },
-    // ],
-    paths: [
-      { params: { locale: "en", route: "diffusion-models" } },
-      { params: { locale: "en", route: "hello-world" } },
-      { params: { locale: "vn", route: "diffusion-models" } },
-      { params: { locale: "vn", route: "get-started" } },
-      { params: { locale: "vn", route: "hello-world" } },
-    ],
+    paths: [{ params: { locale: "en", route: "hello-world" } }, { params: { locale: "vn", route: "hello-world" } }],
+    // paths: pageParams,
     fallback: false,
   };
 };
 
 export const getStaticProps = async (context: any) => {
   const { route, locale } = context.params as ContextProps;
-
-  const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: postDir, route: "/", locale: "" });
+  // collectCatchAllRoutes();
+  const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: DEFAULT_POST_DIR, route: route, locale: locale });
 
   // console.log("pageMap", JSON.stringify(pageMap));
   // console.log("imports", imports);
@@ -300,17 +218,20 @@ export const getStaticProps = async (context: any) => {
     frontMatter,
   );
 
+  const ss = pageMap;
   const readingTimeResult = readingTime != undefined ? readingTime : 0;
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {
     pageMap: pageMap || {},
-    title: title,
+    title: title || "",
     frontMatter: frontMatter || {},
     filePath: slash(path.relative(CWD, mdxPath)),
     hasJsxInH1: false,
     timestamp: 100,
     readingTime: readingTimeResult,
   };
+
+  // console.log("pageMap", pageMap)
 
   // const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex });
   const mdxContent = await myCompileMdx({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex });

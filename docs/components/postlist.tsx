@@ -28,6 +28,7 @@ interface PostListProps {
 }
 
 export const PostList: FC<PostListProps> = ({ posts, locale }) => {
+  // console.log("locale", locale)
   return (
     <ul className={cn("nx-divide-y nx--my-8", "nx-divide-gray-200", "dark:nx-divide-gray-700")}>
       {posts.map((post: any, index: number) => {

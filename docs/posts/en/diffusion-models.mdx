@@ -18,7 +18,7 @@ Flow models have to use specialized architectures to construct reversible transf
 
 Diffusion models are inspired by non-equilibrium thermodynamics. They define a Markov chain of diffusion steps to slowly add random noise to data and then learn to reverse the diffusion process to construct desired data samples from the noise. Unlike VAE or flow models, diffusion models are learned with a fixed procedure and the latent variable has high dimensionality (same as the original data).
 
-![](./posts/img/diffusion-models/generative-overview.png)
+![](./img/diffusion-models/generative-overview.png)
 
 Fig. 1. Overview of different types of generative models.
 
@@ -34,7 +34,7 @@ $$
 
 The data sample $\mathbf{x}_0$ gradually loses its distinguishable features as the step $t$ becomes larger. Eventually when $T \to \infty$, $\mathbf{x}_T$ is equivalent to an isotropic Gaussian distribution.
 
-![](./posts/img/diffusion-models/DDPM.png)
+![](./img/diffusion-models/DDPM.png)
 
 Fig. 2. The Markov chain of forward (reverse) diffusion process of generating a sample by slowly adding (removing) noise. (Image source: [Ho et al. 2020](https://arxiv.org/abs/2006.11239) with a few additional annotations)
 
@@ -68,7 +68,7 @@ $$
 p_\theta(\mathbf{x}_{0:T}) = p(\mathbf{x}_T) \prod^T_{t=1} p_\theta(\mathbf{x}_{t-1} \vert \mathbf{x}_t) \quad p_\theta(\mathbf{x}_{t-1} \vert \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \boldsymbol{\mu}_\theta(\mathbf{x}_t, t), \boldsymbol{\Sigma}_\theta(\mathbf{x}_t, t))
 $$
 
-![](./posts/img/diffusion-models/diffusion-example.png)
+![](./img/diffusion-models/diffusion-example.png)
 
 Fig. 3. An example of training a diffusion model for modeling a 2D swiss roll data. (Image source: [Sohl-Dickstein et al., 2015](https://arxiv.org/abs/1503.03585))
 
@@ -197,7 +197,7 @@ $$
 
 where $C$ is a constant not depending on $\theta$.
 
-![](./posts/img/diffusion-models/DDPM-algo.png)
+![](./img/diffusion-models/DDPM-algo.png)
 
 Fig. 4. The training and sampling algorithms in DDPM (Image source: [Ho et al. 2020](https://arxiv.org/abs/2006.11239))
 
@@ -233,7 +233,7 @@ $$
 
 where the small offset $s$ is to prevent $\beta_t$ from being too small when close to $t=0$.
 
-![](./posts/img/diffusion-models/diffusion-beta.png)
+![](./img/diffusion-models/diffusion-beta.png)
 
 Fig. 5. Comparison of linear and cosine-based scheduling of $\beta_t$ during training. (Image source: [Nichol & Dhariwal, 2021](https://arxiv.org/abs/2102.09672))
 
@@ -249,7 +249,7 @@ $$
 
 However, the simple objective $L_\text{simple}$ does not depend on $\boldsymbol{\Sigma}_\theta$ . To add the dependency, they constructed a hybrid objective $L_\text{hybrid} = L_\text{simple} + \lambda L_\text{VLB}$ where $\lambda=0.001$ is small and stop gradient on $\boldsymbol{\mu}_\theta$ in the $L_\text{VLB}$ term such that $L_\text{VLB}$ only guides the learning of $\boldsymbol{\Sigma}_\theta$. Empirically they observed that $L_\text{VLB}$ is pretty challenging to optimize likely due to noisy gradients, so they proposed to use a time-averaging smoothed version of $L_\text{VLB}$ with importance sampling.
 
-![](./posts/img/diffusion-models/improved-DDPM-nll.png)
+![](./img/diffusion-models/improved-DDPM-nll.png)
 
 Fig. 6. Comparison of negative log-likelihood of improved DDPM with other likelihood-based generative models. NLL is reported in the unit of bits/dim. (Image source: [Nichol & Dhariwal, 2021](https://arxiv.org/abs/2102.09672))
 
@@ -290,7 +290,7 @@ $$
 
 While all the models are trained with $T=1000$ diffusion steps in the experiments, they observed that DDIM ($\eta=0$) can produce the best quality samples when $S$ is small, while DDPM ($\eta=1$) performs much worse on small $S$. DDPM does perform better when we can afford to run the full reverse Markov diffusion steps ($S=T=1000$). With DDIM, it is possible to train the diffusion model up to any arbitrary number of forward steps but only sample from a subset of steps in the generative process.
 
-![](./posts/img/diffusion-models/DDIM-results.png)
+![](./img/diffusion-models/DDIM-results.png)
 
 Fig. 7. FID scores on CIFAR10 and CelebA datasets by diffusion models of different settings, including $\color{cyan}{\text{DDIM}}$ ($\eta=0$) and $\color{orange}{\text{DDPM}}$ ($\hat{\sigma}$). (Image source: [Song et al., 2020](https://arxiv.org/abs/2010.02502))
 
@@ -302,7 +302,7 @@ Compared to DDPM, DDIM is able to:
 
 _Latent diffusion model_ (**LDM**; [Rombach & Blattmann, et al. 2022](https://arxiv.org/abs/2112.10752)) runs the diffusion process in the latent space instead of pixel space, making training cost lower and inference speed faster. It is motivated by the observation that most bits of an image contribute to perceptual details and the semantic and conceptual composition still remains after aggressive compression. LDM loosely decomposes the perceptual compression and semantic compression with generative modeling learning by first trimming off pixel-level redundancy with autoencoder and then manipulate/generate semantic concepts with diffusion process on learned latent.
 
-![](./posts/img/diffusion-models/image-distortion-rate.png)
+![](./img/diffusion-models/image-distortion-rate.png)
 
 Fig. 8. The plot for tradeoff between compression rate and distortion, illustrating two-stage compressions - perceptural and semantic comparession. (Image source: [Rombach & Blattmann, et al. 2022](https://arxiv.org/abs/2112.10752))
 
@@ -327,7 +327,7 @@ $$
 \end{aligned}
 $$
 
-![](./posts/img/diffusion-models/latent-diffusion-arch.png)
+![](./img/diffusion-models/latent-diffusion-arch.png)
 
 Fig. 9. The architecture of latent diffusion model. (Image source: [Rombach & Blattmann, et al. 2022](https://arxiv.org/abs/2112.1075))
 
@@ -362,7 +362,7 @@ $$
 
 The resulting _ablated diffusion model_ (**ADM**) and the one with additional classifier guidance (**ADM-G**) are able to achieve better results than SOTA generative models (e.g. BigGAN).
 
-![](./posts/img/diffusion-models/conditioned-DDPM.png)
+![](./img/diffusion-models/conditioned-DDPM.png)
 
 Fig. 10. The algorithms use guidance from a classifier to run conditioned generation with DDPM and DDIM. (Image source: [Dhariwal & Nichol, 2021](https://arxiv.org/abs/2105.05233)\])
 
@@ -394,7 +394,7 @@ The guided diffusion model, GLIDE ([Nichol, Dhariwal & Ramesh, et al. 2022](http
 
 To generate high-quality images at high resolution, [Ho et al. (2021)](https://arxiv.org/abs/2106.15282) proposed to use a pipeline of multiple diffusion models at increasing resolutions. _Noise conditioning augmentation_ between pipeline models is crucial to the final image quality, which is to apply strong data augmentation to the conditioning input $\mathbf{z}$ of each super-resolution model $p_\theta(\mathbf{x} \vert \mathbf{z})$. The conditioning noise helps reduce compounding error in the pipeline setup. _U-net_ is a common choice of model architecture in diffusion modeling for high-resolution image generation.
 
-![](./posts/img/diffusion-models/cascaded-diffusion.png)
+![](./img/diffusion-models/cascaded-diffusion.png)
 
 Fig. 11. A cascaded pipeline of multiple diffusion models at increasing resolutions. (Image source: [Ho et al. 2021](https://arxiv.org/abs/2106.15282)\])
 
@@ -414,7 +414,7 @@ $$
 \underbrace{P(\mathbf{x} \vert y) = P(\mathbf{x}, \mathbf{c}^i \vert y)}_{\mathbf{c}^i\text{ is deterministic given }\mathbf{x}} = P(\mathbf{x} \vert \mathbf{c}^i, y)P(\mathbf{c}^i \vert y)
 $$
 
-![](./posts/img/diffusion-models/unCLIP.png)
+![](./img/diffusion-models/unCLIP.png)
 
 Fig. 12. The architecture of unCLIP. (Image source: [Ramesh et al. 2022](https://arxiv.org/abs/2204.06125)\])
 

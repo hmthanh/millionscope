@@ -1,11 +1,16 @@
 import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { getAllMdx } from "@/server/processing-mdx";
+import { getAllMdx, getAllMdxCustom } from "@/server/processing-mdx";
 import slugify from "@sindresorhus/slugify";
 import { MDXFrontMatter } from "@/components/postlist";
-import { Page } from "@/components/page";
+import { NextSEOHead } from "@/components/nextSEOHead";
 import { PostList } from "@/components/postlist";
 import { locale } from "dayjs";
+import { useRouter } from "@/client/hooks";
+import { DEFAULT_DIR, DEFAULT_LOCALE } from "@/global/constants";
+import path from "path";
+import { CWD, DEFAULT_POST_DIR } from "@/server/constants";
+import { PageOpts } from "@/global/types";
 
 interface ContextProps extends ParsedUrlQuery {
   tag: string;
@@ -14,21 +19,22 @@ interface ContextProps extends ParsedUrlQuery {
 interface PostsProps {
   tag: string;
   posts: Array<MDXFrontMatter>;
-  locale: string;
 }
 
-const Posts: NextPage<PostsProps> = ({ tag, posts, locale }) => {
+const Posts: NextPage<PostsProps> = ({ tag, posts }) => {
+  const router = useRouter();
+  const locale = router.query.locale ? String(router.query.locale) : DEFAULT_LOCALE;
+  const route = router.query.route ? router.query.route : "/";
   return (
     <>
-      <Page title={`Posts tagged: "${tag}"`}>
+      <NextSEOHead title={`Posts tagged: "${tag}"`}>
         <PostList posts={posts} locale={locale} />
-      </Page>
+      </NextSEOHead>
     </>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  console.log("getStaticPaths", getStaticPaths);
   // const mdxFiles = getAllMdx().map((post) => post["frontMatter"]);
   // const tags = Array.from(new Set(mdxFiles.map((file) => file.tags)))
   // console.log("\n tags", tags,"tags \n")
@@ -51,8 +57,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  console.log("getStaticProps", getStaticProps);
+  const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: DEFAULT_POST_DIR, route: "/", locale: DEFAULT_LOCALE });
   const locale = "vn";
+
+  const pageOpts: Partial<PageOpts> = {
+    pageMap: pageMap,
+    title: "Homepage",
+    frontMatter: {},
+    // filePath: slash(path.relative(CWD, mdxPath)),
+    hasJsxInH1: false,
+    timestamp: 100,
+    readingTime: {} as any,
+  };
 
   const { tag } = context.params as ContextProps;
   const mdxFiles = getAllMdx({ locale }).map((post) => post["frontMatter"]);
@@ -62,6 +78,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       posts: mdxFiles.filter((file) => {
         return file.tags?.includes(tag);
       }),
+      pageOpts,
       locale,
     },
   };

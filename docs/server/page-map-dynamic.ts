@@ -62,7 +62,7 @@ export function collectCatchAllRoutes(parent: Folder, meta: DynamicMetaJsonFile,
 
 export const resolvePageMap = (locale: string, dynamicMetaModules: DynamicMetaDescriptor) => async () => {
   const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
-  if (process.env.NODE_ENV === "production" && cachedResolvedPageMap[locale]) {
+  if (cachedResolvedPageMap[locale]) {
     return cachedResolvedPageMap[locale];
   }
   const { pageMap } = locale
@@ -81,3 +81,12 @@ export const resolvePageMap = (locale: string, dynamicMetaModules: DynamicMetaDe
 
   return (cachedResolvedPageMap[locale] = result);
 };
+
+// export const fetchAllPageRoute = (locale: string) => async () => {
+//   const __nextra_internal__ = (globalThis as NextraInternalGlobal)[NEXTRA_INTERNAL];
+//   if (cachedResolvedPageMap[locale]) {
+//     return cachedResolvedPageMap[locale];
+//   }
+//
+//   return (cachedResolvedPageMap[locale] = result);
+// };

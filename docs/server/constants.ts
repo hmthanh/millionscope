@@ -231,6 +231,8 @@ export const CWD = process.cwd();
 
 export const PUBLIC_DIR = path.join(CWD, "public");
 
+export const DEFAULT_POST_DIR = path.join(CWD, "posts");
+
 export const CHUNKS_DIR = path.join(CWD, ".next", "static", "chunks");
 
 export const MARKDOWN_URL_EXTENSION_REGEX = /\.mdx?(?:(?=[#?])|$)/;

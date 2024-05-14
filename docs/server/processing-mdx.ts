@@ -2,11 +2,11 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "node:util";
 import matter from "gray-matter";
-import { DEFAULT_DIR, MARKDOWN_EXTENSION_REGEX } from "@/global/constants";
+import { DEFAULT_DIR, DEFAULT_LOCALE, MARKDOWN_EXTENSION_REGEX } from "@/global/constants";
 import type { MDXFrontMatter } from "@/components/postlist";
 import { collectFiles } from "@/server/page-map";
-import { NextraConfig } from "@/global/types";
-import { CWD } from "@/server/constants";
+import { MdxFile, NextraConfig, PageMapItem } from "@/global/types";
+import { CWD, DEFAULT_LOCALES } from "@/server/constants";
 import { PAGES_DIR } from "@/server/file-system";
 
 const root = process.cwd();
@@ -44,15 +44,36 @@ export const getAllMdx = ({ locale }: { locale: string }) => {
   return items.sort((a, b) => new Date(b.frontMatter.date).getTime() - new Date(a.frontMatter.date).getTime());
 };
 
+var cachedResolvedPageMap: Record<string, PageMapItem[]> = Object.create(null);
+
 export const getAllMdxCustom = async ({ dir, route = "/", locale = "en", transformPageMap }: { dir: string; route?: string; locale?: string; transformPageMap?: NextraConfig["transformPageMap"] }) => {
+  const dirPath = path.join(dir, locale);
+
   const { pageMap, imports, dynamicMetaImports } = await collectFiles({
-    dir,
-    route,
+    dir: dirPath,
+    route: locale,
+    isFollowingSymlink: false,
+  });
+  // console.log("pageMap", pageMap);
+  const pageMapFiltered = pageMap.filter((page: PageMapItem) => "frontMatter" in page);
+
+  return { pageMap: pageMapFiltered, imports, dynamicMetaImports };
+};
+
+export const collectAllPageRoute = async () => {
+  const defaultDirPath = path.resolve(CWD, DEFAULT_DIR);
+
+  const locale = "";
+  const { pageMap, imports, dynamicMetaImports } = await collectFiles({
+    dir: defaultDirPath,
+    route: "/",
     isFollowingSymlink: false,
   });
 
   return { pageMap, imports, dynamicMetaImports };
 };
+
+// function collectPageMaps(locale: string): PageMapItem[] {}
 
 // export const getAllMdxLocale = async () => {
 //   const postDir = path.resolve(CWD, DEFAULT_DIR);

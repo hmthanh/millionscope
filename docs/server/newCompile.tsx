@@ -38,7 +38,7 @@ import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
 // @ts-ignore
 import type { Processor } from "@mdx-js/mdx/lib/core";
 import { rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "@/server/rehype-plugins";
-import { MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
+import { MARKDOWN_URL_EXTENSION_REGEX, PUBLIC_DIR } from "@/server/constants";
 import { bundledLanguages, getHighlighter } from "shiki";
 import rehypeShiki from "@shikijs/rehype";
 import { MDXRemoteSerializeResult } from "@mdx-remote";
@@ -133,128 +133,128 @@ const DEFAULT_REHYPE_PRETTY_CODE_OPTIONS: RehypePrettyCodeOptions = {
 //     filterMetaString: meta => meta.replace(CODE_BLOCK_FILENAME_REGEX, '')
 // }
 
-export async function newCompile({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex }: MyCompileMdxProps) {
-  const {
-    jsx = false,
-    format: _format = "mdx",
-    outputFormat = "function-body",
-    // remarkPlugins,
-    // rehypePlugins,
-    rehypePrettyCodeOptions,
-  }: MdxOptions = {};
-  const rehypePlugins: PluggableList = [];
-  const remarkPlugins: PluggableList = [];
-  const defaultShowCopyCode = true;
-  const codeHighlight = true;
-  const latexOptions: RehypeKatexOptions = {};
-
-  // TScope = Record<string, unknown>,
-  // TFrontmatter = Record<string, unknown>
-  const mdxContent: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>> = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [
-        // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
-        ...(remarkPlugins || []),
-        // [
-        //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
-        //     {
-        //         packageName: 'nextra/banner.tsx',
-        //         tabNamesProp: 'items',
-        //         storageKey: 'selectedPackageManager'
-        //     }
-        // ] satisfies Pluggable,
-        // isRemoteContent && remarkRemoveImports,
-        remarkFrontmatter, // parse and attach yaml node
-        [remarkMdxFrontMatter] satisfies Pluggable,
-        remarkGfm as Pluggable,
-        remarkMath,
-        [
-          remarkMdxDisableExplicitJsx,
-          // Replace the <summary> and <details> with customized banner.tsx
-          { whiteList: ["details", "summary"] },
-        ] satisfies Pluggable,
-        remarkCustomHeadingId,
-        // remarkMdxTitle,
-        [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
-        // search && ([remarkStructurize, search] satisfies Pluggable),
-        [remarkStructurize, flexsearch] satisfies Pluggable,
-        // staticImage && remarkStaticImage,
-        [remarkEmbedImages, { dirname: "./posts" }],
-        // readingTime &&
-        remarkReadingTime,
-        // latex &&
-        remarkMath,
-        [
-          clonedRemarkLinkRewrite,
-          {
-            pattern: MARKDOWN_URL_EXTENSION_REGEX,
-            replace: "",
-            excludeExternalLinks: true,
-          },
-        ] satisfies Pluggable,
-        remarkRemoveImports,
-        // isFileOutsideCWD && remarkReplaceImports,
-      ],
-      rehypePlugins: [
-        ...(rehypePlugins || []),
-        // [
-        //     rehypePrettyCode,
-        //     {
-        //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-        //         // ...rehypePrettyCodeOptions
-        //     }
-        // ] satisfies Pluggable,
-        [
-          // To render <details /> and <summary /> correctly
-          rehypeRaw,
-          // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
-          { passThrough: ["mdxjsEsm", "mdxJsxFlowElement"] },
-        ],
-        [rehypeIcon, rehypeAttachCodeMeta],
-        [rehypeParseCodeMeta, { defaultShowCopyCode }],
-        // [
-        //
-        //     !isRemoteContent && rehypeIcon,
-        //     rehypeAttachCodeMeta
-        // ],
-
-        // [
-        //
-        //     !isRemoteContent && rehypeIcon,
-        //     rehypeAttachCodeMeta
-        // ],
-        [rehypeKatex, latexOptions],
-        // (typeof latex === 'object'
-        //     ? latex.renderer === 'mathjax'
-        //         ? [rehypeBetterReactMathjax, latex.options, isRemoteContent]
-        //         : [rehypeKatex, latex.options]
-        //     : rehypeKatex),
-        // ...(codeHighlight === false
-        //     ? []
-        //     :),
-        // latex && rehypeKatex,
-        // codeHighlight !== false &&
-        // ([
-        //     rehypePrettyCode,
-        //     {
-        //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
-        //         // ...rehypePrettyCodeOptions
-        //     }
-        // ] as any),
-        // attachMeta,
-        [
-          rehypeShiki,
-          {
-            theme: "github-dark",
-            // themes: { dark: 'github-dark', light: "github-light" }
-          },
-        ] satisfies Pluggable,
-        [rehypeExtractTocContent, { isRemoteContent }],
-      ],
-    },
-    scope: frontMatter,
-  });
-
-  // console.log("mdxContent", mdxContent)
-  return mdxContent;
-}
+// export async function newCompile({ content, frontMatter, isRemoteContent, flexsearch, readingTime, latex }: MyCompileMdxProps) {
+//   const {
+//     jsx = false,
+//     format: _format = "mdx",
+//     outputFormat = "function-body",
+//     // remarkPlugins,
+//     // rehypePlugins,
+//     rehypePrettyCodeOptions,
+//   }: MdxOptions = {};
+//   const rehypePlugins: PluggableList = [];
+//   const remarkPlugins: PluggableList = [];
+//   const defaultShowCopyCode = true;
+//   const codeHighlight = true;
+//   const latexOptions: RehypeKatexOptions = {};
+//
+//   // TScope = Record<string, unknown>,
+//   // TFrontmatter = Record<string, unknown>
+//   const mdxContent: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>> = await serialize(content, {
+//     mdxOptions: {
+//       remarkPlugins: [
+//         // should be before remarkRemoveImports because contains `import { Mermaid } from ...`
+//         ...(remarkPlugins || []),
+//         // [
+//         //     remarkNpm2Yarn, // should be before remarkRemoveImports because contains `import { Tabs as $Tabs, Tab as $Tab } from ...`
+//         //     {
+//         //         packageName: 'nextra/banner.tsx',
+//         //         tabNamesProp: 'items',
+//         //         storageKey: 'selectedPackageManager'
+//         //     }
+//         // ] satisfies Pluggable,
+//         // isRemoteContent && remarkRemoveImports,
+//         remarkFrontmatter, // parse and attach yaml node
+//         [remarkMdxFrontMatter] satisfies Pluggable,
+//         remarkGfm as Pluggable,
+//         remarkMath,
+//         [
+//           remarkMdxDisableExplicitJsx,
+//           // Replace the <summary> and <details> with customized banner.tsx
+//           { whiteList: ["details", "summary"] },
+//         ] satisfies Pluggable,
+//         remarkCustomHeadingId,
+//         // remarkMdxTitle,
+//         [remarkHeadings, { isRemoteContent }] satisfies Pluggable,
+//         // search && ([remarkStructurize, search] satisfies Pluggable),
+//         [remarkStructurize, flexsearch] satisfies Pluggable,
+//         // staticImage && remarkStaticImage,
+//         [remarkEmbedImages, { dirname: PUBLIC_DIR }],
+//         // readingTime &&
+//         remarkReadingTime,
+//         // latex &&
+//         remarkMath,
+//         [
+//           clonedRemarkLinkRewrite,
+//           {
+//             pattern: MARKDOWN_URL_EXTENSION_REGEX,
+//             replace: "",
+//             excludeExternalLinks: true,
+//           },
+//         ] satisfies Pluggable,
+//         remarkRemoveImports,
+//         // isFileOutsideCWD && remarkReplaceImports,
+//       ],
+//       rehypePlugins: [
+//         ...(rehypePlugins || []),
+//         // [
+//         //     rehypePrettyCode,
+//         //     {
+//         //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
+//         //         // ...rehypePrettyCodeOptions
+//         //     }
+//         // ] satisfies Pluggable,
+//         [
+//           // To render <details /> and <summary /> correctly
+//           rehypeRaw,
+//           // fix Error: Cannot compile.ts `mdxjsEsm` node for npm2yarn and mermaid
+//           { passThrough: ["mdxjsEsm", "mdxJsxFlowElement"] },
+//         ],
+//         [rehypeIcon, rehypeAttachCodeMeta],
+//         [rehypeParseCodeMeta, { defaultShowCopyCode }],
+//         // [
+//         //
+//         //     !isRemoteContent && rehypeIcon,
+//         //     rehypeAttachCodeMeta
+//         // ],
+//
+//         // [
+//         //
+//         //     !isRemoteContent && rehypeIcon,
+//         //     rehypeAttachCodeMeta
+//         // ],
+//         [rehypeKatex, latexOptions],
+//         // (typeof latex === 'object'
+//         //     ? latex.renderer === 'mathjax'
+//         //         ? [rehypeBetterReactMathjax, latex.options, isRemoteContent]
+//         //         : [rehypeKatex, latex.options]
+//         //     : rehypeKatex),
+//         // ...(codeHighlight === false
+//         //     ? []
+//         //     :),
+//         // latex && rehypeKatex,
+//         // codeHighlight !== false &&
+//         // ([
+//         //     rehypePrettyCode,
+//         //     {
+//         //         ...DEFAULT_REHYPE_PRETTY_CODE_OPTIONS,
+//         //         // ...rehypePrettyCodeOptions
+//         //     }
+//         // ] as any),
+//         // attachMeta,
+//         [
+//           rehypeShiki,
+//           {
+//             theme: "github-dark",
+//             // themes: { dark: 'github-dark', light: "github-light" }
+//           },
+//         ] satisfies Pluggable,
+//         [rehypeExtractTocContent, { isRemoteContent }],
+//       ],
+//     },
+//     scope: frontMatter,
+//   });
+//
+//   // console.log("mdxContent", mdxContent)
+//   return mdxContent;
+// }

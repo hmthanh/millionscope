@@ -19,7 +19,7 @@ import remarkReadingTime from "remark-reading-time";
 import remarkSmartypants from "remark-smartypants";
 import type { Pluggable, Plugin } from "unified";
 import type { FrontMatter, LoaderOptions, PageOpts, ReadingTime, StructurizedData } from "@/global/types";
-import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX } from "@/server/constants";
+import { CWD, DEFAULT_LOCALE, ERROR_ROUTES, MARKDOWN_URL_EXTENSION_REGEX, PUBLIC_DIR } from "@/server/constants";
 import { recmaRewriteFunctionBody, recmaRewriteJsx } from "@/server/recma-plugins";
 import { DEFAULT_REHYPE_PRETTY_CODE_OPTIONS, rehypeAttachCodeMeta, rehypeBetterReactMathjax, rehypeExtractTocContent, rehypeIcon, rehypeParseCodeMeta } from "@/server/rehype-plugins";
 import {
@@ -95,7 +95,7 @@ function getMdxOption(frontMatter: any): CompileOptions {
       // search && ([remarkStructurize, search] satisfies Pluggable),
       [remarkStructurize, flexsearch] satisfies Pluggable,
       // staticImage && remarkStaticImage,
-      [remarkEmbedImages, { dirname: "./posts" }],
+      // [remarkEmbedImages, { dirname: PUBLIC_DIR }],
       // readingTime &&
       remarkReadingTime,
       // latex &&
