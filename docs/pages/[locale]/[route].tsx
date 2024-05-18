@@ -1,7 +1,7 @@
 "use client";
 
 import slash from "slash";
-import { Folder, Heading, PageMapItem, PageOpts } from "@/global/types";
+import { Folder, Heading, MdxFile, PageMapItem, PageOpts } from "@/global/types";
 import { CHUNKS_DIR, CWD, DEFAULT_POST_DIR } from "@/server/constants";
 import { logger } from "@/server/utils";
 
@@ -87,8 +87,23 @@ interface PageRouteItem {
   params: { locale: string; route: string };
 }
 
+function findAllPageRoutes(cacheRoute: PageRouteItem, pageMap: PageMapItem[], isRoot: boolean = true) {
+  pageMap.map((page: PageMapItem) => {
+    // Check is folder
+    if ("children" in pageMap) {
+      const pageFolder = page as Folder;
+      findAllPageRoutes(cacheRoute, pageFolder.children, false);
+    }
+    if ("frontmatter" in pageMap) {
+      const pageMdx = page as MdxFile;
+      // pageMdx.
+    }
+  });
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const { pageMap, imports, dynamicMetaImports } = await collectAllPageRoute();
+  // console.log("pageMap", JSON.stringify(pageMap));
   // const metaImportsAST: ImportDeclaration[] = imports
   //   // localeCompare to avoid race condition
   //   .sort((a, b) => a.filePath.localeCompare(b.filePath))
@@ -120,6 +135,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const pageItem = page as Folder;
     pageItem.children.map((item: PageMapItem) => {
       if ("frontMatter" in item) {
+        // console.log("pageItem", pageItem);
         pageParams.push({ params: { locale: pageItem.name, route: item.route } });
       }
     });
@@ -128,8 +144,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // console.log("pageParams", pageParams);
 
   return {
-    paths: [{ params: { locale: "en", route: "hello-world" } }, { params: { locale: "vn", route: "hello-world" } }],
-    // paths: pageParams,
+    // paths: [{ params: { locale: "en", route: "hello-world" } }, { params: { locale: "vn", route: "hello-world" } }],
+    paths: pageParams,
     fallback: false,
   };
 };
