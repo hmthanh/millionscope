@@ -33,7 +33,14 @@ export function ConfigProvider({ children, value: pageOpts }: { children: ReactN
 
   const fsPath = useFSRoute();
 
-  const normalizePagesResult = useMemo(() => normalizePages({ list: pageOpts.pageMap, route: fsPath }), [pageOpts.pageMap, fsPath]);
+  const normalizePagesResult = useMemo(
+    () =>
+      normalizePages({
+        list: pageOpts.pageMap,
+        route: fsPath,
+      }),
+    [pageOpts.pageMap, fsPath],
+  );
 
   const { activeType, activeThemeContext: themeContext } = normalizePagesResult;
 

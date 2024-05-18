@@ -136,7 +136,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     pageItem.children.map((item: PageMapItem) => {
       if ("frontMatter" in item) {
         // console.log("pageItem", pageItem);
-        pageParams.push({ params: { locale: pageItem.name, route: item.route } });
+        pageParams.push({ params: { locale: pageItem.name, route: item.route.replace(`/${pageItem.name}/`, "") } });
       }
     });
   });
@@ -156,6 +156,7 @@ export const getStaticProps = async (context: any) => {
   const { pageMap, imports, dynamicMetaImports } = await getAllMdxCustom({ dir: DEFAULT_POST_DIR, route: route, locale: locale });
 
   // console.log("pageMap", JSON.stringify(pageMap));
+  console.log("pageMap", pageMap);
   // console.log("imports", imports);
   const mdxFiles = getAllMdx({ locale: "vn" });
   // console.log("imports", imports);
@@ -239,7 +240,7 @@ export const getStaticProps = async (context: any) => {
   let timestamp: PageOpts["timestamp"];
   const pageOpts: Partial<PageOpts> = {
     pageMap: pageMap || {},
-    title: title || "",
+    title: frontMatter.title || "",
     frontMatter: frontMatter || {},
     filePath: slash(path.relative(CWD, mdxPath)),
     hasJsxInH1: false,

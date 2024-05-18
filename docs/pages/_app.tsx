@@ -7,6 +7,9 @@ import type { AppProps } from "next/app";
 import "@/styles/new.css";
 import { ConfigProvider, ThemeConfigProvider, useThemeConfig } from "@/contexts";
 import { useRouter } from "@/client/hooks";
+import ThemeLayout from "@/components/layout/themeLayout";
+import { DataProvider } from "@/client/hooks/use-data";
+import { PageOpts } from "@/global/types";
 
 // import {useRouter} from "next/router";
 
@@ -19,27 +22,16 @@ export default function App({ Component, pageProps }: IPageMeta) {
   const themeConfig = useThemeConfig();
   const router = useRouter();
 
-  // const pageOptsDefault: PageOpts<Record<any, any>> = { filePath: "", frontMatter: {}, pageMap: [], title: "" };
-  // const pageOpts: PageOpts = pageProps.pageOpts ? pageProps.pageOpts : pageOptsDefault;
+  const pageOpts: PageOpts = pageProps.pageOpts ? pageProps.pageOpts : ({ filePath: "", frontMatter: {}, pageMap: [], title: "" } as PageOpts);
   // const pageOpts: PageOpts = useMemo(() => pageProps.pageOpts, [pageProps.pageOpts]);
-  // console.log("pageProps", pageProps);
   // console.log("router", router)
-  if ("pageOpts" in pageProps) {
-    return (
-      <ThemeConfigProvider value={themeConfig}>
-        <ConfigProvider value={pageProps.pageOpts}>
-          <Component {...pageProps} />
-        </ConfigProvider>
-      </ThemeConfigProvider>
-    );
-  }
 
   return (
-    <ThemeConfigProvider value={themeConfig}>
-      {/*<ConfigProvider value={pageProps.pageOpts}>*/}
-      <Component {...pageProps} />
-      {/*</ConfigProvider>*/}
-    </ThemeConfigProvider>
+    <ThemeLayout themeConfig={themeConfig} pageOpts={pageOpts} pageProps={pageProps}>
+      <DataProvider value={pageProps}>
+        <Component {...pageProps} />
+      </DataProvider>
+    </ThemeLayout>
   );
 }
 

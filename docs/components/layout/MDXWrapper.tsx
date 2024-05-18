@@ -4,7 +4,7 @@ import { useMDXComponents } from "@/client/mdx";
 import { Wrapper } from "@/client/components";
 
 export function MDXWrapper({ children, toc }: { children: ReactNode; toc: Heading[] }): ReactElement {
-  const { wrapper } = useMDXComponents();
+  // const { wrapper } = useMDXComponents();
   return <TOCWrapper toc={toc}>{children}</TOCWrapper>;
 }
 

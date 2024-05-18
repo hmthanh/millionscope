@@ -38,9 +38,9 @@ export function RemoteContent({
   return <MDXContent components={components} />;
 }
 
-RemoteContent.useTOC = (props: Record<string, unknown>) => {
-  const compiledSource = useData("__nextra_dynamic_mdx");
-  console.log("compiledSource", compiledSource);
-  const { useTOC } = evaluate(compiledSource);
-  return useTOC(props);
-};
+// RemoteContent.useTOC = (props: Record<string, unknown>) => {
+//   const compiledSource = useData("__nextra_dynamic_mdx");
+//   // console.log("compiledSource", compiledSource);
+//   const { useTOC } = evaluate(compiledSource);
+//   return useTOC(props);
+// };
